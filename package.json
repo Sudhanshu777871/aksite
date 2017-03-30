@@ -91,7 +91,7 @@
     "chai-things": "^0.2.0",
     "classie": "^1.0.0",
     "connect-livereload": "~0.6.0",
-    "css-loader": "^0.27.0",
+    "css-loader": "^0.28.0",
     "d3": "^4.4.3",
     "del": "^2.2.1",
     "eslint": "~3.16.1",
