@@ -6,7 +6,7 @@
 Andrew Koroluk
 ===================
 
-##Technologies Used
+## Technologies Used
 
 * MongoDB
 * ExpressJS
@@ -27,7 +27,7 @@ Andrew Koroluk
 * JetBrains WebStorm
 * Atlassian SourceTree
 
-##Running Locally
+## Running Locally
 1. [Install Git](http://www.git-scm.com/downloads)
 
 2. [Install MongoDB](https://www.mongodb.org/downloads) and have a running daemon
@@ -55,14 +55,14 @@ Andrew Koroluk
 
 	`gulp serve`
 
-=====
+-----
 
-##Building
+## Building
 
 1. `gulp build`
 
 2. `NODE_ENV=production node dist/server/`
 
-##Testing
+## Testing
 
 From the project root, run `gulp test`
