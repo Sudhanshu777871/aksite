@@ -98,7 +98,7 @@
     "eslint-plugin-lodash": "^2.2.5",
     "extract-text-webpack-plugin": "^2.0.0-beta.4",
     "file-loader": "^0.11.0",
-    "flow-bin": "^0.44.0",
+    "flow-bin": "^0.45.0",
     "font-awesome": "^4.7.0",
     "gulp": "^3.9.1",
     "gulp-add-src": "^0.2.0",
