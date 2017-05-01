@@ -95,7 +95,7 @@
     "d3": "^4.4.3",
     "del": "^2.2.1",
     "eslint": "~3.16.1",
-    "eslint-plugin-lodash": "^2.2.5",
+    "eslint-plugin-lodash": "^2.4.2",
     "extract-text-webpack-plugin": "^2.0.0-beta.4",
     "file-loader": "^0.11.0",
     "flow-bin": "^0.45.0",
