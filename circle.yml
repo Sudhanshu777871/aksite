@@ -39,6 +39,8 @@ deployment:
       - cd dist && docker build --rm=false -t gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 .
       # Using a separate tag command until Docker 1.10 is available on CircleCI, then we can use two tags in the build command above
       - docker tag gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 gcr.io/${PROJECT_NAME}/aksite:latest
+      - sudo chown -R ubuntu ~/.config/gcloud
+      - /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ~/account-auth.json
       - chmod 0744 ./scripts/deploy.sh
       - ./scripts/deploy.sh
 
