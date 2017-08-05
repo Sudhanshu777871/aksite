@@ -86,7 +86,7 @@
     "babel-loader": "^7.0.0",
     "bootstrap": "^3.3.7",
     "bootstrap-sass": "^3.3.6",
-    "chai": "^3.5.0",
+    "chai": "^4.1.1",
     "chai-as-promised": "^7.0.0",
     "chai-things": "^0.2.0",
     "classie": "^1.0.0",
