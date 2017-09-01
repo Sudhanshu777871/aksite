@@ -1,6 +1,5 @@
 'use strict';
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
-import { StateService } from 'ui-router-ng2';
 import {
     wrapperLodash as _,
     mixin,
@@ -20,6 +19,8 @@ mixin(_, {
 import {autobind} from 'core-decorators';
 import {GalleryService} from '../../../components/gallery/gallery.service';
 import {PhotoService} from '../../../components/photo/photo.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { switchMap } from 'rxjs/operator/switchMap';
 
 import PhotoSwipe from 'photoswipe';
 import PhotoSwipeUiDefault from 'photoswipe/dist/photoswipe-ui-default';
@@ -50,19 +51,26 @@ export class GalleryComponent {
     photos = [];
     items = [];
 
-    static parameters = [StateService, PhotoService, GalleryService];
-    constructor(stateService: StateService, Photo: PhotoService, Gallery: GalleryService) {
-        this.StateService = stateService;
-        this.galleryId = this.StateService.params.galleryId;
+    static parameters = [ActivatedRoute, PhotoService, GalleryService];
+    constructor(route: ActivatedRoute, Photo: PhotoService, Gallery: GalleryService) {
+        this.route = route;
+        this.galleryId = this.route.params.id;
         this.Photo = Photo;
         this.Gallery = Gallery;
 
-        this.ngOnInit();
+        // this.ngOnInit();
     }
 
-    async ngOnInit() {
-        this.gallery = await this.Gallery.get({id: this.galleryId});
+    ngOnInit() {
+        switchMap.call(this.route.params, (params: ParamMap) => this.Gallery.get({id: params.id}))
+            .subscribe(gallery => {
+                this.gallery = gallery;
 
+                this.onGallery();
+            });
+    }
+
+    async onGallery() {
         let photoArray = await Promise.map(this.gallery.photos, async (photo, i) => {
             photo = await this.Photo.get({id: photo});
 

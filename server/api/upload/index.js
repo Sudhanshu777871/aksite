@@ -1,10 +1,9 @@
 'use strict';
+import {Router} from 'express';
+const auth = require('../../auth/auth.service');
+const controller = require('./upload.controller');
 
-var express = require('express'),
-    auth = require('../../auth/auth.service'),
-    controller = require('./upload.controller');
-
-var router = express.Router();
+var router = new Router();
 
 router.get('/', auth.hasRole('admin'), controller.index);
 router.get('/clean', auth.hasRole('admin'), controller.clean);

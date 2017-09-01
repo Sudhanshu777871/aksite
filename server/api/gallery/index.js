@@ -1,10 +1,9 @@
 'use strict';
-
-var express = require('express');
+import {Router} from 'express';
 var controller = require('./gallery.controller');
 var auth = require('../../auth/auth.service');
 
-var router = express.Router();
+var router = new Router();
 
 router.get('/', auth.appendUser(), controller.index);
 router.get('/count', auth.hasRole('admin'), controller.count);

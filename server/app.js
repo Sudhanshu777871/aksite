@@ -13,8 +13,11 @@ import config from './config/environment';
 import Grid from 'gridfs-stream';
 import raven from 'raven';
 
-export let client = new raven.Client(config.sentry.dsn);
-client.patchGlobal();
+export let client;
+if(config.sentry.dsn) {
+    client = new raven.Client(config.sentry.dsn);
+    client.patchGlobal();
+}
 
 // Connect to database
 mongoose.connect(config.mongo.uri, config.mongo.options);

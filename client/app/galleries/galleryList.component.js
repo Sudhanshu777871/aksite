@@ -12,7 +12,7 @@ mixin(_, {
 
 import { Component, ViewEncapsulation, Inject } from '@angular/core';
 import { Http } from '@angular/http';
-import { StateService } from 'ui-router-ng2';
+import { Router } from '@angular/router';
 import { autobind } from 'core-decorators';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -34,11 +34,11 @@ export class GalleryListComponent {
     galleries = [];
     loadingGalleries = true;
 
-    static parameters = [GalleryService, Http, StateService];
-    constructor(Gallery: GalleryService, http: Http, stateService: StateService) {
+    static parameters = [GalleryService, Http, Router];
+    constructor(Gallery: GalleryService, http: Http, router: Router) {
         this.Gallery = Gallery;
         this.Http = http;
-        this.StateService = stateService;
+        this.router = router;
     }
 
     async ngOnInit() {
@@ -80,7 +80,7 @@ export class GalleryListComponent {
 
     @autobind
     goToGallery(event) {
-        this.StateService.go('gallery', {galleryId: event.currentTarget.id});
+        this.router.navigate(['/galleries', event.currentTarget.id]);
     }
 }
 

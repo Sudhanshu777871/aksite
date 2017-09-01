@@ -1,9 +1,8 @@
 'use strict';
-
-var express = require('express'),
-    controller = require('./photo.controller'),
-    auth = require('../../auth/auth.service'),
-    router = express.Router();
+import {Router} from 'express';
+const controller = require('./photo.controller');
+const auth = require('../../auth/auth.service');
+const router = new Router();
 
 router.get('/', auth.appendUser(), controller.index);
 router.get('/count', auth.hasRole('admin'), controller.count);

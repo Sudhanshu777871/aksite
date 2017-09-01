@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { UIRouterModule } from 'ui-router-ng2';
+import { RouterModule, Routes } from '@angular/router';
 import { AlertModule } from 'ng2-bootstrap';
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -11,31 +11,29 @@ import { GalleryComponent } from './gallery/gallery.component';
 import { GalleryService } from '../../components/gallery/gallery.service';
 import { PhotoService } from '../../components/photo/photo.service';
 
+const routes: Routes = [{
+    path: 'galleries',
+    component: GalleryListComponent,
+}, {
+    path: 'galleries/:id',
+    component: GalleryComponent,
+}];
+
 @NgModule({
     imports: [
         BrowserModule,
-        UIRouterModule.forChild({
-            states: [{
-                name: 'galleries',
-                url: '/galleries',
-                component: GalleryListComponent
-            }, {
-                name: 'gallery',
-                url: '/galleries/gallery/:galleryId',
-                component: GalleryComponent
-            }]
-        }),
         AlertModule,
         BrowserModule,
-        DirectivesModule
+        DirectivesModule,
+        RouterModule.forChild(routes),
     ],
     providers: [
         GalleryService,
-        PhotoService
+        PhotoService,
     ],
     declarations: [
         GalleryListComponent,
-        GalleryComponent
-    ]
+        GalleryComponent,
+    ],
 })
 export class GalleriesModule {}

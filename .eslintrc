@@ -179,7 +179,7 @@
         "brace-style": 2,                                           //enforce one true brace style
         "camelcase": 1,                                             //require camel case names
         "capitalized-comments": 0,                                  //enforce or disallow capitalization of the first letter of a comment
-        "comma-dangle": [1, "always-multiline"],                    //require or disallow trailing commas
+        "comma-dangle": 0,                                          //require or disallow trailing commas
         "comma-spacing": [2, {"before": false, "after": true}],     //enforce spacing before and after comma
         "comma-style": 2,                                           //enforce one true comma style
         "computed-property-spacing": 2,                             //require or disallow padding inside computed properties
