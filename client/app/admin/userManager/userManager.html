@@ -5,29 +5,24 @@
         </div>
     </div>
     <div class="row">
-        <md-content>
-            <md-list>
-                <md-list-item class="md-2-line md-with-secondary md-clickable fade-out" ng-repeat="user in vm.users" ng-class="{deleted: user.deleted}">
-                    <md-button class="md-no-style" ng-click="vm.goToUser(user._id)">
-                        <div class="md-list-item-inner">
-                            <img class="md-avatar" ng-src="/api/upload/{{user.imageId}}.jpg" alt="{{user.name}}">
-                            <div class="md-list-item-text">
-                                <h3>{{user.name}}</h3>
-                                <p>{{user.email}}</p>
-                            </div>
-                            <div class="icon-section text-muted">
-                                <i class="fa fa-hdd-o fa-2x" ng-class="{'local-color': user.providers.local}"></i>
-                                <i class="fa fa-google-plus fa-2x" ng-class="{'google-plus-color': user.providers.google}"></i>
-                                <i class="fa fa-linkedin-square fa-2x" ng-class="{'linkedin-color': user.providers.linkedin}"></i>
-                                <i class="fa fa-github fa-2x" ng-class="{'github-color': user.providers.github}"></i>
-                            </div>
-                        </div>
-                    </md-button>
-                    <md-button class="md-secondary-container md-icon-button" aria-label="Delete User" ng-click="vm.deleteUser(user, $event)">
-                        <md-icon class="fa md-warn" md-font-icon="fa-trash-o"></md-icon>
-                    </md-button>
-                </md-list-item>
-            </md-list>
-        </md-content>
+        <md-list class="user-list">
+            <md-list-item class="user" *ngFor="let user of users">
+                <span md-list-avatar [ngStyle]="{'background': user.smallImageId ? user.bgImg : 'lightblue', 'background-size': 'contain'}"></span>
+                <h4 md-line style="overflow: hidden;">{{user.name}}</h4>
+                <p md-line class="subheader">{{user.email}}</p>
+                <div class="icon-section text-muted">
+                    <i class="fa fa-hdd-o fa-2x" [class.local-color]="user.providers.local"></i>
+                    <i class="fa fa-google-plus fa-2x" [class.google-plus]="user.providers.google"></i>
+                    <i class="fa fa-linkedin-square fa-2x" [class.linkedin]="user.providers.linkedin"></i>
+                    <i class="fa fa-github fa-2x" [class.github]="user.providers.github"></i>
+                </div>
+                <button md-icon-button (click)="goToUser(user._id)">
+                    <md-icon>edit</md-icon>
+                </button>
+                <button md-icon-button (click)="deleteUser(user)">
+                    <md-icon>delete</md-icon>
+                </button>
+            </md-list-item>
+        </md-list>
     </div>
 </div>

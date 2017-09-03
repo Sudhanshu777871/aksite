@@ -39,7 +39,7 @@
 
         <ul class="sidenav-menu">
             <li class="" *ngFor="let section of sections">
-                <button md-button uiSref="{{section.sref}}">
+                <button md-button [routerLink]="section.link">
                     <i class="fa fa-fw {{section.icon}}"></i>
                     {{section.title}}
                 </button>
@@ -49,5 +49,5 @@
 
     <button md-button (click)="start.open()"><i class="fa fa-bars fa-2x"></i></button>
 
-    <div ui-view="body"></div>
+    <router-outlet></router-outlet>
 </md-sidenav-container>

@@ -3,12 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule, Http } from '@angular/http';
 import { MaterialModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
-import {  AuthHttp, AuthConfig } from 'angular2-jwt';
+import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { AppComponent } from './app.component';
 import { MainModule } from './main/main.module';
 import { DirectivesModule } from '../components/directives.module';
 import { AccountModule } from './account/account.module';
-// import { AdminModule } from './admin/admin.module';
+import { AdminModule } from './admin/admin.module';
 import { ProjectsModule } from './projects/projects.module';
 import { GalleriesModule } from './galleries/galleries.module';
 import { BlogModule } from './blog/blog.module';
@@ -71,7 +71,7 @@ const appRoutes: Routes = [
         MainModule,
         DirectivesModule,
         AccountModule,
-        // AdminModule,
+        AdminModule,
         ProjectsModule,
         GalleriesModule,
         BlogModule,

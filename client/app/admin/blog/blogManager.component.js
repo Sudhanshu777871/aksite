@@ -1,7 +1,7 @@
 'use strict';
 import { Component } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { StateService } from 'ui-router-ng2';
+import { Router } from '@angular/router';
 import {
     wrapperLodash as _,
     mixin,
@@ -26,12 +26,14 @@ export class BlogManagerComponent {
     postChanges = [];
     dirty = false;
 
-    static parameters = [Http, StateService];
-    constructor(http: Http, stateService: StateService) {
+    static parameters = [Http, Router];
+    constructor(http: Http, router: Router) {
         this.Http = http;
-        this.StateService = stateService;
+        this.router = router;
+    }
 
-        this.Http.get('/api/posts')
+    ngOnInit() {
+        return this.Http.get('/api/posts')
             .toPromise()
             .then(extractData)
             .then(data => {
@@ -53,7 +55,7 @@ export class BlogManagerComponent {
     }
 
     goToPost(id) {
-        this.StateService.go('admin.post', {postId: id});
+        this.router.navigate(['admin/blog', id]);
     }
 
     //TODO: remove strange toggling, change to immediately delete, but show a 'Post Deleted' toast with an 'UNDO' button

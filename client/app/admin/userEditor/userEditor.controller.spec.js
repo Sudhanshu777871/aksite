@@ -25,7 +25,7 @@ describe('Controller: UserEditorController', function() {
             $sanitize = _$sanitize_;
             Upload = _Upload_;
             Auth = _Auth_;
-            UserEditorController = _$controller_('UserEditorController', {
+            UserEditorController = _$controller_('UserEditorComponent', {
                 $scope: scope,
                 $http: _$http_,
                 $state: _$state_,
