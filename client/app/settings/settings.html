@@ -1,27 +1,16 @@
-<section layout="row" flex>
-    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
-        <md-toolbar class="md-theme-indigo">
-            <h1 class="md-toolbar-tools">Settings</h1>
-        </md-toolbar>
-        <md-content class="" ng-controller="SettingsSidenavController as sidenav">
-            <md-button ng-click="sidenav.close()" class="md-primary" hide-gt-md>
-                Close Sidenav Left
-            </md-button>
-            <ul class="sidenav-menu">
-                <li class="" ng-repeat="section in settings.sections">
-                    <md-button ui-sref="{{section.link}}">
-                        <i class="fa fa-fw {{section.icon}}"></i> {{section.title}}
-                    </md-button>
-                </li>
-            </ul>
-        </md-content>
+<md-sidenav-container>
+    <md-sidenav #settingsNav [opened]="true">
+        <ul class="sidenav-menu">
+            <li class="" *ngFor="let section of sections">
+                <button md-button [routerLink]="section.link">
+                    <i class="fa fa-fw {{section.icon}}"></i>
+                    {{section.title}}
+                </button>
+            </li>
+        </ul>
     </md-sidenav>
-    <md-content flex class="" ng-style="heightStyle" style="min-height: 750px;">
-        <div class="padding" layout="column" layout-align="center center" hide-gt-md>
-            <md-button ng-click="settings.toggleLeft()" class="md-primary" style="width: 100%">
-                Toggle Sidebar
-            </md-button>
-        </div>
-        <div ui-view=""></div>
-    </md-content>
-</section>
+
+    <button md-button (click)="settingsNav.open()"><i class="fa fa-bars fa-2x"></i></button>
+
+    <router-outlet></router-outlet>
+</md-sidenav-container>

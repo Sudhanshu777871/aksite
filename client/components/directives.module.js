@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { CollapseModule } from 'ng2-bootstrap';
+import { CollapseModule } from 'ngx-bootstrap';
 
 import { AuthModule } from './auth/auth.module';
 

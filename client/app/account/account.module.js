@@ -9,25 +9,10 @@ import { SignupComponent } from './signup/signup.component';
 const accountRoutes: Routes = [{
     path: 'login',
     component: LoginComponent,
-    //data: { title: 'Home' }
-// }, {
-//     path: 'settings',
-//     component: SettingsComponent,
 }, {
     path: 'signup',
     component: SignupComponent,
 }];
-// UIRouterModule.forChild({
-//     states: [{
-//         name: 'login',
-//         url: '/login',
-//         component: LoginComponent
-//     }, {
-//         name: 'signup',
-//         url: '/signup',
-//         component: SignupComponent
-//     }]
-// }),
 
 @NgModule({
     imports: [

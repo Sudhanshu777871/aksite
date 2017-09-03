@@ -6,7 +6,7 @@ import profile from './profile';
 
 import routing from './settings.routes';
 import SettingsSidenavController from './sidenav.controller';
-import SettingsController from './settings.controller';
+import SettingsController from './settings.component';
 
 //import '!raw!sass!./settings.scss'
 

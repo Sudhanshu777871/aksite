@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AlertModule } from 'ng2-bootstrap';
+import { AlertModule } from 'ngx-bootstrap';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { DirectivesModule } from '../../components/directives.module';

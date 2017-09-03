@@ -14,6 +14,7 @@ import { GalleriesModule } from './galleries/galleries.module';
 import { BlogModule } from './blog/blog.module';
 // import { UserModule } from './user/user.module';
 import { ResumeModule } from './resume/resume.module';
+import { SettingsModule } from "./settings/settings.module";
 
 import constants from './app.constants';
 import Raven from 'raven-js';
@@ -77,6 +78,7 @@ const appRoutes: Routes = [
         BlogModule,
         // UserModule,
         ResumeModule,
+        SettingsModule,
     ],
     declarations: [
         AppComponent,
