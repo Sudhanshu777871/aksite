@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
     selector: 'user-editor',
     template: require('./userEditor.html'),
-    styles: [require('./userEditor.scss')]
+    // styles: [require('./userEditor.scss')]
 })
 export class UserEditorComponent {
     loadingUser = true;

@@ -5,7 +5,7 @@ import { AuthService } from '../../components/auth/auth.service';
 @Component({
     selector: 'user-settings',
     template: require('./settings.html'),
-    styles: [require('./settings.scss')]
+    // styles: [require('./settings.scss')]
 })
 export class SettingsComponent {
     sections = [{
