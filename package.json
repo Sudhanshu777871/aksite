@@ -175,7 +175,7 @@
     "run-sequence": "^2.0.0",
     "rxjs": "^5.0.1",
     "sass-loader": "^6.0.2",
-    "should": "~11.2.0",
+    "should": "~13.0.1",
     "sinon": "^1.17.6",
     "sinon-chai": "^2.8.0",
     "snyk": "^1.23.2",
