@@ -124,7 +124,7 @@ function createProject(coverId, thumbnailId) {
 It works on both click and touch devices that utilize modern web browsers.
 This project was done as part of Boilermake, Purdue's first hackathon. It won 3rd place.
 
-<a href="http://scottlittle.me/dotsynth" class="btn btn-lg btn-primary">Demo</a>
+<a href="https://awk34.github.io/dotsynth/" class="btn btn-lg btn-primary">Demo</a>
 <a href="https://github.com/Awk34/dotsynth" class="btn btn-lg btn-default"><i class="fa fa-github"></i> View on GitHub</a>`
     })
         .tap(() => console.log('Finished creating project0'));
