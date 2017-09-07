@@ -263,7 +263,11 @@ module.exports = function makeWebpackConfig(options) {
                 embedSource: true,
                 noAutoWrap: true,
             }
-        })
+        }),
+        new webpack.ContextReplacementPlugin(
+            /angular(\\|\/)core(\\|\/)@angular/,
+            path.resolve(__dirname, '../src')
+        ),
     ];
 
     if(DEV) {
