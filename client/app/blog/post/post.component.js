@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { Http } from '@angular/http';
-import { StateService } from 'ui-router-ng2';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { switchMap } from 'rxjs/operator/switchMap';
 import Raven from 'raven-js';
 
 import moment from 'moment';
@@ -17,35 +18,23 @@ export class PostComponent {
     error;
     post = {author: {}};
 
-    static parameters = [StateService, Http];
-    constructor(stateService: StateService, http: Http, $rootScope, $stateParams, $http, $sce) {
-        this.StateService = stateService;
-        this.Http = http;
-
-        this.postId = this.StateService.params.postId;
-
-        this.$sce = $sce;
+    static parameters = [ActivatedRoute, Http];
+    constructor(route: ActivatedRoute, http: Http) {
+        this.route = route;
+        this.http = http;
     }
 
     ngOnInit() {
-        return this.Http.get(`api/posts/${this.postId}`)
-            .toPromise()
-            .then(res => {
-                if(!res.text()) return {};
-                return res.json() || { };
-            })
-            .then(post => {
-                this.post = post;
-
-                // this.$rootScope.title += ` | ${post.title}`;
-
+        switchMap.call(this.route.params, (params: ParamMap) => this.http.get(`api/posts/${params.id}`))
+            .subscribe(res => {
+                this.post = res.json();
                 this.post.content = converter.makeHtml(this.post.content);
                 this.post.date = moment(this.post.date).format('LL');
-            })
-            .catch(err => {
-                Raven.captureException(new Error(JSON.stringify(err)));
-                console.log(err);
-                this.error = err;
             });
+            // .catch(err => {
+            //     Raven.captureException(new Error(JSON.stringify(err)));
+            //     console.log(err);
+            //     this.error = err;
+            // });
     }
 }

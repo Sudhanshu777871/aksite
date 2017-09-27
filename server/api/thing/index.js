@@ -1,9 +1,8 @@
 'use strict';
-
-var express = require('express');
+import {Router} from 'express';
 var controller = require('./thing.controller');
 
-var router = express.Router();
+var router = new Router();
 
 router.get('/', controller.index);
 router.get('/:id', controller.show);

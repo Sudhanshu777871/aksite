@@ -1,5 +1,5 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-import { StateService } from 'ui-router-ng2';
+import { Router } from '@angular/router';
 import {autobind} from 'core-decorators';
 
 // import { PreloaderComponent } from '../../components/preloader/preloader.component'
@@ -25,10 +25,10 @@ export class ProjectListComponent {
     projects = [];
     loadingProjects = true;
 
-    static parameters = [ProjectService, StateService];
-    constructor(Project: ProjectService, stateService: StateService) {
+    static parameters = [ProjectService, Router];
+    constructor(Project: ProjectService, router: Router) {
         this.Project = Project;
-        this.StateService = stateService;
+        this.router = router;
     }
 
     ngOnInit() {
@@ -75,6 +75,6 @@ export class ProjectListComponent {
 
     @autobind
     goToProject(event) {
-        this.StateService.go('project', {projectId: event.currentTarget.id});
+        this.router.navigate(['/projects', event.currentTarget.id]);
     }
 }

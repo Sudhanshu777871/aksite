@@ -170,9 +170,9 @@ UserSchema.methods = {
      */
     encryptPassword(password) {
         if(!password || !this.salt) return '';
-        var salt = new Buffer(this.salt, 'base64');
-        return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
-    }
+        let salt = new Buffer(this.salt, 'base64');
+        return crypto.pbkdf2Sync(password, salt, 10000, 512, 'sha1').toString('base64');
+    },
 };
 
 export default mongoose.model('User', UserSchema);

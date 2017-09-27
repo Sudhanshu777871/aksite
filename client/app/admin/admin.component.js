@@ -9,31 +9,31 @@ export class AdminComponent {
     sections = [{
         title: 'Home',
         icon: 'fa-home',
-        sref: 'admin.dashboard',
+        link: '',
     }, {
         title: 'Users',
         icon: 'fa-user',
-        sref: 'admin.users',
+        link: 'users',
     }, {
         title: 'Galleries',
         icon: 'fa-photo',
-        sref: 'admin.galleries',
+        link: 'galleries',
     }, {
         title: 'Projects',
         icon: 'fa-briefcase',
-        sref: 'admin.projects',
+        link: 'projects',
     }, {
         title: 'Blog',
         icon: 'fa-newspaper-o',
-        sref: 'admin.blog',
+        link: 'blog',
     }, {
         title: 'Files',
         icon: 'fa-files-o',
-        sref: 'admin.files',
+        link: 'files',
     }, {
         title: 'Settings',
         icon: 'fa-cog',
-        sref: 'admin.settings',
+        link: 'settings',
     }];
 
     // static parameters = [];

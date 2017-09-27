@@ -1,9 +1,9 @@
 'use strict';
 import { Component, ViewEncapsulation } from '@angular/core';
-import { Response, Headers } from '@angular/http';
+import { Response } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt';
-import { StateService } from 'ui-router-ng2';
-import { FileUploader } from 'ng2-file-upload';
+import { ActivatedRoute } from '@angular/router';
+// import { FileUploader } from 'ng2-file-upload';
 import { AuthService } from '../../../components/auth/auth.service';
 
 import {
@@ -30,23 +30,24 @@ export class PostEditorComponent {
     submitted = false;
     post = {author: {}};
 
-    static parameters = [AuthHttp, StateService, AuthService, FileUploader];
-    constructor(authHttp: AuthHttp, stateService: StateService, authService: AuthService, fileUploader: FileUploader) {
+    static parameters = [AuthHttp, ActivatedRoute, AuthService/*, FileUploader*/];
+    constructor(authHttp: AuthHttp, route: ActivatedRoute, authService: AuthService/*, fileUploader: FileUploader*/) {
         this.AuthHttp = authHttp;
-        this.StateService = stateService;
+        this.route = route;
         this.AuthService = authService;
         // this.fileUploadService = fileUploader;
-        this.params = this.StateService.params;
-
-        // this.$sce = $sce;
-        // this.Upload = Upload;
-        // this.Auth = Auth;
     }
 
     async ngOnInit() {
+        this.id = await new Promise(resolve => {
+            this.route.params.subscribe(params => {
+                resolve(params.id);
+            });
+        });
+
         this.currentUser = await this.AuthService.getCurrentUser(true);
 
-        if(!this.params.postId || this.params.postId === 'new') {
+        if(!this.id || this.id === 'new') {
             this.post = {
                 title: 'Untitled Post',
                 subheader: undefined,
@@ -66,7 +67,7 @@ export class PostEditorComponent {
             this.loadingPost = false;
             this.newPost = true;
         } else {
-            this.AuthHttp.get(`/api/posts/${this.params.postId}`)
+            this.AuthHttp.get(`/api/posts/${this.id}`)
                 .toPromise()
                 .then(function(res: Response) {
                     if(!res.text()) return {};

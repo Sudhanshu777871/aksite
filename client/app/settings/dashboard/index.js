@@ -1,7 +1,7 @@
 import angular from 'angular';
 
 import routing from './dashboard.routes';
-import SettingsDashboardController from './dashboard.controller';
+import SettingsDashboardController from './dashboard.component';
 
 //import '!raw!sass!./dashboard.scss';
 

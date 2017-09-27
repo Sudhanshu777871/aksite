@@ -2,30 +2,28 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
-import { UIRouterModule } from 'ui-router-ng2';
-import { PaginationModule, AlertModule } from 'ng2-bootstrap';
+import { RouterModule, Routes } from '@angular/router';
+import { PaginationModule, AlertModule } from 'ngx-bootstrap';
 
 import { BlogComponent } from './blog.component';
 import { PostComponent } from './post/post.component';
+
+const routes: Routes = [{
+    path: 'blog',
+    component: BlogComponent,
+}, {
+    path: 'blog/:id',
+    component: PostComponent,
+}];
 
 @NgModule({
     imports: [
         FormsModule,
         BrowserModule,
         HttpModule,
-        UIRouterModule.forChild({
-            states: [{
-                name: 'blog',
-                url: '/blog',
-                component: BlogComponent
-            }, {
-                name: 'post',
-                url: '/blog/post/:postId',
-                component: PostComponent
-            }]
-        }),
-        PaginationModule,
+        PaginationModule.forRoot(),
         AlertModule,
+        RouterModule.forChild(routes),
     ],
     declarations: [
         BlogComponent,

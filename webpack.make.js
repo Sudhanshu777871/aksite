@@ -266,6 +266,10 @@ module.exports = function makeWebpackConfig(options) {
         })
     ];
 
+    if(DEV) {
+        config.plugins.push(new webpack.HotModuleReplacementPlugin());
+    }
+
     if(!TEST) {
         config.plugins.push(new CommonsChunkPlugin({
             name: 'vendor',
@@ -340,7 +344,7 @@ module.exports = function makeWebpackConfig(options) {
         );
     }
 
-    config.cache = !!DEV;
+    config.cache = DEV;
 
     if(TEST) {
         config.stats = {
@@ -359,6 +363,7 @@ module.exports = function makeWebpackConfig(options) {
         hot: true,
         proxy: {
             '/api': 'http://localhost:9050',
+            '/auth': 'http://localhost:9050',
             '/socket.io': 'http://localhost:9050',
         },
         stats: {
@@ -367,6 +372,7 @@ module.exports = function makeWebpackConfig(options) {
             colors: true,
             chunks: false,
         },
+        historyApiFallback: true,
     };
 
     config.node = {

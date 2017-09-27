@@ -9,7 +9,7 @@ import {
     partial,
     isEqual,
     noop,
-    throttle
+    throttle,
 } from 'lodash-es';
 mixin(_, {
     sample,
@@ -19,7 +19,7 @@ mixin(_, {
     partial,
     isEqual,
     noop,
-    throttle
+    throttle,
 });
 
 import { Component, OnInit, Inject } from '@angular/core';

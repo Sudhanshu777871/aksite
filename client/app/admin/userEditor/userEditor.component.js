@@ -1,38 +1,50 @@
 'use strict';
+import { Component } from '@angular/core';
+import { AuthHttp } from 'angular2-jwt';
+import { AuthService } from '../../../components/auth/auth.service';
+import { Response } from '@angular/http';
+import { ActivatedRoute } from '@angular/router';
 
-export default class UserEditorController {
+@Component({
+    selector: 'user-editor',
+    template: require('./userEditor.html'),
+    // styles: [require('./userEditor.scss')]
+})
+export class UserEditorComponent {
     loadingUser = true;
     submitted = false;
 
-    /*@ngInject*/
-    constructor($http, $stateParams, $state, $sanitize, Upload, Auth) {
-        this.$http = $http;
-        this.$stateParams = $stateParams;
-        this.$state = $state;
-        this.$sanitize = $sanitize;
-        this.Upload = Upload;
-        this.Auth = Auth;
+    static parameters = [AuthHttp, AuthService, ActivatedRoute];
+    constructor(http: AuthHttp, authService: AuthService, route: ActivatedRoute) {
+        this.http = http;
+        this.authService = authService;
+        this.route = route;
+    }
 
-        this.currentUser = Auth.getCurrentUser();
+    async ngOnInit() {
+        this.id = await new Promise(resolve => this.route.params.subscribe(params => resolve(params.id)));
 
-        if(!$stateParams.userId) {
+        this.currentUser = await this.authService.getCurrentUser();
+
+        if(!this.id) {
             this.user = {
                 name: 'New User',
                 email: 'test@example.com'
             };
             this.loadingUser = false;
         } else {
-            $http.get(`/api/users/${$stateParams.userId}`)
-                .then(({data}) => {
+            await this.http.get(`/api/users/${this.id}`)
+                .toPromise()
+                .then(extractData)
+                .then(data => {
                     console.log(data);
                     this.user = data;
                     this.filename = this.user.imageId;
+                    this.loadingUser = false;
                 })
                 .catch(res => {
                     this.error = res;
-                })
-                .finally(() => {
-                    this.loadingUser = true;
+                    this.loadingUser = false;
                 });
         }
     }
@@ -101,4 +113,9 @@ export default class UserEditorController {
         }
         this.$state.go('admin.users');
     }
+}
+
+function extractData(res: Response) {
+    if(!res.text()) return {};
+    return res.json() || { };
 }

@@ -9,3 +9,14 @@
         line-height: 40px;
     }
 }
+
+.user-list {
+    .user {
+        .mat-list-avatar {
+            background-size: contain;
+        }
+        .subheader {
+            color: #909090;
+        }
+    }
+}

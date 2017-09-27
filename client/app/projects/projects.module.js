@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { UIRouterModule } from 'ui-router-ng2';
+import { RouterModule, Routes } from '@angular/router';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { DirectivesModule } from '../../components/directives.module';
@@ -9,26 +9,24 @@ import { ProjectComponent } from './project/project.component';
 
 import { ProjectService } from '../../components/Project/Project.service';
 
+const routes: Routes = [{
+    path: 'projects',
+    component: ProjectListComponent,
+}, {
+    path: 'projects/:id',
+    component: ProjectComponent,
+}];
+
 @NgModule({
     imports: [
         BrowserModule,
         DirectivesModule,
-        UIRouterModule.forChild({
-            states: [{
-                name: 'projects',
-                url: '/projects',
-                component: ProjectListComponent
-            }, {
-                name: 'project',
-                url: '/projects/project/:projectId',
-                component: ProjectComponent
-            }]
-        }),
+        RouterModule.forChild(routes),
     ],
     providers: [ProjectService],
     declarations: [
         ProjectListComponent,
-        ProjectComponent
-    ]
+        ProjectComponent,
+    ],
 })
 export class ProjectsModule {}

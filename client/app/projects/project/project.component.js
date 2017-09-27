@@ -1,38 +1,32 @@
-import {Component} from '@angular/core';
-import {Converter} from 'showdown';
+import { Component, OnInit } from '@angular/core';
+import { Converter } from 'showdown';
 const converter = new Converter();
-import {ProjectService} from '../../../components/Project/Project.service';
+import { ProjectService } from '../../../components/Project/Project.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
+import { switchMap } from 'rxjs/operator/switchMap';
 
 @Component({
     selector: 'project',
     template: require('./project.html'),
-    styles: [require('./project.scss')]
+    styles: [require('./project.scss')],
 })
-export class ProjectComponent {
+export class ProjectComponent implements OnInit {
     error;
     project = {};
 
-    static parameters = [ProjectService, '$rootScope', '$http', '$stateParams'];
-    constructor(projectService: ProjectService, $rootScope, $http, $stateParams) {
+    static parameters = [ProjectService, ActivatedRoute];
+    constructor(projectService: ProjectService, route: ActivatedRoute) {
         this.projectService = projectService;
-        this.$rootScope = $rootScope;
-        this.$http = $http;
-        this.$stateParams = $stateParams;
+        this.route = route;
 
-        this.projectId = $stateParams.projectId;
+        // this.projectId = $stateParams.projectId;
     }
 
     ngOnInit() {
-        return this.projectService.get({id: this.$stateParams.projectId})
-            .then(project => {
+        switchMap.call(this.route.params, (params: ParamMap) => this.projectService.get({id: params.id}))
+            .subscribe(project => {
                 this.project = project;
-
-                this.$rootScope.title += ` | ${project.name}`;
-
                 this.content = converter.makeHtml(project.content);
-            })
-            .catch(res => {
-                this.error = res;
             });
     }
 }

@@ -1,23 +1,22 @@
 'use strict';
 import { Component } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { AuthService } from '../../../components/auth/auth.service';
 
 @Component({
     selector: 'signup',
     template: require('./signup.html'),
-    styles: [require('./signup.scss')]
+    styles: [require('./signup.scss')],
 })
 export class SignupComponent {
     user = {};
     errors = {};
     submitted = false;
 
-    static parameters = [AuthService, '$location', '$state'];
-    constructor(authService: AuthService, $location, $state) {
+    static parameters = [AuthService, Router];
+    constructor(authService: AuthService, router: Router) {
         this.authService = authService;
-        this.$location = $location;
-        this.$state = $state;
+        this.router = router;
     }
 
     register() {
@@ -28,7 +27,7 @@ export class SignupComponent {
             email: this.user.email,
             password: this.user.password
         }).then(() => {
-            this.$location.path('/');
+            this.router.navigateByUrl('/home');
         }).catch(err => {
             this.errors = err;
         });
@@ -39,6 +38,6 @@ export class SignupComponent {
     }
 
     sref(state) {
-        this.$state.go(state);
+        console.warn(state);
     }
 }

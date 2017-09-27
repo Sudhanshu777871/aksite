@@ -4,29 +4,28 @@
     <div class="container post-list">
         <div class="post-block" *ngFor="let post of posts">
             <a *ngIf="post.imageId"
-               uiSref="post"
-               [uiParams]="{postId: post._id}"
+               routerLink="/blog/{{post._id}}"
                class="block-image"
                style.background-image="url(/api/upload/{{post.imageId}})"></a>
 
-            <a uiSref="post" [uiParams]="{postId: post._id}" style="cursor: pointer;">
+            <a routerLink="/blog/{{post._id}}" style="cursor: pointer;">
                 <h2 class="block-header">{{post.title}} <small [hidden]="!post.hidden">Hidden</small></h2>
             </a>
 
-            <a uiSref="post" [uiParams]="{postId: post._id}" style="cursor: pointer;">
+            <a routerLink="/blog/{{post._id}}" style="cursor: pointer;">
                 <p class="block-snippet" [innerHTML]="post.subheader"></p>
             </a>
 
             <div class="block-author">
                 <div class="block-meta">
                     <div class="meta-avatar">
-                        <a uiSref="profile" [uiParams]="{id: post.author.id}" class="avatar avatar--small" title="Go to {{post.author.name}}'s profile">
+                        <a routerLink="/profile/{{post.author.id}}" class="avatar avatar--small" title="Go to {{post.author.name}}'s profile">
                             <img src="/api/upload/{{post.author.imageId}}" class="img-circle" title="{{post.author.name}}">
                         </a>
                     </div>
                     <div class="meta-summary">
                         by
-                        <a uiSref="profile" [uiParams]="{id: post.author.id}" title="Go to {{post.author.name}}'s profile" class="link">
+                        <a routerLink="/profile/{{post.author.id}}" title="Go to {{post.author.name}}'s profile" class="link">
                             {{post.author.name}}
                         </a>
                         <span class="metaInline metaInline--supplemental">

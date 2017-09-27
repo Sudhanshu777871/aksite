@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UIRouterModule } from 'ui-router-ng2';
-import { CollapseModule } from 'ng2-bootstrap';
+import { RouterModule } from '@angular/router';
+import { CollapseModule } from 'ngx-bootstrap';
 
 import { AuthModule } from './auth/auth.module';
 
@@ -12,7 +12,7 @@ import { PreloaderComponent } from './preloader/preloader.component';
 @NgModule({
     imports: [
         CommonModule,
-        UIRouterModule.forChild(),
+        RouterModule,
         CollapseModule,
         AuthModule,
     ],

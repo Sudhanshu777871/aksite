@@ -41,7 +41,10 @@
         "lodash/unwrap": 2,                                         // Prevent chaining without evaluation via value() or non-chainable methods like max().,
 
         //Possible Errors
+        "for-direction": 0,                                         //enforce “for” loop update clause moving the counter in the right direction.
+        "getter-return": 2,                                         //enforce return statements in getters
         "no-await-in-loop": 0,                                      //disallow await inside of loops
+        "no-compare-neg-zero": 2,                                   //disallow comparing against -0
         "no-cond-assign": 2,                                        //disallow assignment in conditional expressions
         "no-console": 0,                                            //disallow use of console in the node environment
         "no-constant-condition": 1,                                 //disallow use of constant expressions in conditions
@@ -165,6 +168,7 @@
         "callback-return": 2,                                       //enforce return after a callback
         "global-require": 0,                                        //enforce require() on top-level module scope
         "handle-callback-err": 2,                                   //enforce error handling in callbacks
+        "no-buffer-constructor": 2,                                 //disallow use of the Buffer() constructor
         "no-mixed-requires": 2,                                     //disallow mixing regular variable and require declarations
         "no-new-require": 2,                                        //disallow use of new operator with the require function
         "no-path-concat": 2,                                        //disallow string concatenation with __dirname and __filename
@@ -174,12 +178,14 @@
         "no-sync": 1,                                               //disallow use of synchronous methods
 
         //Stylistic Issues
+        "array-bracket-newline": 0,                                 //enforce linebreaks after opening and before closing array brackets
         "array-bracket-spacing": [2, "never"],                      //enforce spacing inside array brackets
+        "array-element-newline": 0,                                 //enforce line breaks after each array element
         "block-spacing": 0,                                         //disallow or enforce spaces inside of single line blocks
         "brace-style": 2,                                           //enforce one true brace style
         "camelcase": 1,                                             //require camel case names
         "capitalized-comments": 0,                                  //enforce or disallow capitalization of the first letter of a comment
-        "comma-dangle": [1, "always-multiline"],                    //require or disallow trailing commas
+        "comma-dangle": 0,                                          //require or disallow trailing commas
         "comma-spacing": [2, {"before": false, "after": true}],     //enforce spacing before and after comma
         "comma-style": 2,                                           //enforce one true comma style
         "computed-property-spacing": 2,                             //require or disallow padding inside computed properties
@@ -189,6 +195,7 @@
         "func-name-matching": 0,                                    //require function names to match the name of the variable or property to which they are assigned
         "func-names": 0,                                            //require function expressions to have a name
         "func-style": 0,                                            //enforce use of function declarations or expressions
+        "function-paren-newline": ["error", "multiline"],           //enforce consistent line breaks inside function parentheses
         "id-blacklist": 0,                                          //blacklist certain identifiers to prevent them being used
         "id-length": 0,                                             //this option enforces minimum and maximum identifier lengths (variable names, property names etc.)
         "id-match": 0,                                              //require identifiers to match the provided regular expression
@@ -217,8 +224,6 @@
         "multiline-ternary": 0,                                     //enforce newlines between operands of ternary expressions
         "new-cap": 0,                                               //require a capital letter for constructors
         "new-parens": 2,                                            //disallow the omission of parentheses when invoking a constructor with no arguments
-        "newline-after-var": 0,                                     //require or disallow an empty newline after variable declarations
-        "newline-before-return": 0,                                 //require newline before return statement
         "newline-per-chained-call": 0,                              //enforce newline after each call when chaining the calls
         "no-array-constructor": 2,                                  //disallow use of the Array constructor
         "no-bitwise": 0,                                            //disallow use of bitwise operators
@@ -240,6 +245,7 @@
         "no-underscore-dangle": 0,                                  //disallow dangling underscores in identifiers
         "no-unneeded-ternary": 2,                                   //disallow the use of ternary operators when a simpler alternative exists
         "no-whitespace-before-property": 2,                         //disallow whitespace before properties
+        "nonblock-statement-body-position": 1,                      //enforce the location of single-line statements
         "object-curly-newline": 0,                                  //enforce consistent line breaks inside braces
         "object-curly-spacing": 0,                                  //require or disallow padding inside curly braces
         "object-property-newline": 0,                               //enforce placing object properties on separate lines
@@ -247,13 +253,14 @@
         "one-var-declaration-per-line": 2,                          //require or disallow an newline around variable declarations
         "operator-assignment": 0,                                   //require assignment operator shorthand where possible or prohibit it entirely
         "operator-linebreak": [1, "before"],                        //enforce operators to be placed before or after line breaks
+        "padding-line-between-statements": 0,                       //require or disallow padding lines between statements
         "padded-blocks": [2, "never"],                              //enforce padding within blocks
         "quote-props": [2, "as-needed"],                            //require quotes around object literal property names
         "quotes": [2, "single"],                                    //specify whether backticks, double or single quotes should be used
         "require-jsdoc": 0,                                         //Require JSDoc comment
-        "semi-spacing": 2,                                          //enforce spacing before and after semicolons
-        "sort-imports": 0,                                          //sort import declarations within module
         "semi": 2,                                                  //require or disallow use of semicolons instead of ASI
+        "semi-spacing": 2,                                          //enforce spacing before and after semicolons
+        "semi-style": 0,                                            //enforce location of semicolons
         "sort-keys": 0,                                             //requires object keys to be sorted
         "sort-vars": 0,                                             //sort variables within the same declaration block
         "space-before-blocks": 2,                                   //require or disallow a space before blocks
@@ -262,6 +269,7 @@
         "space-infix-ops": 2,                                       //require spaces around operators
         "space-unary-ops": 2,                                       //require or disallow spaces before/after unary operators
         "spaced-comment": 0,                                        //require or disallow a space immediately following the // or /* in a comment
+        "switch-colon-spacing": 0,                                  //enforce spacing around colons of switch statements
         "template-tag-spacing": [2, "never"],                       //require or disallow spacing between template tags and their literals
         "unicode-bom": 0,                                           //require or disallow the Unicode BOM
         "wrap-regex": 0,                                            //require regex literals to be wrapped in parentheses
@@ -293,6 +301,8 @@
         "prefer-template": 1,                                       //suggest using template literals instead of strings concatenation
         "require-yield": 2,                                         //disallow generator functions that do not have yield
         "rest-spread-spacing": ["error", "never"],                  //enforce spacing between rest and spread operators and their expressions
+        "sort-imports": 0,                                          //sort import declarations within module
+        "symbol-description": 0,                                    //require symbol descriptions
         "template-curly-spacing": 2,                                //enforce spacing around embedded expressions of template strings
         "yield-star-spacing": [2, "after"]                          //enforce spacing around the * in yield* expressions
     }

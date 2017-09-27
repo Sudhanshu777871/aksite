@@ -1,20 +1,20 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule } from '@angular/http';
+import { HttpModule, Http } from '@angular/http';
 import { MaterialModule } from '@angular/material';
-import { UIRouterModule } from 'ui-router-ng2';
-import { AUTH_PROVIDERS } from 'angular2-jwt';
+import { RouterModule, Routes } from '@angular/router';
+import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { AppComponent } from './app.component';
 import { MainModule } from './main/main.module';
 import { DirectivesModule } from '../components/directives.module';
-// import { AuthModule } from '../components/auth/auth.ng2module';
 import { AccountModule } from './account/account.module';
 import { AdminModule } from './admin/admin.module';
 import { ProjectsModule } from './projects/projects.module';
 import { GalleriesModule } from './galleries/galleries.module';
 import { BlogModule } from './blog/blog.module';
-import { UserModule } from './user/user.module';
+// import { UserModule } from './user/user.module';
 import { ResumeModule } from './resume/resume.module';
+import { SettingsModule } from "./settings/settings.module";
 
 import constants from './app.constants';
 import Raven from 'raven-js';
@@ -31,26 +31,54 @@ class RavenErrorHandler implements ErrorHandler {
     }
 }
 
+export function getAuthHttp(http) {
+    return new AuthHttp(new AuthConfig({
+        noJwtError: true,
+        globalHeaders: [{Accept: 'application/json'}],
+        tokenGetter: () => localStorage.getItem('id_token'),
+    }), http);
+}
+
+const appRoutes: Routes = [
+    //{ path: 'crisis-center', component: CrisisListComponent },
+    //{ path: 'hero/:id',      component: HeroDetailComponent },
+    // {
+    //   path: 'home',
+    //   component: MainComponent,
+    //   data: { title: 'Home' }
+    // },
+    {
+        path: '',
+        redirectTo: '/home',
+        pathMatch: 'full',
+    },
+    //{ path: '**', component: PageNotFoundComponent }
+];
+
 @NgModule({
     providers: [
-        AUTH_PROVIDERS,
+        {
+            provide: AuthHttp,
+            useFactory: getAuthHttp,
+            deps: [Http],
+        },
         { provide: ErrorHandler, useClass: RavenErrorHandler }
     ],
     imports: [
         BrowserModule,
         HttpModule,
         MaterialModule,
-        UIRouterModule.forRoot({useHash: true}),
+        RouterModule.forRoot(appRoutes, { enableTracing: process.env.NODE_ENV === 'development' }),
         MainModule,
         DirectivesModule,
-        // AuthModule,
         AccountModule,
         AdminModule,
         ProjectsModule,
         GalleriesModule,
         BlogModule,
-        UserModule,
+        // UserModule,
         ResumeModule,
+        SettingsModule,
     ],
     declarations: [
         AppComponent,

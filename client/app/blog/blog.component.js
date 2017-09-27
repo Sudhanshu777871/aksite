@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Http } from '@angular/http';
-import { StateService } from 'ui-router-ng2';
+import { Router } from '@angular/router';
 import 'rxjs/add/operator/toPromise';
 import {
     wrapperLodash as _,
@@ -27,10 +27,10 @@ export class BlogComponent {
     collectionSize = 0;
     posts = [];
 
-    static parameters = [Http, StateService];
-    constructor(http: Http, stateService: StateService) {
+    static parameters = [Http, Router];
+    constructor(http: Http, router: Router) {
         this.Http = http;
-        this.StateService = stateService;
+        this.router = router;
         this.$stateParams = {};
         this.$state = {};
 
@@ -44,7 +44,8 @@ export class BlogComponent {
 
     pageChanged({page}) {
         this.currentPage = page;
-        this.StateService.transitionTo('blog', {page, pagesize: this.pagesize}, { notify: false, reload: false });
+        // this.router.navigate('blog', {page, pagesize: this.pagesize}, { notify: false, reload: false });
+        // this.router.navigate(['blog', {page, pagesize: this.pagesize}]);
 
         return this.getPageData();
     }
