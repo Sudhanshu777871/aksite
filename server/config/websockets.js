@@ -44,6 +44,10 @@ export function broadcast(message) {
     });
 }
 
+/**
+ * @param server
+ * @return {Promise}
+ */
 export default function initWebSocketServer(server) {
     primus = new Primus(server, {
         transformer: 'uws',
@@ -53,12 +57,16 @@ export default function initWebSocketServer(server) {
     primus.on('connection', onConnect);
     primus.on('disconnection', onDisconnect);
 
-    return new Promise((resolve, reject) => {
-        // Save the primus client library configured for our server settings
-        primus.save(path.join(__dirname, '../../client/components/socket/primus.js'), err => {
-            if(err) return reject(err);
+    if(process.env.NODE_ENV === 'development') {
+        return new Promise((resolve, reject) => {
+            // Save the primus client library configured for our server settings
+            primus.save(path.join(__dirname, '../../client/components/socket/primus.js'), err => {
+                if(err) return reject(err);
 
-            resolve();
+                resolve();
+            });
         });
-    });
+    } else {
+        return Promise.resolve();
+    }
 }
