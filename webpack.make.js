@@ -370,7 +370,11 @@ module.exports = function makeWebpackConfig(options) {
         proxy: {
             '/api': 'http://localhost:9050',
             '/auth': 'http://localhost:9050',
-            '/socket.io': 'http://localhost:9050',
+            '/primus': {
+                target: 'http://localhost:9050',
+                secure: false,
+                ws: true,
+            },
         },
         stats: {
             modules: false,

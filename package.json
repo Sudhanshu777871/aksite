@@ -60,12 +60,13 @@
     "passport-google-oauth20": "^1.0.0",
     "passport-linkedin-oauth2": "^1.2.1",
     "passport-local": "~1.0.0",
+    "primus": "^7.1.0",
+    "primus-emit": "^1.0.0",
     "raven": "^1.1.1",
     "request": "~2.83.0",
     "serve-favicon": "^2.3.0",
     "showdown": "^1.5.5",
-    "socket.io": "^1.5.1",
-    "socketio-jwt": "^4.5.0"
+    "uws": "^8.14.1"
   },
   "devDependencies": {
     "@angular/animations": "^4.3.6",

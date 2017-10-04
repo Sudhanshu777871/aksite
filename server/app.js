@@ -12,6 +12,10 @@ mongoose.Promise = require('bluebird');
 import config from './config/environment';
 import Grid from 'gridfs-stream';
 import raven from 'raven';
+import http from 'http';
+import initWebSocketServer from './config/websockets';
+import expressConfig from './config/express';
+import registerRoutes from './routes';
 
 export let client;
 if(config.sentry.dsn) {
@@ -28,11 +32,21 @@ mongoose.connection.on('error', err => {
 
 // Setup server
 const app = express();
-const server = require('http').createServer(app);
-const socketio = require('socket.io').listen(server);
-require('./config/socketio').default(socketio);
-require('./config/express').default(app);
-require('./routes').default(app);
+const server = http.createServer(app);
+const wsInitPromise = initWebSocketServer(server);
+expressConfig(app);
+registerRoutes(app);
+
+let mongoPromise = new Promise((resolve, reject) => {
+    Grid.mongo = mongoose.mongo;
+    const conn = mongoose.createConnection(config.mongo.uri);
+
+    conn.once('open', err => {
+        if(err) return reject(err);
+
+        resolve();
+    });
+});
 
 // Start server
 function startServer() {
@@ -41,13 +55,8 @@ function startServer() {
     });
 }
 
-setImmediate(() => {
-    Grid.mongo = mongoose.mongo;
-    const conn = mongoose.createConnection(config.mongo.uri);
-
-    conn.once('open', err => {
-        if(err) throw err;
-
+Promise.all([wsInitPromise, mongoPromise])
+    .then(() => {
         // Populate DB with sample data
         if(config.seedDB) {
             // wait for DB seed
@@ -56,8 +65,10 @@ setImmediate(() => {
         } else {
             startServer();
         }
+    })
+    .catch(err => {
+        console.log('Server failed to start due to error: %s', err);
     });
-});
 
 // Expose app
 export default app;
