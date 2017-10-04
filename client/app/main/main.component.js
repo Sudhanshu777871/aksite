@@ -53,7 +53,7 @@ let vendorImages = [{
     alt: 'karma'
 }, {
     href: 'https://lodash.com/',
-    src: 'assets/images/lodash.png',
+    src: 'assets/images/lodash.svg',
     alt: 'lodash'
 }, {
     href: 'http://gulpjs.com/',
@@ -65,7 +65,7 @@ let vendorImages = [{
     alt: 'webpack'
 }, {
     href: 'http://mochajs.org/',
-    src: 'assets/images/mocha.png',
+    src: 'assets/images/mocha.svg',
     alt: 'mocha'
 }, {
     href: 'http://sass-lang.com/',
