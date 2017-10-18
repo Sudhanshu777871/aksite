@@ -10,7 +10,7 @@ Andrew Koroluk
 
 * MongoDB
 * ExpressJS
-* AngularJS
+* Angular
 * Node.js
 * Git
 * Babel
@@ -20,12 +20,12 @@ Andrew Koroluk
 * Karma
 * Mocha
 * Protractor
-* Socket.io
+* Primus + µWS
 * Sass
-* Codeship
-* Amazon Web Services
+* CircleCI
+* Google Cloud Platform
 * JetBrains WebStorm
-* Atlassian SourceTree
+* GitKraken
 
 ## Running Locally
 1. [Install Git](http://www.git-scm.com/downloads)
