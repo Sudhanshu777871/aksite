@@ -15,7 +15,7 @@
     "email": "koroluka@gmail.com",
     "url": "http://andrewkoroluk.com/"
   },
-  "license": "MIT",
+  "license": "Unlicense",
   "dependencies": {
     "babel-core": "^6.21.0",
     "babel-plugin-angular2-annotations": "^5.1.0",
