@@ -208,7 +208,7 @@ md-chips.md-chips-noline .md-chips {
     color: $link-color;
 }
 
-md-sidenav {
+mat-sidenav {
     z-index: 1001;
 }
 
@@ -235,7 +235,7 @@ md-sidenav {
     }
 }
 
-md-list md-item {
+mat-list md-item {
     a md-item-content .md-tile-content * {
         color: $darkTextColor;
     }
@@ -244,7 +244,7 @@ md-list md-item {
     }
 }
 
-md-list md-list-item.md-with-secondary button md-icon.fa {
+mat-list mat-list-item.md-with-secondary button md-icon.fa {
     font-size: 2em;
     line-height: 44px;
     height: 44px;

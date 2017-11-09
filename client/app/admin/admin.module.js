@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { MdSlideToggleModule, MdSidenavModule, MdIconModule, MdButtonModule, MdListModule } from '@angular/material';
+import { MatSlideToggleModule, MatSidenavModule, MatIconModule, MatButtonModule, MatListModule } from '@angular/material';
 import { ProgressbarModule } from 'ngx-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
 import { FileUploadModule } from 'ng2-file-upload';
@@ -58,11 +58,11 @@ const routes: Routes = [{
     imports: [
         BrowserModule,
         FormsModule,
-        MdSlideToggleModule,
-        MdSidenavModule,
-        MdIconModule,
-        MdButtonModule,
-        MdListModule,
+        MatSlideToggleModule,
+        MatSidenavModule,
+        MatIconModule,
+        MatButtonModule,
+        MatListModule,
         ProgressbarModule.forRoot(),
         FileUploadModule,
         RouterModule.forChild(routes),

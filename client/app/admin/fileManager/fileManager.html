@@ -14,10 +14,10 @@
     </div>
     <div class="row">
         <md-content>
-            <md-list>
-                <md-list-item class="md-2-line md-with-secondary md-clickable" ng-repeat="file in fileManager.files">
+            <mat-list>
+                <mat-list-item class="md-2-line md-with-secondary md-clickable" ng-repeat="file in fileManager.files">
                     <md-button class="md-no-style" ng-click="fileManager.openFile(file, $event)">
-                        <div class="md-list-item-inner">
+                        <div class="mat-list-item-inner">
                             <div class="md-avatar" style="
                                 width: 48px;
                                 height: 48px;
@@ -25,16 +25,16 @@
                                 margin: 16px;
                                 background: #000 url('api/upload/{{file._id}}.jpg') no-repeat center;
                                 background-size: cover;"></div>
-                            <div class="md-list-item-text">
+                            <div class="mat-list-item-text">
                                 <h3>{{file._id}}</h3>
                             </div>
                         </div>
                     </md-button>
-                    <md-button class="md-secondary-container md-icon-button" aria-label="Delete File" ng-click="fileManager.deleteFile(file)">
-                        <md-icon class="fa md-warn" md-font-icon="fa-trash-o"></md-icon>
+                    <md-button class="md-secondary-container mat-icon-button" aria-label="Delete File" ng-click="fileManager.deleteFile(file)">
+                        <mat-icon class="fa md-warn" md-font-icon="fa-trash-o"></mat-icon>
                     </md-button>
-                </md-list-item>
-            </md-list>
+                </mat-list-item>
+            </mat-list>
         </md-content>
     </div>
 </div>
