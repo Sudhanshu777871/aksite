@@ -1,7 +1,16 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule, Http } from '@angular/http';
-import { MaterialModule } from '@angular/material';
+import {
+    MatButtonModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatSidenavModule,
+    MatSlideToggleModule,
+    MatToolbarModule,
+    MatTooltipModule,
+} from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { AppComponent } from './app.component';
@@ -67,7 +76,14 @@ const appRoutes: Routes = [
     imports: [
         BrowserModule,
         HttpModule,
-        MaterialModule,
+        MatButtonModule,
+        MatIconModule,
+        MatInputModule,
+        MatListModule,
+        MatSidenavModule,
+        MatSlideToggleModule,
+        MatToolbarModule,
+        MatTooltipModule,
         RouterModule.forRoot(appRoutes, { enableTracing: process.env.NODE_ENV === 'development' }),
         MainModule,
         DirectivesModule,

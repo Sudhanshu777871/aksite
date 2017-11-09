@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { MdSidenavModule } from '@angular/material';
+import { MatSidenavModule } from '@angular/material';
 
 import { SettingsComponent } from './settings.component';
 import { SettingsDashboardComponent } from './dashboard/dashboard.component';
@@ -25,7 +25,7 @@ const routes: Routes = [{
         FormsModule,
         BrowserModule,
         HttpModule,
-        MdSidenavModule,
+        MatSidenavModule,
         RouterModule.forChild(routes),
     ],
     declarations: [

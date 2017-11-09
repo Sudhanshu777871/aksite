@@ -6,29 +6,29 @@
     </div>
     <div class="row">
         <div>
-            <button md-button [hidden]="!dirty" (click)="saveChanges()" class="md-button-lg">
+            <button mat-button [hidden]="!dirty" (click)="saveChanges()" class="md-button-lg">
                 <i class="fa fa-save"></i>
                 Save Changes
             </button>
-            <button md-button href="/admin/blog/post-editor" class="md-button-lg pull-right">
+            <button mat-button href="/admin/blog/post-editor" class="md-button-lg pull-right">
                 <i class="fa fa-plus"></i>
                 New Post
             </button>
         </div>
     </div>
     <div class="row">
-        <md-list class="post-list">
-            <md-list-item class="post" *ngFor="let post of posts">
-                <span md-list-avatar [ngStyle]="{'background': post.imageId ? post.bgImg : 'lightblue'}"></span>
+        <mat-list class="post-list">
+            <mat-list-item class="post" *ngFor="let post of posts">
+                <span mat-list-avatar [ngStyle]="{'background': post.imageId ? post.bgImg : 'lightblue'}"></span>
                 <h4 md-line style="overflow: hidden;">{{post.title}}</h4>
-                <p md-line class="subheader">{{post.subheader}}</p>
-                <button md-icon-button (click)="goToPost(post._id)">
-                    <md-icon>edit</md-icon>
+                <p mat-line class="subheader">{{post.subheader}}</p>
+                <button mat-icon-button (click)="goToPost(post._id)">
+                    <mat-icon>edit</mat-icon>
                 </button>
-                <button md-icon-button (click)="togglePostDeletion(post)">
-                    <md-icon>delete</md-icon>
+                <button mat-icon-button (click)="togglePostDeletion(post)">
+                    <mat-icon>delete</mat-icon>
                 </button>
-            </md-list-item>
-        </md-list>
+            </mat-list-item>
+        </mat-list>
     </div>
 </div>

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MdInputModule, MdButtonModule, MdIconModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatIconModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
@@ -17,9 +17,9 @@ const accountRoutes: Routes = [{
 @NgModule({
     imports: [
         FormsModule,
-        MdInputModule,
-        MdButtonModule,
-        MdIconModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
         RouterModule.forChild(accountRoutes),
     ],
     declarations: [

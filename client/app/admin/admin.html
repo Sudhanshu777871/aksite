@@ -1,5 +1,5 @@
 <!--<section layout="row" flex>-->
-    <!--<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">-->
+    <!--<mat-sidenav class="mat-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">-->
         <!--<md-toolbar class="md-theme-indigo">-->
             <!--<h1 class="md-toolbar-tools">Admin</h1>-->
         <!--</md-toolbar>-->
@@ -17,7 +17,7 @@
                 <!--</li>-->
             <!--</ul>-->
         <!--</md-content>-->
-    <!--</md-sidenav>-->
+    <!--</mat-sidenav>-->
     <!--<md-content flex class="md-padding" style="min-height: 500px;">-->
         <!--<div layout="column" layout-align="center center">-->
             <!--<p>-->
@@ -33,21 +33,21 @@
     <!--</md-content>-->
 <!--</section>-->
 
-<md-sidenav-container>
-    <md-sidenav #start (open)="mybutton.focus()" [opened]="false">
-        <button md-button #mybutton (click)="start.close()"><i class="fa fa-bars fa-2x"></i></button> Admin
+<mat-sidenav-container>
+    <mat-sidenav #start (open)="mybutton.focus()" [opened]="false">
+        <button mat-button #mybutton (click)="start.close()"><i class="fa fa-bars fa-2x"></i></button> Admin
 
         <ul class="sidenav-menu">
             <li class="" *ngFor="let section of sections">
-                <button md-button [routerLink]="section.link">
+                <button mat-button [routerLink]="section.link">
                     <i class="fa fa-fw {{section.icon}}"></i>
                     {{section.title}}
                 </button>
             </li>
         </ul>
-    </md-sidenav>
+    </mat-sidenav>
 
-    <button md-button (click)="start.open()"><i class="fa fa-bars fa-2x"></i></button>
+    <button mat-button (click)="start.open()"><i class="fa fa-bars fa-2x"></i></button>
 
     <router-outlet></router-outlet>
-</md-sidenav-container>
+</mat-sidenav-container>

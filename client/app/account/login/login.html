@@ -5,23 +5,23 @@
 
             <form class="login-form" name="loginForm" (ngSubmit)="login()">
                 <section class="input-section">
-                    <md-input-container>
+                    <mat-input-container>
                         <input mdInput type="text" maxlength="60" required name="email" type="email" placeholder="Email" [(ngModel)]="user.email">
-                    </md-input-container>
+                    </mat-input-container>
                     <!--<div ng-messages="loginForm.email.$error">-->
                         <!--<div ng-message="required">This is required.</div>-->
                         <!--<div ng-message="md-maxlength">The email can be at most 60 characters long.</div>-->
                     <!--</div>-->
-                    <md-input-container>
+                    <mat-input-container>
                         <input mdInput type="text" type="password" required name="password" placeholder="Password" [(ngModel)]="user.password">
-                    </md-input-container>
+                    </mat-input-container>
                     <!--<div ng-messages="loginForm.password.$error">-->
                         <!--<div ng-message="required">This is required.</div>-->
                     <!--</div>-->
                 </section>
 
                 <section class="button-section">
-                    <button md-button class="md-primary md-button-lg" type="submit" aria-label="Login">
+                    <button mat-button class="md-primary md-button-lg" type="submit" aria-label="Login">
                         Log In
                     </button>
                     <a md-button class="md-button-lg" type="button" routerLink="/signup" aria-label="Register">
@@ -33,16 +33,16 @@
             <br/>
 
             <section class="oauth-button-section">
-                <button md-button class="md-button-lg google-plus-color" aria-label="Log in with Google" (click)="loginOauth('google')">
-                    <md-icon fontSet="fa" fontIcon="fa-google-plus"></md-icon>
+                <button mat-button class="md-button-lg google-plus-color" aria-label="Log in with Google" (click)="loginOauth('google')">
+                    <mat-icon fontSet="fa" fontIcon="fa-google-plus"></mat-icon>
                     Log in with Google
                 </button>
-                <button md-button class="md-button-lg github-color" aria-label="Log in with Github" (click)="loginOauth('github')">
-                    <md-icon fontSet="fa" fontIcon="fa-github"></md-icon>
+                <button mat-button class="md-button-lg github-color" aria-label="Log in with Github" (click)="loginOauth('github')">
+                    <mat-icon fontSet="fa" fontIcon="fa-github"></mat-icon>
                     Log in with Github
                 </button>
-                <button md-button class="md-button-lg linkedin-color" aria-label="Log in with Linkedin" (click)="loginOauth('linkedin')">
-                    <md-icon fontSet="fa" fontIcon="fa-linkedin-square"></md-icon>
+                <button mat-button class="md-button-lg linkedin-color" aria-label="Log in with Linkedin" (click)="loginOauth('linkedin')">
+                    <mat-icon fontSet="fa" fontIcon="fa-linkedin-square"></mat-icon>
                     Log in with Linkedin
                 </button>
             </section>

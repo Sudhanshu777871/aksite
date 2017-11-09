@@ -5,9 +5,9 @@
         </div>
     </div>
     <div class="row">
-        <md-list class="user-list">
-            <md-list-item class="user" *ngFor="let user of users">
-                <span md-list-avatar [ngStyle]="{'background': user.smallImageId ? user.bgImg : 'lightblue', 'background-size': 'contain'}"></span>
+        <mat-list class="user-list">
+            <mat-list-item class="user" *ngFor="let user of users">
+                <span mat-list-avatar [ngStyle]="{'background': user.smallImageId ? user.bgImg : 'lightblue', 'background-size': 'contain'}"></span>
                 <h4 md-line style="overflow: hidden;">{{user.name}}</h4>
                 <p md-line class="subheader">{{user.email}}</p>
                 <div class="icon-section text-muted">
@@ -16,13 +16,13 @@
                     <i class="fa fa-linkedin-square fa-2x" [class.linkedin]="user.providers.linkedin"></i>
                     <i class="fa fa-github fa-2x" [class.github]="user.providers.github"></i>
                 </div>
-                <button md-icon-button (click)="goToUser(user._id)">
-                    <md-icon>edit</md-icon>
+                <button mat-icon-button (click)="goToUser(user._id)">
+                    <mat-icon>edit</mat-icon>
                 </button>
-                <button md-icon-button (click)="deleteUser(user)">
-                    <md-icon>delete</md-icon>
+                <button mat-icon-button (click)="deleteUser(user)">
+                    <mat-icon>delete</mat-icon>
                 </button>
-            </md-list-item>
-        </md-list>
+            </mat-list-item>
+        </mat-list>
     </div>
 </div>
