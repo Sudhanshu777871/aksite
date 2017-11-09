@@ -11,6 +11,7 @@ import {
     MatToolbarModule,
     MatTooltipModule,
 } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { AppComponent } from './app.component';
@@ -23,7 +24,7 @@ import { GalleriesModule } from './galleries/galleries.module';
 import { BlogModule } from './blog/blog.module';
 // import { UserModule } from './user/user.module';
 import { ResumeModule } from './resume/resume.module';
-import { SettingsModule } from "./settings/settings.module";
+import { SettingsModule } from './settings/settings.module';
 
 import constants from './app.constants';
 import Raven from 'raven-js';
@@ -84,6 +85,7 @@ const appRoutes: Routes = [
         MatSlideToggleModule,
         MatToolbarModule,
         MatTooltipModule,
+        BrowserAnimationsModule,
         RouterModule.forRoot(appRoutes, { enableTracing: process.env.NODE_ENV === 'development' }),
         MainModule,
         DirectivesModule,
