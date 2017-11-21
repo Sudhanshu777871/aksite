@@ -20,11 +20,12 @@ import mongoose from 'mongoose';
 import connectMongo from 'connect-mongo';
 import raven from 'raven';
 const MongoStore = connectMongo(session);
+raven.config(config.sentry.dsn).install();
 
 export default function(app) {
     var env = app.get('env');
 
-    app.use(raven.middleware.express.requestHandler(config.sentry.dsn));
+    app.use(raven.requestHandler());
     app.set('views', `${config.root}/server/views`);
     app.engine('html', require('ejs').renderFile);
     app.set('view engine', 'html');
@@ -70,7 +71,7 @@ export default function(app) {
         app.use(express.static(path.join(config.root, 'client')));
         app.set('appPath', `${config.root}/client`);
         app.use(morgan('combined'));
-        app.use(raven.middleware.express.errorHandler(config.sentry.dsn));
+        app.use(raven.errorHandler());
     }
 
     if(env === 'development' || env === 'test') {
