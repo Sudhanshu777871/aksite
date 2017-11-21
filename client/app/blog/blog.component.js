@@ -14,10 +14,13 @@ import moment from 'moment';
 import { Converter } from 'showdown';
 const converter = new Converter();
 
+import template from './blog.html';
+import blogCss from './blog.scss';
+
 @Component({
     selector: 'blog',
-    template: require('./blog.html'),
-    styles: [require('./blog.scss')]
+    template,
+    styles: [blogCss]
 })
 export class BlogComponent {
     loadingItems = true;

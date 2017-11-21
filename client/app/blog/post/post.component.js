@@ -2,7 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { Http } from '@angular/http';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operator/switchMap';
-import Raven from 'raven-js';
+// import Raven from 'raven-js';
 
 import moment from 'moment';
 import { Converter } from 'showdown';

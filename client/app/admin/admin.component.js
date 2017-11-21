@@ -1,9 +1,10 @@
 'use strict';
 import { Component } from '@angular/core';
+import template from './admin.html';
 
 @Component({
     selector: 'admin',
-    template: require('./admin.html'),
+    template,
 })
 export class AdminComponent {
     sections = [{

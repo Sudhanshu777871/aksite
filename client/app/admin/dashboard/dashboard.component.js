@@ -88,127 +88,127 @@ export class DashboardComponent {
                 });
         });
 
-        // FIXME: Temp fix for unit tests
-        var gapi = window.gapi;
-        if(!gapi) {
-            gapi = {
-                analytics: {
-                    ready: function() {}
-                }
-            };
-        }
-
-        googleApiInit().then(() => {
-            gapi.analytics.auth.authorize({
-                container: 'auth-button',
-                clientid: '693903895035-1lk6sfgma8o270mk4icngumgnomuahob.apps.googleusercontent.com'
-            });
-
-            /**
-             * Extend the Embed APIs `gapi.analytics.report.Data` component to
-             * return a promise the is fulfilled with the value returned by the API.
-             * @param {Object} params The request parameters.
-             * @return {Promise} A promise.
-             */
-            function query(params) {
-                return new Promise(function(resolve, reject) {
-                    new gapi.analytics.report.Data({query: params})
-                        .once('success', resolve)
-                        .once('error', reject)
-                        .execute();
-                });
-            }
-
-            // Create the view selector.
-            var viewSelector = new gapi.analytics.ViewSelector({
-                container: 'view-selector'
-            });
-
-            // Create the timeline chart.
-            var timeline = new gapi.analytics.googleCharts.DataChart({
-                reportType: 'ga',
-                query: {
-                    dimensions: 'ga:date',
-                    metrics: 'ga:sessions',
-                    'start-date': '30daysAgo',
-                    'end-date': 'yesterday'
-                },
-                chart: {
-                    type: 'LINE', container: 'timeline'
-                }
-            });
-
-            // Hook up the components to work together.
-            gapi.analytics.auth.on('success', () => viewSelector.execute());
-
-            viewSelector.on('change', function(ids) {
-                var now = moment();
-                var monthAgo = moment(now).subtract(1, 'month');
-
-                query({
-                    ids,
-                    dimensions: 'ga:browser',
-                    metrics: 'ga:pageviews',
-                    sort: '-ga:pageviews',
-                    'start-date': monthAgo.format('YYYY-MM-DD'),
-                    'end-date': now.format('YYYY-MM-DD')
-                }).then(function(results) {
-                    var browserData = convertGAPItoD3(results.rows);
-                    _.forEach(browserData, function(item) {
-                        if(item.label === 'Mozilla Compatible Agent') item.label = 'Mozilla';
-                    });
-                    addChart(1, browserData, {
-                        showLegend: true
-                    });
-                });
-
-                query({
-                    ids,
-                    dimensions: 'ga:operatingSystem',
-                    metrics: 'ga:users',
-                    sort: '-ga:users',
-                    'start-date': monthAgo.format('YYYY-MM-DD'),
-                    'end-date': now.format('YYYY-MM-DD')
-                }).then(function(results) {
-                    addChart(2, convertGAPItoD3(results.rows), {
-                        showLegend: true
-                    });
-                });
-
-                query({
-                    ids,
-                    dimensions: 'ga:country',
-                    metrics: 'ga:users',
-                    sort: '-ga:users',
-                    'start-date': monthAgo.format('YYYY-MM-DD'),
-                    'end-date': now.format('YYYY-MM-DD')
-                }).then(function(results) {
-                    addChart(3, convertGAPItoD3(results.rows), {
-                        showLegend: false, showLabels: true, labelThreshold: .01, labelType: 'key'
-                    });
-                });
-
-                query({
-                    ids,
-                    dimensions: 'ga:userType',
-                    metrics: 'ga:users',
-                    sort: '-ga:users',
-                    'start-date': monthAgo.format('YYYY-MM-DD'),
-                    'end-date': now.format('YYYY-MM-DD')
-                }).then(function(results) {
-                    addChart(4, convertGAPItoD3(results.rows), {
-                        showLegend: true, showLabels: true, labelThreshold: .01, labelType: 'percent'
-                    });
-                });
-
-                var newIds = {
-                    query: {
-                        ids
-                    }
-                };
-                timeline.set(newIds).execute();
-            });
-        });
+        // // FIXME: Temp fix for unit tests
+        // var gapi = window.gapi;
+        // if(!gapi) {
+        //     gapi = {
+        //         analytics: {
+        //             ready: function() {}
+        //         }
+        //     };
+        // }
+        //
+        // googleApiInit().then(() => {
+        //     gapi.analytics.auth.authorize({
+        //         container: 'auth-button',
+        //         clientid: '693903895035-1lk6sfgma8o270mk4icngumgnomuahob.apps.googleusercontent.com'
+        //     });
+        //
+        //     /**
+        //      * Extend the Embed APIs `gapi.analytics.report.Data` component to
+        //      * return a promise the is fulfilled with the value returned by the API.
+        //      * @param {Object} params The request parameters.
+        //      * @return {Promise} A promise.
+        //      */
+        //     function query(params) {
+        //         return new Promise(function(resolve, reject) {
+        //             new gapi.analytics.report.Data({query: params})
+        //                 .once('success', resolve)
+        //                 .once('error', reject)
+        //                 .execute();
+        //         });
+        //     }
+        //
+        //     // Create the view selector.
+        //     var viewSelector = new gapi.analytics.ViewSelector({
+        //         container: 'view-selector'
+        //     });
+        //
+        //     // Create the timeline chart.
+        //     var timeline = new gapi.analytics.googleCharts.DataChart({
+        //         reportType: 'ga',
+        //         query: {
+        //             dimensions: 'ga:date',
+        //             metrics: 'ga:sessions',
+        //             'start-date': '30daysAgo',
+        //             'end-date': 'yesterday'
+        //         },
+        //         chart: {
+        //             type: 'LINE', container: 'timeline'
+        //         }
+        //     });
+        //
+        //     // Hook up the components to work together.
+        //     gapi.analytics.auth.on('success', () => viewSelector.execute());
+        //
+        //     viewSelector.on('change', function(ids) {
+        //         var now = moment();
+        //         var monthAgo = moment(now).subtract(1, 'month');
+        //
+        //         query({
+        //             ids,
+        //             dimensions: 'ga:browser',
+        //             metrics: 'ga:pageviews',
+        //             sort: '-ga:pageviews',
+        //             'start-date': monthAgo.format('YYYY-MM-DD'),
+        //             'end-date': now.format('YYYY-MM-DD')
+        //         }).then(function(results) {
+        //             var browserData = convertGAPItoD3(results.rows);
+        //             _.forEach(browserData, function(item) {
+        //                 if(item.label === 'Mozilla Compatible Agent') item.label = 'Mozilla';
+        //             });
+        //             addChart(1, browserData, {
+        //                 showLegend: true
+        //             });
+        //         });
+        //
+        //         query({
+        //             ids,
+        //             dimensions: 'ga:operatingSystem',
+        //             metrics: 'ga:users',
+        //             sort: '-ga:users',
+        //             'start-date': monthAgo.format('YYYY-MM-DD'),
+        //             'end-date': now.format('YYYY-MM-DD')
+        //         }).then(function(results) {
+        //             addChart(2, convertGAPItoD3(results.rows), {
+        //                 showLegend: true
+        //             });
+        //         });
+        //
+        //         query({
+        //             ids,
+        //             dimensions: 'ga:country',
+        //             metrics: 'ga:users',
+        //             sort: '-ga:users',
+        //             'start-date': monthAgo.format('YYYY-MM-DD'),
+        //             'end-date': now.format('YYYY-MM-DD')
+        //         }).then(function(results) {
+        //             addChart(3, convertGAPItoD3(results.rows), {
+        //                 showLegend: false, showLabels: true, labelThreshold: .01, labelType: 'key'
+        //             });
+        //         });
+        //
+        //         query({
+        //             ids,
+        //             dimensions: 'ga:userType',
+        //             metrics: 'ga:users',
+        //             sort: '-ga:users',
+        //             'start-date': monthAgo.format('YYYY-MM-DD'),
+        //             'end-date': now.format('YYYY-MM-DD')
+        //         }).then(function(results) {
+        //             addChart(4, convertGAPItoD3(results.rows), {
+        //                 showLegend: true, showLabels: true, labelThreshold: .01, labelType: 'percent'
+        //             });
+        //         });
+        //
+        //         var newIds = {
+        //             query: {
+        //                 ids
+        //             }
+        //         };
+        //         timeline.set(newIds).execute();
+        //     });
+        // });
     }
 
     ngOnInit() {
