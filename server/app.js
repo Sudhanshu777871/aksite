@@ -16,11 +16,10 @@ import http from 'http';
 import initWebSocketServer from './config/websockets';
 import expressConfig from './config/express';
 import registerRoutes from './routes';
+import { seed } from './config/seed';
 
-export let client;
 if(config.sentry.dsn) {
-    client = new raven.Client(config.sentry.dsn);
-    client.patchGlobal();
+    raven.config(config.sentry.dsn).install();
 }
 
 // Connect to database
@@ -60,7 +59,7 @@ Promise.all([wsInitPromise, mongoPromise])
         // Populate DB with sample data
         if(config.seedDB) {
             // wait for DB seed
-            require('./config/seed').default()
+            seed()
                 .then(startServer);
         } else {
             startServer();
