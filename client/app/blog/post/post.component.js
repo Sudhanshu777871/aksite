@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operator/switchMap';
 // import Raven from 'raven-js';
@@ -18,8 +18,8 @@ export class PostComponent {
     error;
     post = {author: {}};
 
-    static parameters = [ActivatedRoute, Http];
-    constructor(route: ActivatedRoute, http: Http) {
+    static parameters = [ActivatedRoute, HttpClient];
+    constructor(route: ActivatedRoute, http: HttpClient) {
         this.route = route;
         this.http = http;
     }
@@ -27,7 +27,7 @@ export class PostComponent {
     ngOnInit() {
         switchMap.call(this.route.params, (params: ParamMap) => this.http.get(`api/posts/${params.id}`))
             .subscribe(res => {
-                this.post = res.json();
+                this.post = res;
                 this.post.content = converter.makeHtml(this.post.content);
                 this.post.date = moment(this.post.date).format('LL');
             });

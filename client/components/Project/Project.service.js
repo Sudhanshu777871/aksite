@@ -1,13 +1,13 @@
 'use strict';
 import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
+import {HttpClient} from '@angular/common/http';
 import {AuthHttp} from 'angular2-jwt';
 import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class ProjectService {
-    static parameters = [Http, AuthHttp];
-    constructor(http, authHttp) {
+    static parameters = [HttpClient, AuthHttp];
+    constructor(http: HttpClient, authHttp) {
         this.http = http;
         this.authHttp = authHttp;
     }
@@ -19,30 +19,21 @@ export class ProjectService {
     query() {
         return this.http.get('/api/projects/')
             .toPromise()
-            .then(extractData)
             .catch(this.handleError);
     }
     get(project: {id: 'string'}) {
         return this.http.get(`/api/projects/${project.id}`)
             .toPromise()
-            .then(extractData)
             .catch(this.handleError);
     }
     create(project) {
         return this.http.post('/api/projects/', project)
             .toPromise()
-            .then(extractData)
             .catch(this.handleError);
     }
     remove(project) {
         return this.authHttp.delete(`/api/projects/${project.id}`)
             .toPromise()
-            .then(extractData)
             .catch(this.handleError);
     }
-}
-
-function extractData(res: Response) {
-    if(!res.text()) return {};
-    return res.json() || { };
 }
