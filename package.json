@@ -143,7 +143,7 @@
     "isparta-loader": "^2.0.0",
     "istanbul": "~0.4.4",
     "jasmine-core": "^2.3.4",
-    "karma": "~1.7.0",
+    "karma": "~2.0.0",
     "karma-chai-plugins": "^0.9.0",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage": "^1.1.1",
