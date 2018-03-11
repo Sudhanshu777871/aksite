@@ -93,6 +93,7 @@
     "chai-things": "^0.2.0",
     "classie": "^1.0.0",
     "connect-livereload": "~0.6.0",
+    "cross-env": "^5.1.1",
     "css-loader": "^0.28.0",
     "d3": "^4.4.3",
     "del": "^3.0.0",
@@ -201,7 +202,7 @@
     "start:server": "gulp start:server",
     "test": "gulp test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
-    "build": "webpack --config webpack.build.js --bail",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.build.js --bail",
     "test:live": "karma start --auto-watch --no-single-run"
   }
 }
