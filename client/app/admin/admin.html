@@ -34,8 +34,8 @@
 <!--</section>-->
 
 <mat-sidenav-container>
-    <mat-sidenav #start (open)="mybutton.focus()" [opened]="false">
-        <button mat-button #mybutton (click)="start.close()"><i class="fa fa-bars fa-2x"></i></button> Admin
+    <mat-sidenav #sidenav (open)="mybutton.focus()" [opened]="false">
+        <button mat-button #mybutton (click)="sidenav.close()"><i class="fa fa-bars fa-2x"></i></button> Admin
 
         <ul class="sidenav-menu">
             <li class="" *ngFor="let section of sections">
@@ -47,7 +47,7 @@
         </ul>
     </mat-sidenav>
 
-    <button mat-button (click)="start.open()"><i class="fa fa-bars fa-2x"></i></button>
+    <button mat-button (click)="sidenav.open()"><i class="fa fa-bars fa-2x"></i></button>
 
     <router-outlet></router-outlet>
 </mat-sidenav-container>
