@@ -204,7 +204,7 @@ function createGallery(photos) {
         .tap(({_id}) => console.log('Gallery Created', _id));
 }
 
-export default function() {
+export function seed() {
     let start = Date.now();
     console.log('Seed started');
 

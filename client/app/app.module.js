@@ -1,6 +1,7 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule, Http } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import {
     MatButtonModule,
     MatIconModule,
@@ -77,6 +78,7 @@ const appRoutes: Routes = [
     imports: [
         BrowserModule,
         HttpModule,
+        HttpClientModule,
         MatButtonModule,
         MatIconModule,
         MatInputModule,

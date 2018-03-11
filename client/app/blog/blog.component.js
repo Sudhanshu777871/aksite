@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import 'rxjs/add/operator/toPromise';
 import {
@@ -14,10 +14,13 @@ import moment from 'moment';
 import { Converter } from 'showdown';
 const converter = new Converter();
 
+import template from './blog.html';
+import blogCss from './blog.scss';
+
 @Component({
     selector: 'blog',
-    template: require('./blog.html'),
-    styles: [require('./blog.scss')]
+    template,
+    styles: [blogCss]
 })
 export class BlogComponent {
     loadingItems = true;
@@ -27,8 +30,8 @@ export class BlogComponent {
     collectionSize = 0;
     posts = [];
 
-    static parameters = [Http, Router];
-    constructor(http: Http, router: Router) {
+    static parameters = [HttpClient, Router];
+    constructor(http: HttpClient, router: Router) {
         this.Http = http;
         this.router = router;
         this.$stateParams = {};
@@ -53,7 +56,6 @@ export class BlogComponent {
     getPageData() {
         return this.Http.get(`api/posts?page=${this.currentPage}&pagesize=${this.pagesize}`)
             .toPromise()
-            .then(extractData)
             .then(data => {
                 this.pages = data.pages;
                 this.collectionSize = data.numItems;
@@ -69,9 +71,4 @@ export class BlogComponent {
                 console.log(err);
             });
     }
-}
-
-function extractData(res) {
-    if(!res.text()) return {};
-    return res.json() || { };
 }
