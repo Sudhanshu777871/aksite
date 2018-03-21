@@ -179,7 +179,7 @@
     "rxjs": "^5.5.2",
     "sass-loader": "^6.0.2",
     "should": "~13.1.0",
-    "sinon": "^1.17.6",
+    "sinon": "^4.4.7",
     "sinon-chai": "^2.8.0",
     "snyk": "^1.23.2",
     "style-loader": "^0.20.2",
