@@ -67,7 +67,7 @@
     "request": "~2.83.0",
     "serve-favicon": "^2.3.0",
     "showdown": "^1.5.5",
-    "uws": "^10.148.0"
+    "uws": "10.148.1"
   },
   "devDependencies": {
     "@angular/animations": "^5.0.1",
