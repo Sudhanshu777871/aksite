@@ -64,7 +64,7 @@
     "primus": "^7.1.0",
     "primus-emit": "^1.0.0",
     "raven": "^2.2.1",
-    "request": "~2.83.0",
+    "request": "~2.84.0",
     "serve-favicon": "^2.3.0",
     "showdown": "^1.5.5",
     "uws": "10.148.1"
