@@ -1,53 +1,87 @@
-machine:
-  node:
-    version: 6.7.0
-  post:
-    - npm install -g gulp-cli
-  services:
-    - docker
+version: 2
+jobs:
+  build:
+    docker:
+      - image: awk34/aksite-builder
+      - image: mongo
+        command: [mongod, --smallfiles]
 
-dependencies:
-  cache_directories:
-    - ~/kubernetes
-    - ~/docker
-  override:
-    - npm install
-    # If we have a cached image, load it into docker
-    - if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
-    # Else make a new build and save the docker image to the cache
-    - if [[ ! -e ~/docker/image.tar ]]; then gulp build && cd dist && docker build --rm=false -t gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 .; fi
-    - if [[ ! -e ~/docker/image.tar ]]; then mkdir -p ~/docker; docker save gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 > ~/docker/image.tar; fi
-    # The problem here is that the CircleCI cache is created at the end of the 'dependencies' section,
-    # so the build in the deployment step can't be cached.
-  pre:
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update kubectl
-    - echo $ACCT_AUTH | base64 --decode -i > ~/account-auth.json
-    - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ~/account-auth.json
-    - sudo /opt/google-cloud-sdk/bin/gcloud config set project $PROJECT_NAME
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet config set container/cluster $CLUSTER_NAME
-    # Reading the zone from the env var is not working so we set it here
-    - sudo /opt/google-cloud-sdk/bin/gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet container clusters get-credentials $CLUSTER_NAME
-#    - docker build --rm=false -t $EXTERNAL_REGISTRY_ENDPOINT/aksite:$CIRCLE_SHA1 .
+    working_directory: ~/aksite
 
-deployment:
-  prod:
-    branch: master
-    commands:
-      - gulp build
-      - cd dist && docker build --rm=false -t gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 .
-      # Using a separate tag command until Docker 1.10 is available on CircleCI, then we can use two tags in the build command above
-      - docker tag gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 gcr.io/${PROJECT_NAME}/aksite:latest
-      - sudo chown -R ubuntu ~/.config/gcloud
-      - /opt/google-cloud-sdk/bin/gcloud auth activate-service-account --key-file ~/account-auth.json
-      - chmod 0744 ./scripts/deploy.sh
-      - ./scripts/deploy.sh
+    environment:
+      NODE_ENV: test
 
-#     post:
-#       - curl $OPBEAT_RELEASES_URL -H "Authorization: $OPBEAT_TOKEN" -d rev=`git log -n 1 --pretty=format:%H` -d branch=`git rev-parse --abbrev-ref HEAD` -d status=completed
-      # - git config --global user.email "builds@circleci.com"
-      # - git config --global user.name "Circle"
-      # - GIT_TAG=build/$CIRCLE_BUILD_NUM
-      # - git tag $GIT_TAG $CIRCLE_SHA1 -a -m $CIRCLE_BUILD_URL
-      # - git push git@github.com:Awk34/aksite.git $GIT_TAG
+    steps:
+      - checkout
+      - setup_remote_docker
+
+      - run:
+          name: Store Service Account
+          command: echo $ACCT_AUTH | base64 --decode -i > ~/account-auth.json
+#      - run: gcloud --quiet components update
+#      - run: gcloud --quiet components update kubectl
+      - run: gcloud auth activate-service-account --key-file ~/account-auth.json
+      - run: gcloud config set project $PROJECT_NAME
+      - run: gcloud --quiet config set container/cluster $CLUSTER_NAME
+      # Reading the zone from the env var is not working so we set it here
+      - run: gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
+      - run: gcloud --quiet container clusters get-credentials $CLUSTER_NAME
+#      - run: docker build --rm=false -t $EXTERNAL_REGISTRY_ENDPOINT/aksite:$CIRCLE_SHA1 .
+
+      # Global npm dependencies
+      - restore_cache:
+          keys:
+            - aksite-npm-global-{{ .Branch }}
+            - aksite-npm-global-
+      - run: npm install --global gulp-cli
+      - save_cache:
+          key: aksite-npm-global-{{ .Branch }}
+          paths:
+            - /usr/local/lib/node_modules
+
+      # npm dependencies
+      - restore_cache:
+          keys:
+            - aksite-npm-{{ .Branch }}-{{ checksum "package.json" }}
+            - aksite-npm-{{ .Branch }}
+            - -npm-
+      - run: npm install --quiet
+      - save_cache:
+          key: aksite-npm-{{ .Branch }}-{{ checksum "package.json" }}
+          paths:
+            - ~/aksite/node_modules
+
+#      - run: gulp build
+
+      # docker dependencies
+#      - restore_cache:
+#          keys:
+#            - aksite-docker-{{ .Branch }}-{{ checksum "~/docker/image.tar" }}
+#            - aksite-docker-{{ .Branch }}
+#            - -docker-
+#        # If we have a cached image, load it into docker
+#        - run: if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
+#        # Else make a new build and save the docker image to the cache
+#        - run: if [[ ! -e ~/docker/image.tar ]]; then gulp build && cd dist && docker build --rm=false -t gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 .; fi
+#        - run: if [[ ! -e ~/docker/image.tar ]]; then mkdir -p ~/docker; docker save gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 > ~/docker/image.tar; fi
+#        # The problem here is that the CircleCI cache is created at the end of the 'dependencies' section,
+#        # so the build in the deployment step can't be cached.
+#      - save_cache:
+#          key: aksite-docker-{{ .Branch }}-{{ checksum "~/docker/image.tar" }}
+#          paths:
+#            - ~/kubernetes
+#            - ~/docker
+
+      - run: gulp build
+      - run: npm test
+
+      - deploy:
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              cd dist && docker build --rm=false -t gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 .
+              # Using a separate tag command until Docker 1.10 is available on CircleCI, then we can use two tags in the build command above
+              docker tag gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 gcr.io/${PROJECT_NAME}/aksite:latest
+              gcloud auth activate-service-account --key-file ~/account-auth.json
+              chmod 0744 ./scripts/deploy.sh
+              ./scripts/deploy.sh
+            fi
