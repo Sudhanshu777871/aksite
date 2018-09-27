@@ -86,7 +86,7 @@
     "autoprefixer": "^8.0.0",
     "awesome-typescript-loader": "^3.0.3",
     "babel-eslint": "^8.0.0",
-    "babel-loader": "^7.0.0",
+    "babel-loader": "^8.0.4",
     "bootstrap": "^3.3.7",
     "bootstrap-sass": "^3.3.6",
     "chai": "^3.5.0",
