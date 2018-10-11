@@ -61,7 +61,7 @@
     "passport-google-oauth20": "^1.0.0",
     "passport-linkedin-oauth2": "^1.2.1",
     "passport-local": "~1.0.0",
-    "primus": "^7.1.0",
+    "primus": "^7.2.3",
     "primus-emit": "^1.0.0",
     "raven": "^2.2.1",
     "request": "~2.87.0",
