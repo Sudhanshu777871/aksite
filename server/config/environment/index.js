@@ -56,7 +56,8 @@ var all = {
         options: {
             db: {
                 safe: true
-            }
+            },
+            autoIndex: false,
         }
     },
 
