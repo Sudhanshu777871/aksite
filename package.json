@@ -67,7 +67,8 @@
     "request": "~2.87.0",
     "serve-favicon": "^2.3.0",
     "showdown": "^1.5.5",
-    "uws": "10.148.1"
+    "uws": "10.148.1",
+    "snyk": "^1.123.0"
   },
   "devDependencies": {
     "@angular/animations": "^5.0.1",
@@ -181,7 +182,6 @@
     "should": "~13.1.0",
     "sinon": "^4.4.7",
     "sinon-chai": "^2.8.0",
-    "snyk": "^1.23.2",
     "style-loader": "^0.20.2",
     "supertest": "^3.0.0",
     "through2": "^2.0.1",
@@ -203,6 +203,9 @@
     "test": "gulp test",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
     "build": "cross-env NODE_ENV=production webpack --config webpack.build.js --bail",
-    "test:live": "karma start --auto-watch --no-single-run"
-  }
+    "test:live": "karma start --auto-watch --no-single-run",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "snyk": true
 }
