@@ -32,7 +32,7 @@
     "body-parser": "~1.18.0",
     "composable-middleware": "^0.3.0",
     "compression": "~1.7.0",
-    "connect-mongo": "^2.0.0",
+    "connect-mongo": "^3.0.0",
     "cookie-parser": "~1.4.2",
     "core-decorators": "^0.20.0",
     "core-js": "^2.4.1",
