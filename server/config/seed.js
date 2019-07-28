@@ -59,8 +59,8 @@ async function deleteFiles() {
 }
 
 function deleteUsers() {
-    return User.find({}).remove()
-        .then(() => console.log('finished deleting users'));
+    return User.find().remove()
+        .then(res => console.log(`finished deleting ${res.n} users`));
 }
 
 function createUsers(userImageId) {
@@ -105,7 +105,7 @@ function createPosts(userImageId) {
         subheader: `This is test post number **${n}**`,
         categories: ['tests']
     })))
-        .tap(() => console.log('finished populating posts'));
+        .then(() => console.log('finished populating posts'));
 }
 
 function deleteProjects() {
@@ -127,7 +127,7 @@ This project was done as part of Boilermake, Purdue's first hackathon. It won 3r
 <a href="https://awk34.github.io/dotsynth/" class="btn btn-lg btn-primary">Demo</a>
 <a href="https://github.com/Awk34/dotsynth" class="btn btn-lg btn-default"><i class="fa fa-github"></i> View on GitHub</a>`
     })
-        .tap(() => console.log('Finished creating project0'));
+        .then(() => console.log('Finished creating project0'));
 }
 
 function deletePhotos() {
@@ -145,11 +145,17 @@ async function createPhoto(photo) {
         width: null,
         height: 400,
     })
-        .tap(thumbnail => console.log(`${photo.name} -> (thumb)${thumbnail.id}`));
+        .then(thumbnail => {
+            console.log(`${photo.name} -> (thumb)${thumbnail.id}`);
+            return thumbnail;
+        });
 
     // Square Thumbnail Generation
     let squareThumbPromise = util.createThumbnail(file._id)
-        .tap(sqThumbnail => console.log(`${photo.name} -> (sqThumb)${sqThumbnail.id}`));
+        .then(sqThumbnail => {
+            console.log(`${photo.name} -> (sqThumb)${sqThumbnail.id}`);
+            return sqThumbnail;
+        });
 
     let [thumbnail, sqThumbnail] = await Promise.all([thumbPromise, squareThumbPromise]);
 
@@ -201,7 +207,7 @@ function createGallery(photos) {
         date: new Date(),
         hidden: false
     })
-        .tap(({_id}) => console.log('Gallery Created', _id));
+        .then(({_id}) => console.log('Gallery Created', _id));
 }
 
 export function seed() {
@@ -227,7 +233,7 @@ export function seed() {
 
     // Create an orphaned file
     let p4 = util.saveFileFromFs('data/proj_0_cover.jpg')
-        .tap(({_id}) => console.log(`Created orphaned file: ${_id}`));
+        .then(({_id}) => console.log(`Created orphaned file: ${_id}`));
 
     let p5 = (async function() {
         await deleteUsers();
@@ -249,7 +255,7 @@ export function seed() {
             return createProject(projectCoverFile._id, projectThumbFile._id);
         }());
 
-        return await Promise.all([createUsersAndPosts, createProjects]);
+        return Promise.all([createUsersAndPosts, createProjects]);
     }());
 
     return Promise.all([p1, p2, p3, p4, p5])

@@ -13,17 +13,14 @@ import { switchMap } from 'rxjs/operator/switchMap';
 export class ProjectComponent implements OnInit {
     error;
     project = {};
+    content: string|undefined;
 
-    static parameters = [ProjectService, ActivatedRoute];
-    constructor(projectService: ProjectService, route: ActivatedRoute) {
-        this.projectService = projectService;
-        this.route = route;
-
+    constructor(private readonly projectService: ProjectService, private readonly route: ActivatedRoute) {
         // this.projectId = $stateParams.projectId;
     }
 
     ngOnInit() {
-        switchMap.call(this.route.params, (params: ParamMap) => this.projectService.get({id: params.id}))
+        switchMap.call(this.route.params, (params: ParamMap) => this.projectService.get({id: params.get('id')}))
             .subscribe(project => {
                 this.project = project;
                 this.content = converter.makeHtml(project.content);

@@ -106,23 +106,24 @@ UserSchema
 // Validate email is not taken
 UserSchema
     .path('email')
-    .validate(function(value, respond) {
+    .validate(function(value) {
         if(authTypes.indexOf(this.provider) !== -1) {
-            return respond(true);
+            return Promise.resolve(true);
         }
+
         return this.constructor.findOne({email: value}).exec()
             .then(user => {
                 if(user) {
                     if(this.id === user.id) {
-                        return respond(true);
+                        return true;
                     }
-                    return respond(false);
+                    return false;
                 }
-                return respond(true);
+                return true;
             })
-            .catch(function(err) {
-                throw err;
-            });
+            // .catch(function(err) {
+            //     throw err;
+            // });
     }, 'The specified email address is already in use.');
 
 /**

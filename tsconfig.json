@@ -1,0 +1,24 @@
+{
+    "awesomeTypescriptLoaderOptions": {
+        /* ... */
+        "useCache": false,
+        "forceIsolatedModules": true,
+        "reportFiles": [
+            "client/**/*.{ts,tsx}"
+        ]
+    },
+    "compilerOptions": {
+        "baseUrl": "./client",
+        "outDir": "./dist/client",
+        "allowJs": true,
+        "target": "es6",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "lib": [ "es2015", "dom" ],
+        "moduleResolution": "node",
+        "jsx": "react"
+    },
+    "include": [
+        "./client/**/*.(ts|tsx)"
+    ]
+}

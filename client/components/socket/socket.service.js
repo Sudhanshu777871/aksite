@@ -1,12 +1,12 @@
 'use strict';
 import { Injectable } from '@angular/core';
-const Primus = require('./primus').Primus;
+import Primus from 'primus';
 import primusEmit from 'primus-emit';
 import { noop, find, remove } from 'lodash';
 
 @Injectable()
 export class SocketService {
-    primus;
+    // primus: Primus;
 
     constructor() {
         // this.socket = io('', {

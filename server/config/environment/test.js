@@ -6,6 +6,7 @@
 export default {
     // MongoDB connection options
     mongo: {
+        useMongoClient: true,
         uri: 'mongodb://localhost/aksite-test'
     }
 };

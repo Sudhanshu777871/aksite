@@ -1,14 +1,17 @@
-'use strict';
 /*eslint-env node*/
+const autoprefixer = require('autoprefixer');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 const _ = require('lodash');
-var webpack = require('webpack');
-var autoprefixer = require('autoprefixer');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-var path = require('path');
+const CompressionPlugin = require('compression-webpack-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const path = require('path');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = function makeWebpackConfig(options) {
     /**
@@ -16,16 +19,20 @@ module.exports = function makeWebpackConfig(options) {
      * BUILD is for generating minified builds
      * TEST is for generating test builds
      */
-    var BUILD = !!options.BUILD;
-    var TEST = !!options.TEST;
-    var DEV = !!options.DEV;
+    const BUILD = !!options.BUILD;
+    const TEST = !!options.TEST;
+    const DEV = !!options.DEV;
 
     /**
      * Config
      * Reference: http://webpack.github.io/docs/configuration.html
      * This is the object where all configuration gets set
      */
-    var config = {};
+    const config = {};
+
+    config.mode = BUILD
+        ? 'production'
+        : 'development';
 
     /**
      * Entry
@@ -79,7 +86,11 @@ module.exports = function makeWebpackConfig(options) {
 
     config.resolve = {
         modules: ['node_modules'],
-        extensions: ['.js', '.ts']
+        extensions: ['.js', '.ts', '.tsx'],
+        alias: {
+            primus: !TEST ? path.resolve(__dirname, 'client/components/socket/primus.js')
+                : path.resolve(__dirname, 'client/components/socket/primus.mock.js'),
+        }
     };
 
     /**
@@ -115,17 +126,25 @@ module.exports = function makeWebpackConfig(options) {
             use: {
                 loader: 'babel-loader',
                 options: {
-                    babelrc: false,
+                    // babelrc: false,
                     presets: [
-                        ['es2015', { modules: false }],
-                        'stage-0',
-                        'react'
+                        ['babel-preset-env', {
+                            // debug: true,
+                            targets: {
+                                browsers: ['last 2 versions', 'not dead'],
+                            },
+                            debug: true,
+                            modules: false,
+                        }],
+                        'react',
                     ],
                     plugins: [
                         'angular2-annotations',
                         'transform-runtime',
-                        'transform-decorators-legacy'
-                    ],
+                        'transform-decorators-legacy',
+                        'transform-class-properties',
+                        'transform-export-extensions',
+                    ].concat(TEST ? ['istanbul'] : []),
                     shouldPrintComment(commentContents) {
                         let regex = DEV
                             // keep `// @flow`, `/*@ngInject*/`, & flow type comments in dev
@@ -145,8 +164,13 @@ module.exports = function makeWebpackConfig(options) {
             // TS LOADER
             // Reference: https://github.com/s-panferov/awesome-typescript-loader
             // Transpile .ts files using awesome-typescript-loader
-            test: /\.ts$/,
-            use: 'awesome-typescript-loader',
+            test: /\.tsx?$/,
+            use: [{
+                loader: 'awesome-typescript-loader',
+                options: {
+                    tsconfig: path.resolve(__dirname, 'tsconfig.json')
+                },
+            }].concat(DEV ? '@angularclass/hmr-loader' : []),
             include: [
                 path.resolve(__dirname, 'client/')
             ]
@@ -166,10 +190,46 @@ module.exports = function makeWebpackConfig(options) {
             test: /\.html$/,
             use: 'raw-loader'
         }, {
+            // CSS LOADER
+            // Reference: https://github.com/webpack/css-loader
+            // Allow loading css through js
+            //
+            // Reference: https://github.com/postcss/postcss-loader
+            // Postprocess your css with PostCSS plugins
+            test: /\.css$/,
+            use: [
+                DEV ? 'style-loader' : MiniCssExtractPlugin.loader,
+                'css-loader',
+                {
+                    loader: 'postcss-loader',
+                    options: {
+                        autoprefixer: {
+                            browsers: ['last 2 version']
+                        }
+                    }
+                },
+            ],
+            include: [
+                path.resolve(__dirname, 'node_modules/bootstrap/dist/css/*.css'),
+                path.resolve(__dirname, 'client/app/app.css')
+            ]
+        }, {
             // SASS LOADER
             // Reference: https://github.com/jtangelder/sass-loader
-            test: /\.scss$/,
-            use: ['style-loader', 'css-loader', 'sass-loader'],
+            test: /\.(scss|sass)$/,
+            use: [
+                DEV ? 'style-loader' : MiniCssExtractPlugin.loader,
+                'css-loader?sourceMap',
+                {
+                    loader: 'postcss-loader',
+                    options: {
+                        autoprefixer: {
+                            browsers: ['last 2 version']
+                        }
+                    }
+                },
+                'sass-loader',
+            ],
             include: [
                 path.resolve(__dirname, 'node_modules/angular-material/angular-material.scss'),
                 path.resolve(__dirname, 'client/app/app.scss')
@@ -177,9 +237,23 @@ module.exports = function makeWebpackConfig(options) {
         }, {
             // SASS LOADER
             // Reference: https://github.com/jtangelder/sass-loader
-            test: /\.scss$/,
-            use: ['raw-loader?sourceMap', 'sass-loader?sourceMap'],
-            include: [path.resolve(__dirname, 'client')],
+            test: /\.(scss|sass)$/,
+            use: [
+                'to-string-loader?sourceMap',
+                'css-loader?sourceMap',
+                {
+                    loader: 'postcss-loader',
+                    options: {
+                        autoprefixer: {
+                            browsers: ['last 2 version']
+                        }
+                    }
+                },
+                'sass-loader?sourceMap',
+            ],
+            include: [
+                path.resolve(__dirname, 'client')
+            ],
             exclude: [/app\.scss$/]
         }, {
             test: /photoswipe.*\.js$/,
@@ -207,7 +281,7 @@ module.exports = function makeWebpackConfig(options) {
     //
     // Reference: https://github.com/postcss/postcss-loader
     // Postprocess your css with PostCSS plugins
-    var cssLoader = {
+    const cssLoader = {
         test: /\.css$/,
         // Reference: https://github.com/webpack/extract-text-webpack-plugin
         // Extract css files in production builds
@@ -233,16 +307,13 @@ module.exports = function makeWebpackConfig(options) {
      * List: http://webpack.github.io/docs/list-of-plugins.html
      */
     config.plugins = [
-        // Reference: https://github.com/webpack/extract-text-webpack-plugin
-        // Extract css files
-        // Disabled when in test mode or not in build mode
-        new ExtractTextPlugin({
-            filename: '[name].[hash].css',
-            disable: !BUILD || TEST
-        }),
+        // Hides the 'the request of a dependency is an expression' warnings
+        new webpack.ContextReplacementPlugin(
+            /angular(\\|\/)core/,
+            path.resolve(__dirname, '../src')
+        ),
+
         new webpack.LoaderOptionsPlugin({
-            minimize: false,
-            debug: true,
             options: {
                 context: __dirname
             },
@@ -266,34 +337,50 @@ module.exports = function makeWebpackConfig(options) {
                 noAutoWrap: true,
             }
         }),
-        new webpack.ContextReplacementPlugin(
-            /angular(\\|\/)core(\\|\/)@angular/,
-            path.resolve(__dirname, '../src')
-        ),
+
+        new HardSourceWebpackPlugin(),
     ];
 
     if(DEV) {
         config.plugins.push(new webpack.HotModuleReplacementPlugin());
     }
 
-    if(!TEST) {
-        config.plugins.push(new CommonsChunkPlugin({
-            name: 'vendor',
-
-            // filename: "vendor.js"
-            // (Give the chunk a different name)
-
-            minChunks: Infinity
-            // (with more entries, this ensures that no other module
-            //  goes into the vendor chunk)
-        }));
-    }
-
     if(BUILD) {
-        config.plugins.push(new webpack.LoaderOptionsPlugin({
-            minimize: true,
-            debug: false,
-        }));
+        config.plugins.push(
+            new CompressionPlugin({}),
+            // https://github.com/webpack-contrib/mini-css-extract-plugin
+            new MiniCssExtractPlugin({
+                filename: '[name].[hash].css',
+                chunkFilename: '[id].[hash].css',
+            }),
+        );
+        config.optimization = {
+            splitChunks: {
+                cacheGroups: {
+                    vendor: {
+                        name: 'vendor',
+                        test: /\/node_modules\//,
+                        chunks: 'all',
+                        priority: 0,
+                        enforce: true,
+                    },
+                    styles: {
+                        name: 'styles',
+                        test: /\.css$/,
+                        chunks: 'all',
+                        enforce: true
+                    },
+                },
+            },
+            minimizer: [
+                new UglifyJsPlugin({
+                    cache: true,
+                    parallel: true,
+                    sourceMap: true // set to true if you want JS source maps
+                }),
+                new OptimizeCssAssetsPlugin({}),
+            ],
+        };
     }
 
     // Skip rendering index.html in test mode
@@ -345,7 +432,7 @@ module.exports = function makeWebpackConfig(options) {
 
             // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
             // Minify all javascript, switch loaders to minimizing mode
-            new UglifyJSPlugin()
+            new UglifyJsPlugin(),
             // 53372
         );
     }
@@ -368,10 +455,16 @@ module.exports = function makeWebpackConfig(options) {
         contentBase: './client/',
         hot: true,
         proxy: {
-            '/api': 'http://localhost:9050',
-            '/auth': 'http://localhost:9050',
-            '/primus': {
+            '/api': {
                 target: 'http://localhost:9050',
+                secure: false,
+            },
+            '/auth': {
+                target: 'http://localhost:9050',
+                secure: false,
+            },
+            '/primus': {
+                target: 'localhost:9050',
                 secure: false,
                 ws: true,
             },
@@ -382,7 +475,9 @@ module.exports = function makeWebpackConfig(options) {
             colors: true,
             chunks: false,
         },
-        historyApiFallback: true,
+        historyApiFallback: {
+            index: '_index.html'
+        },
     };
 
     config.node = {

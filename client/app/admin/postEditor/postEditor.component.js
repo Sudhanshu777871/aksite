@@ -3,7 +3,6 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { Response } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt';
 import { ActivatedRoute } from '@angular/router';
-// import { FileUploader } from 'ng2-file-upload';
 import { AuthService } from '../../../components/auth/auth.service';
 
 import {
@@ -45,7 +44,7 @@ export class PostEditorComponent {
             });
         });
 
-        this.currentUser = await this.AuthService.getCurrentUser(true);
+        this.currentUser = await this.AuthService.getCurrentUser();
 
         if(!this.id || this.id === 'new') {
             this.post = {

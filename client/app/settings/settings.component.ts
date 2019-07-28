@@ -1,6 +1,6 @@
-'use strict';
 import { Component } from '@angular/core';
 import { AuthService } from '../../components/auth/auth.service';
+import {User} from "../../components/auth/user.service";
 
 @Component({
     selector: 'user-settings',
@@ -19,12 +19,12 @@ export class SettingsComponent {
     }];
 
     static parameters = [AuthService];
-    constructor(authService: AuthService) {
-        this.authService = authService;
-
-        this.heightStyle = {
-            height: window.innerHeight - 70 - 66
-        };
+    // heightStyle: CSSStyleDeclaration;
+    currentUser: User;
+    constructor(private readonly authService: AuthService) {
+        // this.heightStyle = {
+        //     height: `${window.innerHeight - 70 - 66}`;
+        // };
     }
 
     async ngOnInit() {

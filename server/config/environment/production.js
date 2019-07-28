@@ -10,13 +10,14 @@ export default {
 
     // Server port
     port: process.env.PORT
-        || 3000,
+        || 80,
 
     client: '/client',
 
     // MongoDB connection options
     mongo: {
+        useMongoClient: true,
         uri: process.env.MONGODB_URI
-            || 'mongodb://mongo:27017/aksite'
+            || 'mongodb://localhost:27017/aksite'
     }
 };

@@ -50,12 +50,15 @@ export function broadcast(message) {
  */
 export default function initWebSocketServer(server) {
     primus = new Primus(server, {
-        transformer: 'uws',
+        // transformer: 'uws',
     });
     primus.plugin('emit', primusEmit);
 
     primus.on('connection', onConnect);
     primus.on('disconnection', onDisconnect);
+    primus.on('open', () => console.log('open'));
+    primus.on('initialised', () => console.log('initialised'));
+    primus.on('error', error => console.log(error));
 
     if(process.env.NODE_ENV === 'development') {
         return new Promise((resolve, reject) => {

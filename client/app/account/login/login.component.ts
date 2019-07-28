@@ -4,21 +4,24 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../components/auth/auth.service';
 
+interface User {
+    email: string;
+    password: string;
+}
+
 @Component({
     selector: 'login',
     template: require('./login.html'),
-    style: [require('./login.scss')],
+    styles: [require('./login.scss')],
 })
 export class LoginComponent {
-    user = {};
-    errors = {};
+    user: User;
+    errors: {
+        login?: string;
+    } = {};
     submitted = false;
 
-    static parameters = [Router, AuthService];
-    constructor(router: Router, authService: AuthService) {
-        this.router = router;
-        this.authService = authService;
-    }
+    constructor(private readonly router: Router, private readonly authService: AuthService) {}
 
     login() {
         this.submitted = true;

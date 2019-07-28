@@ -1,5 +1,5 @@
 import {Component, ViewEncapsulation} from '@angular/core';
-import { Router } from '@angular/router';
+import {Router} from '@angular/router';
 import {autobind} from 'core-decorators';
 
 // import { PreloaderComponent } from '../../components/preloader/preloader.component'
@@ -14,26 +14,30 @@ const Grid = makeResponsive(CSSGrid, {
     maxWidth: 1920
 });
 
+interface Project {
+    _id: string;
+    thumbnailId: string;
+    name: string;
+    info: string;
+}
+
 @Component({
     selector: 'project-list',
     template: require('./projectList.html'),
     styles: [require('./projectList.scss')],
-    encapsulation: ViewEncapsulation.None,
+    // encapsulation: ViewEncapsulation.None,
     // directives: [PreloaderComponent]
 })
 export class ProjectListComponent {
     projects = [];
     loadingProjects = true;
+    errors = [];
 
-    static parameters = [ProjectService, Router];
-    constructor(Project: ProjectService, router: Router) {
-        this.Project = Project;
-        this.router = router;
-    }
+    constructor(private readonly Project: ProjectService, private readonly router: Router) {}
 
     ngOnInit() {
         return this.Project.query()
-            .then(projects => {
+            .then((projects: Project[]) => {
                 this.loadingProjects = false;
                 Reflect.deleteProperty(projects, '$promise');
                 Reflect.deleteProperty(projects, '$resolved');

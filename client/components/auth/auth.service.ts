@@ -1,9 +1,8 @@
-'use strict';
 import { Injectable } from '@angular/core';
 import { Response } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt';
-import { UserService } from './user.service';
 import { Http } from '@angular/http';
+import {User, UserService} from './user.service';
 import 'rxjs/add/operator/toPromise';
 import {
     wrapperLodash as _,
@@ -29,16 +28,14 @@ function safeCb(cb) {
 
 @Injectable()
 export class AuthService {
-    currentUser = {};
+    currentUser: User = {};
 
-    static parameters = [Http, AuthHttp, UserService];
-    constructor(http: Http, authHttp: AuthHttp, userService: UserService) {
-        this.http = http;
-        this.authHttp = authHttp;
-        this.User = userService;
-
+    constructor(
+        private readonly http: Http,
+        private readonly authHttp: AuthHttp,
+        private readonly userService: UserService) {
         if(localStorage.getItem('id_token')) {
-            this.User.get().then(user => {
+            this.userService.get().then((user: User) => {
                 this.currentUser = user;
             }).catch(err => {
                 console.log(err);
@@ -50,12 +47,8 @@ export class AuthService {
 
     /**
      * Authenticate user and save token
-     *
-     * @param  {Object}   user     - login info
-     * @param  {Function} callback - optional, function(error, user)
-     * @return {Promise}
      */
-    login({email, password}, callback) {
+    login({email, password}: User, callback?: (error, user) => void): Promise {
         return this.http.post('/auth/local', {
             email,
             password
@@ -64,9 +57,9 @@ export class AuthService {
             .then(extractData)
             .then(res => {
                 localStorage.setItem('id_token', res.token);
-                return this.User.get();
+                return this.userService.get();
             })
-            .then(user => {
+            .then((user: User) => {
                 this.currentUser = user;
                 localStorage.setItem('user', JSON.stringify(user));
                 console.log(this.currentUser);
@@ -83,7 +76,7 @@ export class AuthService {
     /**
      * Delete access token and user info
      */
-    logout() {
+    logout(): Promise<void> {
         // this.$cookies.remove('token');
         localStorage.removeItem('user');
         localStorage.removeItem('id_token');
@@ -98,13 +91,13 @@ export class AuthService {
      * @param  {Function} callback - optional, function(error, user)
      * @return {Promise}
      */
-    createUser(user, callback) {
-        return this.User.create(user)
-            .then(data => {
+    createUser(user: User, callback?: (error, user: User) => void) {
+        return this.userService.create(user)
+            .then((data: {token: string}) => {
                 localStorage.setItem('id_token', data.token);
-                return this.User.get();
+                return this.userService.get();
             })
-            .then(_user => {
+            .then((_user: User) => {
                 this.currentUser = _user;
                 return safeCb(callback)(null, _user);
             })
@@ -114,63 +107,24 @@ export class AuthService {
             });
     }
 
-    /**
-     * Change password
-     *
-     * @param  {String}   oldPassword
-     * @param  {String}   newPassword
-     * @param  {Function} callback    - optional, function(error, user)
-     * @return {Promise}
-     */
-    changePassword(oldPassword, newPassword, callback) {
-        return this.User.changePassword({id: this.currentUser._id}, oldPassword, newPassword)
+    changePassword(oldPassword: string, newPassword: string, callback?: (error, user) => void): Promise<void> {
+        return this.userService.changePassword({id: this.currentUser._id}, oldPassword, newPassword)
             .then(() => safeCb(callback)(null))
             .catch(err => safeCb(callback)(err));
     }
 
     /**
      * Gets all available info on a user
-     *   (synchronous|asynchronous)
-     *
-     * @param  {Function|*} [callback] - optional, function(user)
-     * @return {Object|Promise}
      */
-    getCurrentUser(callback) {
-        if(!callback) {
-            return this.currentUser;
-        }
-
-        safeCb(callback)(this.currentUser);
-        return Promise.resolve(this.currentUser);
-    }
-
-    /**
-     * Gets all available info on a user
-     *
-     * @return {Object|Promise}
-     */
-    getCurrentUserSync() {
+    getCurrentUser() {
         return this.currentUser;
     }
 
     /**
      * Check if a user is logged in
-     *   (synchronous|asynchronous)
-     *
-     * @param  {Function|*} [callback] - optional, function(is)
-     * @return {Boolean|Promise}
      */
-    isLoggedIn(callback) {
-        if(!callback) {
-            return this.currentUser.hasOwnProperty('role');
-        }
-
-        return this.getCurrentUser(null)
-            .then(function(user) {
-                var is = user.hasOwnProperty('role');
-                safeCb(callback)(is);
-                return is;
-            });
+    isLoggedIn(): boolean {
+        return this.getCurrentUser().hasOwnProperty('role');
     }
 
     /**
@@ -199,11 +153,11 @@ export class AuthService {
             return this.currentUser.role === 'admin';
         }
 
-        return this.getCurrentUser().then(user => {
-            var is = user.role === 'admin';
-            safeCb(callback)(is);
-            return is;
-        });
+        const user = this.getCurrentUser();
+
+        const is = user.role === 'admin';
+        safeCb(callback)(is);
+        return Promise.resolve(is);
     }
 
     /**

@@ -1,4 +1,3 @@
-'use strict';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AuthHttp} from 'angular2-jwt';
@@ -6,11 +5,7 @@ import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class ProjectService {
-    static parameters = [HttpClient, AuthHttp];
-    constructor(http: HttpClient, authHttp) {
-        this.http = http;
-        this.authHttp = authHttp;
-    }
+    constructor(private readonly http: HttpClient, private readonly authHttp: AuthHttp) {}
 
     handleError(err) {
         throw err;
@@ -21,7 +16,7 @@ export class ProjectService {
             .toPromise()
             .catch(this.handleError);
     }
-    get(project: {id: 'string'}) {
+    get(project: {id: string}) {
         return this.http.get(`/api/projects/${project.id}`)
             .toPromise()
             .catch(this.handleError);

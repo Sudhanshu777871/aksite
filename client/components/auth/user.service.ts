@@ -6,56 +6,57 @@ import {AuthHttp} from 'angular2-jwt';
 // import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
 
-type UserType = {
+export interface User {
     // TODO: use Mongoose model
-    name: string;
-    email: string;
+    _id?: string;
+    id?: string;
+    name?: string;
+    email?: string;
+    password?: string;
+    role?: string;
 }
 
 @Injectable()
 export class UserService {
-    static parameters = [AuthHttp];
-    constructor(authHttp) {
-        this.authHttp = authHttp;
-    }
-
-    handleError(err) {
-        throw err;
-    }
+    constructor(private readonly authHttp: AuthHttp) {}
 
     query() {
         return this.authHttp.get('/api/users/')
             .toPromise()
             .then(extractData)
-            .catch(this.handleError);
+            .catch(handleError);
     }
-    get(user = {id: 'me'}) {
+    get(user: User = {id: 'me'}): Promise<User&{token: string}> {
         return this.authHttp.get(`/api/users/${user.id}`)
             .toPromise()
             .then(extractData)
-            .catch(this.handleError);
+            .catch(handleError) as Promise<User&{token: string}>;
     }
-    create(user: UserType) {
+    create(user: User): Promise<{token: string}> {
         return this.authHttp.post('/api/users/', user)
             .toPromise()
             .then(extractData)
-            .catch(this.handleError);
+            .catch(handleError) as Promise<{token: string}>;
     }
-    changePassword(user, oldPassword, newPassword) {
+    changePassword(user: User, oldPassword: string, newPassword: string): Promise<User> {
         return this.authHttp.put(`/api/users/${user.id}/password`, {oldPassword, newPassword})
             .toPromise()
             .then(extractData)
-            .catch(this.handleError);
+            .catch(handleError) as Promise<User>;
     }
-    remove(user) {
+    remove(user: User): Promise<User> {
         return this.authHttp.delete(`/api/users/${user.id}`)
             .toPromise()
             .then(extractData)
-            .catch(this.handleError);
+            .catch(handleError) as Promise<User>;
     }
 }
 
-function extractData(res: Response) {
+function handleError(err) {
+    throw err;
+}
+
+function extractData(res: Response): {} {
     if(!res.text()) return {};
-    return res.json() || { };
+    return res.json() || {};
 }

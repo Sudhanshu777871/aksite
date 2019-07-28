@@ -4,14 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { MatSlideToggleModule, MatSidenavModule, MatIconModule, MatButtonModule, MatListModule } from '@angular/material';
 import { ProgressbarModule } from 'ngx-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
-import { FileUploadModule } from 'ng2-file-upload';
+// import { FileUploadModule } from 'ng2-file-upload';
 
 import { AdminComponent } from './admin.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BlogManagerComponent } from './blog/blogManager.component';
 import { PostEditorComponent } from './postEditor/postEditor.component';
 import { UserManagerComponent } from './userManager/userManager.component';
-import { UserEditorComponent } from "./userEditor/userEditor.component";
+import { UserEditorComponent } from './userEditor/userEditor.component';
 
 //import '!raw!sass!./admin.scss
 
@@ -64,7 +64,7 @@ const routes: Routes = [{
         MatButtonModule,
         MatListModule,
         ProgressbarModule.forRoot(),
-        FileUploadModule,
+        // FileUploadModule,
         RouterModule.forChild(routes),
     ],
     declarations: [

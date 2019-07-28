@@ -1,6 +1,8 @@
 /**
  * Server Utility Functions
  */
+
+
 'use strict';
 import _ from 'lodash';
 import Promise from 'bluebird';
@@ -12,9 +14,14 @@ import gm from 'gm';
 import Grid from 'gridfs-stream';
 import BufferStream from './components/BufferStream';
 
-var conn = mongoose.createConnection(config.mongo.uri);
+import {mongooseConnectionPromise} from './mongoose.connection';
+
 Grid.mongo = mongoose.mongo;
-const gfs = new Grid(conn.db);
+let gfs;
+
+mongooseConnectionPromise.then(() => {
+    gfs = new Grid(mongoose.connection.db);
+});
 
 /**
  * Creates a thumbnail in GridFS based on the ID passed
@@ -29,7 +36,7 @@ const gfs = new Grid(conn.db);
  */
 export function createThumbnail(id, options = {}) {
     return new Promise((resolve, reject) => {
-        var thumbnail = {};
+        const thumbnail = {};
 
         _.defaults(options, {
             height: 200,
@@ -37,7 +44,7 @@ export function createThumbnail(id, options = {}) {
             quality: 90
         });
 
-        var stream = gfs.createReadStream({_id: id});
+        const stream = gfs.createReadStream({_id: id});
         stream.on('error', reject);
         gm(stream, id)
             .size({bufferStream: true}, function(err, size) {
@@ -57,16 +64,16 @@ export function createThumbnail(id, options = {}) {
                 this.stream(function(err, outStream) {
                     if(err) return reject(err);
                     else {
-                        var writestream = gfs.createWriteStream({
+                        const writeStream = gfs.createWriteStream({
                             filename: options.filename
                         });
-                        writestream.on('close', function(thumbnailFile) {
+                        writeStream.on('close', function(thumbnailFile) {
                             thumbnail.file = thumbnailFile;
                             thumbnail.id = thumbnailFile._id;
 
-                            return resolve(thumbnail);
+                            resolve(thumbnail);
                         });
-                        outStream.pipe(writestream);
+                        outStream.pipe(writeStream);
                     }
                 });
             });
@@ -83,7 +90,7 @@ export function createThumbnail(id, options = {}) {
  */
 export function saveFileFromUrl(url, options = {}) {
     return new Promise((resolve, reject) => {
-        var writestream = gfs.createWriteStream({
+        const writestream = gfs.createWriteStream({
             filename: options.filename,
             contentType: options.contentType
         });
@@ -105,7 +112,7 @@ export function saveFileFromUrl(url, options = {}) {
  */
 export function saveFileFromFs(uri, options = {}) {
     return new Promise((resolve, reject) => {
-        var writestream = gfs.createWriteStream({
+        const writestream = gfs.createWriteStream({
             filename: options.filename,
             contentType: options.contentType
         });

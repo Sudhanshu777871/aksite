@@ -56,7 +56,7 @@
 
 import './app.scss';
 
-import './polyfills';
+// import './polyfills';
 
 import 'hammerjs';
 

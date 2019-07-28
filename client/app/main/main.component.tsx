@@ -34,7 +34,7 @@ import { CSSGrid, measureItems, makeResponsive, layout } from 'react-stonecutter
 
 let texts = ['dashed-stroke-text', 'gradient-text', 'pattern-text', /*'diag-striped-text',*/ 'bg-img-text'];
 let usedTexts = [];
-let currentText = _.sample(texts);  // Load first random text
+let currentText = _.sample(texts); // Load first random text
 let vendorImages = [{
     href: 'https://angular.io/',
     src: 'assets/images/angular.svg',
@@ -135,6 +135,7 @@ export class MainComponent implements OnInit {
     static parameters = [SocketService];
     constructor(socketService: SocketService) {
         console.log(socketService);
+        socketService.primus.emit('asdf');
         vendorImages = _.shuffle(vendorImages);
     }
 

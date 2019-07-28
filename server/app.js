@@ -1,6 +1,7 @@
 /**
  * Main application file
  */
+
 'use strict';
 
 // Set default node environment to development
@@ -8,7 +9,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development'; // eslint-disable-
 
 import express from 'express';
 import mongoose from 'mongoose';
-mongoose.Promise = require('bluebird');
+// mongoose.Promise = require('bluebird');
 import config from './config/environment';
 import Grid from 'gridfs-stream';
 import raven from 'raven';
@@ -17,13 +18,14 @@ import initWebSocketServer from './config/websockets';
 import expressConfig from './config/express';
 import registerRoutes from './routes';
 import { seed } from './config/seed';
+import {mongooseConnectionPromise} from './mongoose.connection';
 
 if(config.sentry.dsn) {
     raven.config(config.sentry.dsn).install();
 }
 
 // Connect to database
-mongoose.connect(config.mongo.uri, config.mongo.options);
+// export const mongooseConnectionPromise = mongoose.connect(config.mongo.uri, config.mongo.options);
 mongoose.connection.on('error', err => {
     console.error(`MongoDB connection error: ${err}`);
     process.exit(-1); // eslint-disable-line no-process-exit
@@ -36,37 +38,40 @@ const wsInitPromise = initWebSocketServer(server);
 expressConfig(app);
 registerRoutes(app);
 
-let mongoPromise = new Promise((resolve, reject) => {
-    Grid.mongo = mongoose.mongo;
-    const conn = mongoose.createConnection(config.mongo.uri);
-
-    conn.once('open', err => {
-        if(err) return reject(err);
-
-        resolve();
-    });
-});
+// let mongoPromise = mongooseConnectionPromise.then((conn) => {
+//     Grid.mongo = mongoose.mongo;
+//     // const conn = mongoose.createConnection(config.mongo.uri);
+//
+//     // conn.once('open', err => {
+//     //     if(err) return reject(err);
+//     //
+//     //     resolve();
+//     // });
+// });
 
 // Start server
 function startServer() {
-    app.angularFullstack = server.listen(config.port, config.ip, function() {
+    console.log(config.ip);
+    app.angularFullstack = app.listen(config.port, config.ip, (...args) => {
+        console.log(args);
         console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
     });
 }
 
-Promise.all([wsInitPromise, mongoPromise])
+Promise.all([wsInitPromise, mongooseConnectionPromise])
     .then(() => {
+        Grid.mongo = mongoose.mongo;
         // Populate DB with sample data
         if(config.seedDB) {
             // wait for DB seed
-            seed()
+            return seed()
                 .then(startServer);
         } else {
-            startServer();
+            return startServer();
         }
     })
     .catch(err => {
-        console.log('Server failed to start due to error: %s', err);
+        console.log('Server failed to start due to error:', err);
     });
 
 // Expose app

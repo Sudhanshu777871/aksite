@@ -1,20 +1,8 @@
-'use strict';
 /*eslint no-process-env:0*/
 
-var path = require('path');
-var _ = require('lodash');
+import path from 'path';
+import _ from 'lodash';
 import shared from './shared';
-
-let localEnv;
-try {
-    localEnv = require('../local.env').default;
-} catch(e) {
-    localEnv = {};
-}
-
-_.forEach(localEnv, (value, key) => {
-    process.env[key] = value;
-});
 
 //function requiredProcessEnv(name) {
 //    if(!process.env[name]) {
@@ -54,9 +42,7 @@ var all = {
     // MongoDB connection options
     mongo: {
         options: {
-            db: {
-                safe: true
-            }
+            safe: true,
         }
     },
 
