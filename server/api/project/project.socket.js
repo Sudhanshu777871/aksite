@@ -2,8 +2,6 @@
  * Broadcast updates to client when the model changes
  */
 
-'use strict';
-
 var Project = require('./project.model');
 
 exports.register = function(socket) {

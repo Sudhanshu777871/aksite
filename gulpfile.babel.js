@@ -1,4 +1,3 @@
-'use strict';
 /*eslint-env node*/
 /*eslint no-process-env:0, no-process-exit:0*/
 import _ from 'lodash';

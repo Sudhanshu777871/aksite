@@ -1,4 +1,3 @@
-'use strict';
 import {Router} from 'express';
 const auth = require('../../auth/auth.service');
 const controller = require('./upload.controller');

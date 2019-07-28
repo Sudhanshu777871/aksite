@@ -1,4 +1,3 @@
-'use strict';
 import { Component } from '@angular/core';
 import { AuthHttp } from 'angular2-jwt';
 import { Response } from '@angular/http';

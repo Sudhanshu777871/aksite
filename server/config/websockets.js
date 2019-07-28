@@ -1,7 +1,7 @@
 /**
  * WebSocket configuration
  */
-'use strict';
+
 import path from 'path';
 import Primus from 'primus';
 import primusEmit from 'primus-emit';

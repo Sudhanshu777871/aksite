@@ -2,7 +2,6 @@
  * Express configuration
  */
 
-'use strict';
 import express from 'express';
 import favicon from 'serve-favicon';
 import morgan from 'morgan';

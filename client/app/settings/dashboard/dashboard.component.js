@@ -1,4 +1,3 @@
-'use strict';
 import { Component } from '@angular/core';
 import { AuthService } from '../../../components/auth/auth.service';
 

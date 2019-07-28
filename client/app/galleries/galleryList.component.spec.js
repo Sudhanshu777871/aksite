@@ -1,5 +1,3 @@
-'use strict';
-
 describe('Controller: GalleriesController', function() {
 
     var GalleriesController,

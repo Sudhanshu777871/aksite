@@ -1,7 +1,7 @@
 /**
  * Main application routes
  */
-'use strict';
+
 import errors from './components/errors';
 import path from 'path';
 

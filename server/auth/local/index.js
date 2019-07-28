@@ -1,4 +1,3 @@
-'use strict';
 import { Router } from 'express';
 import passport from 'passport';
 import * as auth from '../auth.service';

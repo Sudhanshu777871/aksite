@@ -1,5 +1,3 @@
-'use strict';
-
 describe('Controller: PostEditorController', function() {
 
     var PostEditorController,

@@ -1,5 +1,3 @@
-'use strict';
-
 describe('Main View', function() {
     var page;
 

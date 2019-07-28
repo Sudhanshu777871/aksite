@@ -1,4 +1,3 @@
-'use strict';
 /*eslint-env mocha*/
 
 var User = require('./user.model').default;

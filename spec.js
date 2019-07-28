@@ -1,4 +1,3 @@
-'use strict';
 /*eslint-env node*/
 
 Error.stackTraceLimit = Infinity;
@@ -6,7 +5,7 @@ Error.stackTraceLimit = Infinity;
 import './client/app/polyfills';
 
 // require('core-js/client/shim');
-import 'reflect-metadata';
+// import 'reflect-metadata';
 
 // require('ts-helpers');
 

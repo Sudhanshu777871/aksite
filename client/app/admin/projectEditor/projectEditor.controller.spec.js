@@ -1,5 +1,3 @@
-'use strict';
-
 describe('Controller: ProjectEditorController', function() {
 
     var ProjectEditorController,

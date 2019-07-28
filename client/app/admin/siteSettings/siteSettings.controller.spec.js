@@ -1,5 +1,3 @@
-'use strict';
-
 describe('Controller: SiteSettingsController', function() {
 
     var SiteSettingsController,

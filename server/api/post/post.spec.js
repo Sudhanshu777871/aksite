@@ -1,4 +1,3 @@
-'use strict';
 /*eslint-env mocha*/
 
 var app = require('../../app').default;

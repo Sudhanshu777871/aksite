@@ -1,5 +1,3 @@
-'use strict';
-
 export default class FileManagerController {
     /*@ngInject*/
     constructor($http) {

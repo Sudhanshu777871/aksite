@@ -1,4 +1,3 @@
-'use strict';
 import { noop } from 'lodash-es';
 
 export class SocketServiceMock {

@@ -1,4 +1,3 @@
-'use strict';
 import {wrapperLodash as _, mixin} from 'lodash-es';
 import {
     forEach

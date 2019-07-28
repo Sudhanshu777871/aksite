@@ -1,5 +1,3 @@
-'use strict';
-
 describe('Controller: UserEditorController', function() {
 
     var UserEditorController,

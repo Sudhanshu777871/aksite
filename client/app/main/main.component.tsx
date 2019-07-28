@@ -1,4 +1,3 @@
-'use strict';
 import {
     wrapperLodash as _,
     sample,

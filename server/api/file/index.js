@@ -1,5 +1,3 @@
-'use strict';
-
 import * as controller from './file.controller';
 import * as auth from '../../auth/auth.service';
 import {Router} from 'express';

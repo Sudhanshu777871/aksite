@@ -1,4 +1,3 @@
-'use strict';
 /*eslint-env mocha*/
 import app from './';
 import mongoose from 'mongoose';

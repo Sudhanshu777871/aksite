@@ -2,8 +2,6 @@
  * Broadcast updates to client when the model changes
  */
 
-'use strict';
-
 var Post = require('./post.model');
 
 exports.register = function(socket) {

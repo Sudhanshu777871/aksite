@@ -1,5 +1,3 @@
-'use strict';
-
 describe('Component: BlogComponent', function() {
     // var BlogController,
     //     scope,

@@ -1,5 +1,3 @@
-'use strict';
-
 // class RavenExceptionHandler {
 //     call(err) {
 //         Raven.captureException(err.originalException);

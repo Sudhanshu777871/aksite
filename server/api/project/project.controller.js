@@ -1,5 +1,3 @@
-'use strict';
-
 import * as util from '../../util';
 import config from '../../config/environment';
 import _ from 'lodash';

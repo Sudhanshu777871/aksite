@@ -1,5 +1,3 @@
-'use strict';
-
 import _ from 'lodash';
 import * as util from '../../util';
 import {signToken} from '../../auth/auth.service';

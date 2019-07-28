@@ -1,4 +1,3 @@
-'use strict';
 /*eslint-env mocha*/
 
 import Post from './post.model';

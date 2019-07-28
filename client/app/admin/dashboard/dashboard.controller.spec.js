@@ -1,5 +1,3 @@
-'use strict';
-
 describe('Controller: DashboardController', function() {
 
     var DashboardCtrl,

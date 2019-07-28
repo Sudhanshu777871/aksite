@@ -1,5 +1,3 @@
-'use strict';
-
 describe('Controller: FileManagerController', function() {
 
     var FileManagerController,

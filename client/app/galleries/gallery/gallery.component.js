@@ -1,4 +1,3 @@
-'use strict';
 import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import {
     wrapperLodash as _,

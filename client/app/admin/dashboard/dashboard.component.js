@@ -1,6 +1,5 @@
-'use strict';
 import { Component } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Response } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt';
 
 import _ from 'lodash-es';
@@ -10,7 +9,7 @@ const d3 = {};
 const nv = {};
 import React from 'react';
 import ReactDOM from 'react-dom';
-import moment from 'moment';
+// import moment from 'moment';
 
 const apiItems = [{
     path: 'upload', title: 'Uploads'

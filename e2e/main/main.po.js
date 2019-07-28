@@ -3,8 +3,6 @@
  * https://docs.google.com/presentation/d/1B6manhG0zEXkC-H-tPo2vwU06JhL8w9-XCF9oehXzAQ
  */
 
-'use strict';
-
 var MainPage = function() {
     this.poweredByEl = element(by.css('.vendor-section'));
     this.h1El = this.poweredByEl.element(by.css('h1'));

@@ -1,4 +1,3 @@
-'use strict';
 import { TestBed } from '@angular/core/testing';
 import { SocketService } from '../../components/socket/socket.service';
 import { SocketServiceMock } from '../../components/socket/socket.mock';

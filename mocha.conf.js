@@ -1,4 +1,3 @@
-'use strict';
 /*eslint-env node*/
 
 // Register the Babel require hook

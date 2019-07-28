@@ -1,4 +1,3 @@
-'use strict';
 import { Component } from '@angular/core';
 import { StateService } from 'ui-router-ng2';
 import { UserService } from '../../components/auth/user.service';

@@ -2,8 +2,6 @@
  * Broadcast updates to client when the model changes
  */
 
-'use strict';
-
 var File = require('./file.model');
 
 export function register(socket) {

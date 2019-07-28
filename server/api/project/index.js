@@ -1,4 +1,3 @@
-'use strict';
 import {Router} from 'express';
 var controller = require('./project.controller');
 var auth = require('../../auth/auth.service');

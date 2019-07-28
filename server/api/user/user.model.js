@@ -1,4 +1,3 @@
-'use strict';
 /*eslint no-invalid-this:0*/
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;

@@ -1,5 +1,3 @@
-'use strict';
-
 export default class SiteSettings {
     /*@ngInject*/
     constructor($http) {

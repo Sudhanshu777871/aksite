@@ -2,7 +2,6 @@
  * Populate DB with sample data on server start
  * to disable, edit config/environment/index.js, and set `seedDB: false`
  */
-'use strict';
 import _ from 'lodash';
 import Promise from 'bluebird';
 import Thing from '../api/thing/thing.model';

@@ -1,4 +1,3 @@
-'use strict';
 import {Router} from 'express';
 const controller = require('./photo.controller');
 const auth = require('../../auth/auth.service');
