@@ -1,4 +1,4 @@
-describe('Controller: FileManagerController', function() {
+describe('Controller: FileManagerComponent', function() {
 
     var FileManagerController,
         scope,

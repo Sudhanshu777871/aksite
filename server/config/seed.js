@@ -3,7 +3,6 @@
  * to disable, edit config/environment/index.js, and set `seedDB: false`
  */
 import _ from 'lodash';
-import Promise from 'bluebird';
 import Thing from '../api/thing/thing.model';
 import User from '../api/user/user.model';
 import Post from '../api/post/post.model';

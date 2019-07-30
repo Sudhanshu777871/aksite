@@ -2,7 +2,7 @@
  * Main application routes
  */
 
-import errors from './components/errors';
+import {errors} from './components/errors';
 import path from 'path';
 
 export default function(app) {
@@ -20,11 +20,13 @@ export default function(app) {
 
     // All undefined asset or api routes should return a 404
     app.route('/:url(api|auth|components|app|assets)/*')
-        .get(errors[404]);
+        .get(errors.get(404));
+
+    const appPath = app.get('appPath');
 
     // All other routes should redirect to the index.html
-    app.route('/*')
+    app.route('/')
         .get(function(req, res) {
-            res.sendFile(path.resolve(`${app.get('appPath')}/index.html`));
+            res.sendFile(path.resolve(`${appPath}/index.html`));
         });
 }

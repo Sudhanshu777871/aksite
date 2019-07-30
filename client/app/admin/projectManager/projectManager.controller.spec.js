@@ -1,4 +1,4 @@
-describe('Controller: ProjectManagerController', function() {
+describe('Controller: ProjectManagerComponent', function() {
 
     var ProjectManagerController,
         scope,

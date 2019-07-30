@@ -18,7 +18,6 @@ export class SettingsComponent {
         link: 'profile'
     }];
 
-    static parameters = [AuthService];
     // heightStyle: CSSStyleDeclaration;
     currentUser: User;
     constructor(private readonly authService: AuthService) {

@@ -27,7 +27,11 @@ function onConnect(spark) {
 
     // When the client emits 'info', this listens and executes
     spark.on('info', data => {
-        spark.log(JSON.stringify(data, null, 2));
+        console.log('info', JSON.stringify(data));
+    });
+
+    spark.on('data', data => {
+        console.info('data', data);
     });
 
     // Register the spark with each WebSocket event handler
@@ -48,10 +52,8 @@ export function broadcast(message) {
  * @param server
  * @return {Promise}
  */
-export default function initWebSocketServer(server) {
-    primus = new Primus(server, {
-        // transformer: 'uws',
-    });
+export function initWebSocketServer(server) {
+    primus = new Primus(server, {});
     primus.plugin('emit', primusEmit);
 
     primus.on('connection', onConnect);

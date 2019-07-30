@@ -21,7 +21,7 @@ export class GalleryService {
             .then(extractData)
             .catch(this.handleError);
     }
-    get(gallery: {id: 'string'}) {
+    get(gallery: {id: string}) {
         return this.http.get(`/api/gallery/${gallery.id}`)
             .toPromise()
             .then(extractData)
@@ -33,7 +33,7 @@ export class GalleryService {
             .then(extractData)
             .catch(this.handleError);
     }
-    remove(gallery: {id: 'string'}) {
+    remove(gallery: {id: string}) {
         return this.authHttp.delete(`/api/gallery/${gallery.id}`)
             .toPromise()
             .then(extractData)

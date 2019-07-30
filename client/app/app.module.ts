@@ -28,6 +28,7 @@ import { ResumeModule } from './resume/resume.module';
 import { SettingsModule } from './settings/settings.module';
 
 import constants from './app.constants';
+// @ts-ignore
 import Raven from 'raven-js';
 
 if(process.env.NODE_ENV === 'production') {
@@ -37,8 +38,8 @@ if(process.env.NODE_ENV === 'production') {
 }
 
 class RavenErrorHandler implements ErrorHandler {
-    handleError(err:any) : void {
-        Raven.captureException(err.originalError);
+    handleError(err: Error) : void {
+        Raven.captureException((err as any).originalError);
     }
 }
 
@@ -63,7 +64,7 @@ const appRoutes: Routes = [
         redirectTo: '/home',
         pathMatch: 'full',
     },
-    //{ path: '**', component: PageNotFoundComponent }
+    // { path: '**', component: AppComponent }
 ];
 
 @NgModule({

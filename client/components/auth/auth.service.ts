@@ -14,7 +14,6 @@ mixin(_, {
     isFunction,
     noop
 });
-import Promise from 'bluebird';
 
 /**
  * Return a callback or noop function
@@ -26,9 +25,16 @@ function safeCb(cb) {
     return _.isFunction(cb) ? cb : noop;
 }
 
+interface Credentials {
+    email: string;
+    password: string;
+}
+
 @Injectable()
 export class AuthService {
-    currentUser: User = {};
+    currentUser: User = {
+        imageId: '',
+    };
 
     constructor(
         private readonly http: Http,
@@ -48,7 +54,7 @@ export class AuthService {
     /**
      * Authenticate user and save token
      */
-    login({email, password}: User, callback?: (error, user) => void): Promise {
+    login({email, password}: Credentials, callback?: (error, user) => void): Promise<User> {
         return this.http.post('/auth/local', {
             email,
             password
@@ -80,7 +86,9 @@ export class AuthService {
         // this.$cookies.remove('token');
         localStorage.removeItem('user');
         localStorage.removeItem('id_token');
-        this.currentUser = {};
+        this.currentUser = {
+            imageId: '',
+        };
         return Promise.resolve();
     }
 
@@ -108,7 +116,7 @@ export class AuthService {
     }
 
     changePassword(oldPassword: string, newPassword: string, callback?: (error, user) => void): Promise<void> {
-        return this.userService.changePassword({id: this.currentUser._id}, oldPassword, newPassword)
+        return this.userService.changePassword(this.currentUser._id, oldPassword, newPassword)
             .then(() => safeCb(callback)(null))
             .catch(err => safeCb(callback)(err));
     }
@@ -143,21 +151,9 @@ export class AuthService {
 
     /**
      * Check if a user is an admin
-     *   (synchronous|asynchronous)
-     *
-     * @param  {Function|*} callback - optional, function(is)
-     * @return {Boolean|Promise}
      */
-    isAdmin(callback) {
-        if(arguments.length === 0) {
-            return this.currentUser.role === 'admin';
-        }
-
-        const user = this.getCurrentUser();
-
-        const is = user.role === 'admin';
-        safeCb(callback)(is);
-        return Promise.resolve(is);
+    isAdmin() {
+        return this.currentUser.role === 'admin';
     }
 
     /**

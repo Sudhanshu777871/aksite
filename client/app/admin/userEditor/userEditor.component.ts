@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { AuthHttp } from 'angular2-jwt';
 import { AuthService } from '../../../components/auth/auth.service';
 import { Response } from '@angular/http';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
+import {User} from "../../../components/auth/user.service";
 
 @Component({
     selector: 'user-editor',
@@ -12,13 +13,16 @@ import { ActivatedRoute } from '@angular/router';
 export class UserEditorComponent {
     loadingUser = true;
     submitted = false;
+    id: string;
+    currentUser: User;
+    user: User;
+    filename: string;
+    fileToUpload?: File;
 
-    static parameters = [AuthHttp, AuthService, ActivatedRoute];
-    constructor(http: AuthHttp, authService: AuthService, route: ActivatedRoute) {
-        this.http = http;
-        this.authService = authService;
-        this.route = route;
-    }
+    constructor(private readonly http: AuthHttp,
+                private readonly authService: AuthService,
+                private readonly route: ActivatedRoute,
+                private readonly router: Router) {}
 
     async ngOnInit() {
         this.id = await new Promise(resolve => this.route.params.subscribe(params => resolve(params.id)));
@@ -28,9 +32,9 @@ export class UserEditorComponent {
         if(!this.id) {
             this.user = {
                 name: 'New User',
-                email: 'test@example.com'
+                email: 'test@example.com',
+                imageId: '',
             };
-            this.loadingUser = false;
         } else {
             await this.http.get(`/api/users/${this.id}`)
                 .toPromise()
@@ -39,13 +43,13 @@ export class UserEditorComponent {
                     console.log(data);
                     this.user = data;
                     this.filename = this.user.imageId;
-                    this.loadingUser = false;
                 })
                 .catch(res => {
-                    this.error = res;
-                    this.loadingUser = false;
+                    console.error(res);
                 });
         }
+
+        this.loadingUser = false;
     }
 
     onFileSelect($files) {
@@ -66,7 +70,7 @@ export class UserEditorComponent {
 
         this.submitted = true;
 
-        let options = {
+        let options: any = {
             url: `api/users/${this.user._id}`,
             method: 'PUT',
             fields: this.user
@@ -80,37 +84,37 @@ export class UserEditorComponent {
             };
         }
 
-        this.upload = this.Upload.upload(options);
-
-        this.upload
-            .progress(evt => {
-                this.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
-            })
-            .then(({data, status}) => {
-                this.progress = undefined;
-                console.log(status);
-                console.log(data);
-                this.$state.go('admin.users');
-            })
-            .catch(({data, status}) => {
-                this.progress = undefined;
-                console.log(status);
-                console.log(data);
-            });
-
-        this.upload
-            .xhr(xhr => {
-                this.abort = function() {
-                    xhr.abort();
-                };
-            });
+        // this.upload = this.Upload.upload(options);
+        //
+        // this.upload
+        //     .progress(evt => {
+        //         this.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
+        //     })
+        //     .then(({data, status}) => {
+        //         this.progress = undefined;
+        //         console.log(status);
+        //         console.log(data);
+        //         this.$state.go('admin.users');
+        //     })
+        //     .catch(({data, status}) => {
+        //         this.progress = undefined;
+        //         console.log(status);
+        //         console.log(data);
+        //     });
+        //
+        // this.upload
+        //     .xhr(xhr => {
+        //         this.abort = function() {
+        //             xhr.abort();
+        //         };
+        //     });
     }
 
     cancel() {
-        if(this.upload) {
-            this.upload.abort();
-        }
-        this.$state.go('admin.users');
+        // if(this.upload) {
+        //     this.upload.abort();
+        // }
+        this.router.navigate(['/admin/users']);
     }
 }
 

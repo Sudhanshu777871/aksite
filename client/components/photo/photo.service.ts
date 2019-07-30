@@ -21,7 +21,7 @@ export class PhotoService {
             .then(extractData)
             .catch(this.handleError);
     }
-    get(photo: {id: 'string'}) {
+    get(photo: {id: string}) {
         return this.http.get(`/api/photos/${photo.id}`)
             .toPromise()
             .then(extractData)
@@ -33,7 +33,7 @@ export class PhotoService {
             .then(extractData)
             .catch(this.handleError);
     }
-    remove(photo: {id: 'string'}) {
+    remove(photo: {id: string}) {
         return this.authHttp.delete(`/api/photos/${photo.id}`)
             .toPromise()
             .then(extractData)

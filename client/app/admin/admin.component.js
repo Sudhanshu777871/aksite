@@ -9,7 +9,7 @@ export class AdminComponent {
     sections = [{
         title: 'Home',
         icon: 'fa-home',
-        link: '',
+        link: '/admin',
     }, {
         title: 'Users',
         icon: 'fa-user',

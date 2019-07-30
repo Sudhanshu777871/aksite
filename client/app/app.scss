@@ -47,7 +47,6 @@ $theme: mat-light-theme($primary, $accent, $warn);
 @import 'settings/profile/profile';
 @import 'settings/settings';
 @import 'user/user';
-@import '../components/navbar/navbar';
 @import '../components/preloader/preloader';
 @import '../components/timeline/timeline';
 @import '../assets/scss/whiteframe';

@@ -10,12 +10,34 @@ import {
 mixin(_, {
     forEach
 });
+// @ts-ignore
 import moment from 'moment';
 import { Converter } from 'showdown';
 const converter = new Converter();
 
+// @ts-ignore
 import template from './blog.html';
+// @ts-ignore
 import blogCss from './blog.scss';
+
+interface Page {
+    imageId: string;
+    _id: string;
+    title: string;
+    hidden: string;
+    author: {
+        id: string;
+        name: string;
+        imageId: string;
+    };
+    date: string;
+}
+
+interface BlogData {
+    // pages
+    numItems: number;
+    items
+}
 
 @Component({
     selector: 'blog',
@@ -29,16 +51,12 @@ export class BlogComponent {
     pagesize = 10;
     collectionSize = 0;
     posts = [];
+    // pages;
 
-    static parameters = [HttpClient, Router];
-    constructor(http: HttpClient, router: Router) {
-        this.Http = http;
-        this.router = router;
-        this.$stateParams = {};
-        this.$state = {};
-
-        this.currentPage = parseInt(this.$stateParams.page, 10) || 1;
-        this.pagesize = this.$stateParams.pagesize || 10;
+    constructor(private readonly http: HttpClient,
+                private readonly router: Router) {
+        this.currentPage = /*parseInt(this.$stateParams.page, 10) || */1;
+        this.pagesize = /*this.$stateParams.pagesize || */10;
     }
 
     ngOnInit() {
@@ -54,16 +72,16 @@ export class BlogComponent {
     }
 
     getPageData() {
-        return this.Http.get(`api/posts?page=${this.currentPage}&pagesize=${this.pagesize}`)
+        return this.http.get(`api/posts?page=${this.currentPage}&pagesize=${this.pagesize}`)
             .toPromise()
-            .then(data => {
-                this.pages = data.pages;
+            .then((data: BlogData) => {
+                // this.pages = data.pages;
                 this.collectionSize = data.numItems;
                 this.posts = data.items;
-                _.forEach(this.posts, post => {
+                for(const post of this.posts) {
                     post.date = moment(post.date).format('LL');
                     post.subheader = converter.makeHtml(post.subheader);
-                });
+                }
                 this.noItems = data.items.length <= 0;
                 document.body.scrollTop = document.documentElement.scrollTop = 0;
             })

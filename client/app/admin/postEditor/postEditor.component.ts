@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { Response } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { AuthService } from '../../../components/auth/auth.service';
 
 import {
@@ -15,7 +15,28 @@ mixin(_, {
     trim
 });
 import { Converter } from 'showdown';
+import {User} from "../../../components/auth/user.service";
 const converter = new Converter({tables: true});
+
+interface AuthorInfo {
+    name: string;
+    id: string;
+    imageId: string;
+    smallImageId: string;
+}
+
+interface Post {
+    _id: string;
+    title: string;
+    subheader: string;
+    alias: string;
+    hidden: boolean;
+    author: AuthorInfo;
+    date: Date;
+    imageId: string;
+    content: string;
+    categories: string[];
+}
 
 @Component({
     selector: 'post-editor',
@@ -26,15 +47,19 @@ const converter = new Converter({tables: true});
 export class PostEditorComponent {
     loadingPost = true;
     submitted = false;
-    post = {author: {}};
+    post: Post;
+    categories = '';
+    newPost: boolean;
+    currentUser: User;
+    id: string;
+    filename?: string;
+    fileToUpload?: File;
 
-    static parameters = [AuthHttp, ActivatedRoute, AuthService/*, FileUploader*/];
-    constructor(authHttp: AuthHttp, route: ActivatedRoute, authService: AuthService/*, fileUploader: FileUploader*/) {
-        this.AuthHttp = authHttp;
-        this.route = route;
-        this.AuthService = authService;
-        // this.fileUploadService = fileUploader;
-    }
+    constructor(private readonly authHttp: AuthHttp,
+                private readonly route: ActivatedRoute,
+                private readonly router: Router,
+                private readonly authService: AuthService
+                /*, fileUploader: FileUploader*/) {}
 
     async ngOnInit() {
         this.id = await new Promise(resolve => {
@@ -43,10 +68,11 @@ export class PostEditorComponent {
             });
         });
 
-        this.currentUser = await this.AuthService.getCurrentUser();
+        this.currentUser = await this.authService.getCurrentUser();
 
         if(!this.id || this.id === 'new') {
             this.post = {
+                _id: '',
                 title: 'Untitled Post',
                 subheader: undefined,
                 alias: undefined,
@@ -65,7 +91,7 @@ export class PostEditorComponent {
             this.loadingPost = false;
             this.newPost = true;
         } else {
-            this.AuthHttp.get(`/api/posts/${this.id}`)
+            await this.authHttp.get(`/api/posts/${this.id}`)
                 .toPromise()
                 .then(function(res: Response) {
                     if(!res.text()) return {};
@@ -74,19 +100,18 @@ export class PostEditorComponent {
                 .then(data => {
                     console.log(data);
                     this.post = data;
-                    this.post.categories = this.post.categories.join(', ');
+                    this.categories = this.post.categories.join(', ');
                     this.filename = this.post.imageId;
                     if(this.post.hidden !== true && this.post.hidden !== false) {
                         this.post.hidden = false;
                     }
                 })
-                .catch(({data, status}) => {
-                    this.error = {data, status};
-                })
-                .then(() => {
-                    this.loadingPost = true;
+                .catch(err => {
+                    console.error(err);
                 });
         }
+
+        this.loadingPost = false;
         // this.fileUploadService.setOptions({
         //     autoUpload: false
         // });
@@ -101,8 +126,8 @@ export class PostEditorComponent {
     }
 
     cancel() {
-        if(this.upload) this.upload.abort();
-        this.$state.go('admin.blog');
+        // if(this.upload) this.upload.abort();
+        this.router.navigate(['/admin/blog']);
     }
 
     onFileSelect($files) {
@@ -118,12 +143,10 @@ export class PostEditorComponent {
         }
     }
 
-    savePost(form) {
-        // if(!form.$valid) return;
-
+    savePost() {
         this.submitted = true;
 
-        var options = {
+        const options: any = {
             url: this.newPost ? 'api/posts/' : `api/posts/${this.post._id}`,
             method: this.newPost ? 'POST' : 'PUT',
             fields: {
@@ -139,7 +162,7 @@ export class PostEditorComponent {
             }
         };
 
-        this.AuthHttp.request(options.url, {
+        this.authHttp.request(options.url, {
             method: options.method,
             body: options.fields,
         })
@@ -165,29 +188,29 @@ export class PostEditorComponent {
             options.fields.categories = _.map(options.fields.categories.split(','), _.trim);
         }
 
-        this.upload = this.Upload.upload(options);
-
-        this.upload
-            .progress(evt => {
-                this.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
-            })
-            .then(({data, status}) => {
-                this.progress = undefined;
-                console.log(status);
-                console.log(data);
-                this.$state.go('admin.blog');
-            })
-            .catch(({data, status}) => {
-                this.progress = undefined;
-                console.log(status);
-                console.log(data);
-            });
-
-        this.upload
-            .xhr(xhr => {
-                this.abort = function() {
-                    xhr.abort();
-                };
-            });
+        // this.upload = this.Upload.upload(options);
+        //
+        // this.upload
+        //     .progress(evt => {
+        //         this.progress = (100.0 * (evt.loaded / evt.total)).toFixed(1);
+        //     })
+        //     .then(({data, status}) => {
+        //         this.progress = undefined;
+        //         console.log(status);
+        //         console.log(data);
+        //         this.$state.go('admin.blog');
+        //     })
+        //     .catch(({data, status}) => {
+        //         this.progress = undefined;
+        //         console.log(status);
+        //         console.log(data);
+        //     });
+        //
+        // this.upload
+        //     .xhr(xhr => {
+        //         this.abort = function() {
+        //             xhr.abort();
+        //         };
+        //     });
     }
 }

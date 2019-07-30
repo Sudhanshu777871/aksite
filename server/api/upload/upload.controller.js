@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import Promise from 'bluebird';
 import {
     handleError,
     createThumbnail,
@@ -238,7 +237,7 @@ export function clean(req, res) {
     ])
         .then(function([fileIds, photoIds, projectIds, userIds]) {
             let ids = _.difference(_.invokeMap(fileIds, 'toString'), _.invokeMap(_.union(photoIds, projectIds, userIds), 'toString'));
-            return Promise.map(ids, id => new Promise((resolve, reject) => {
+            return Promise.all(ids.map(id => new Promise((resolve, reject) => {
                 gfs.remove({_id: id}, function(err) {
                     if(err) return reject(err);
                     else {
@@ -246,7 +245,7 @@ export function clean(req, res) {
                         return resolve();
                     }
                 });
-            }));
+            })));
         })
         .catch(console.log);
 
@@ -261,7 +260,7 @@ export function clean(req, res) {
     ])
         .then(function([photosInGalleries, allPhotos]) {
             let ids = _.difference(_.invokeMap(_.map(allPhotos, '_id'), 'toString'), _.flatten(photosInGalleries));
-            return Promise.map(ids, id => Photo.findByIdAndRemove(id).exec()
+            return Promise.all(ids.map(id => Photo.findByIdAndRemove(id).exec()
                 .then(function(photo) {
                     console.log('Delete photo', photo._id);
                     return Promise.all([
@@ -269,7 +268,7 @@ export function clean(req, res) {
                         deleteFile({_id: photo.thumbnailId}),
                         deleteFile({_id: photo.sqThumbnailId})
                     ]);
-                }));
+                })));
         })
         .catch(console.log);
 

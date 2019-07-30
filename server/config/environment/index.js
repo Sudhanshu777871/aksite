@@ -42,7 +42,7 @@ var all = {
     // MongoDB connection options
     mongo: {
         options: {
-            safe: true,
+            // safe: true,
         }
     },
 

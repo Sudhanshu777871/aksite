@@ -21,7 +21,7 @@ mixin(_, {
     throttle,
 });
 
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { SocketService } from '../../components/socket/socket.service';
 
@@ -43,10 +43,6 @@ let vendorImages = [{
     src: 'assets/images/d3.svg',
     alt: 'd3'
 }, {
-    href: 'https://facebook.github.io/react/',
-    src: 'assets/images/react.svg',
-    alt: 'react'
-}, {
     href: 'https://karma-runner.github.io',
     src: 'assets/images/karma.png',
     alt: 'karma'
@@ -54,10 +50,6 @@ let vendorImages = [{
     href: 'https://lodash.com/',
     src: 'assets/images/lodash.svg',
     alt: 'lodash'
-}, {
-    href: 'http://gulpjs.com/',
-    src: 'assets/images/gulp.png',
-    alt: 'gulp'
 }, {
     href: 'https://webpack.github.io',
     src: 'assets/images/webpack.png',
@@ -86,10 +78,6 @@ let vendorImages = [{
     href: 'http://expressjs.com/',
     src: 'assets/images/express.png',
     alt: 'express'
-}, {
-    href: 'http://socket.io/',
-    src: 'assets/images/socketio.svg',
-    alt: 'socketio'
 }, {
     href: 'https://www.npmjs.com/',
     src: 'assets/images/npm.svg',
@@ -131,10 +119,11 @@ const Grid = makeResponsive(measureItems(CSSGrid, { measureImages: true }), {
     styles: [require('./main.scss')],
 })
 export class MainComponent implements OnInit {
-    static parameters = [SocketService];
-    constructor(socketService: SocketService) {
+    constructor(private readonly socketService: SocketService) {
         console.log(socketService);
-        socketService.primus.emit('asdf');
+        socketService.emit([{}]);
+        socketService.emit(['data', {}]);
+        socketService.emit(['chungus']);
         vendorImages = _.shuffle(vendorImages);
     }
 
@@ -142,24 +131,29 @@ export class MainComponent implements OnInit {
         let imageArray = [];
 
         let addImage = (image, i) => {
-            imageArray.push(<li className="grid-item" key={i}>
-                <a href={image.href}>
-                    <img src={image.src} alt={image.alt}/>
-                </a>
-            </li>);
+            imageArray.push(React.createElement('li', {
+                className: 'grid-item',
+                key: i
+            }, React.createElement('a', {
+                href: image.href
+            }, React.createElement('img', {
+                src: image.src,
+                alt: image.alt
+            }))));
+
             ReactDOM.render(
-                <Grid
-                    className="grid"
-                    component="ul"
-                    columnWidth={250}
-                    gutterWidth={5}
-                    gutterHeight={5}
-                    layout={layout.pinterest}
-                    duration={500}
-                    easing="ease-out">
-                    {imageArray}
-                </Grid>,
-                document.getElementById('stonecutter'));
+                React.createElement(Grid, {
+                    className: 'grid',
+                    component: 'ul',
+                    columnWidth: 250,
+                    gutterWidth: 5,
+                    gutterHeight: 5,
+                    layout: layout.pinterest,
+                    duration: 500,
+                    easing: 'ease-out'
+                }, imageArray),
+                document.getElementById('stonecutter')
+            );
         };
 
         let i = 0;

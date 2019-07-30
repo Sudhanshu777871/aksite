@@ -3,10 +3,8 @@
  */
 
 import _ from 'lodash';
-import Promise from 'bluebird';
 import request from 'request';
 import fs from 'fs';
-import config from './config/environment';
 import mongoose from 'mongoose';
 import gm from 'gm';
 import Grid from 'gridfs-stream';

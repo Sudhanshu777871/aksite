@@ -3,12 +3,10 @@ import { Response } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt';
 
 import _ from 'lodash-es';
-//import d3 from 'd3';
+// import d3 from 'd3';
 //import nv from 'nvd3';
-const d3 = {};
-const nv = {};
-import React from 'react';
-import ReactDOM from 'react-dom';
+// const d3 = {};
+// const nv = {};
 // import moment from 'moment';
 
 const apiItems = [{
@@ -30,28 +28,33 @@ const apiItems = [{
 const convertGAPItoD3 = _.partialRight(_.map, item => ({label: item[0], value: item[1]}));
 
 function addChart(chartNum, data, options = {}) {
-    nv.addGraph(function() {
-        var chart = nv.models.pieChart().x(d => d.label).y(d => d.value);
-
-        chart.showLegend(_.has(options, 'showLegend') ? options.showLegend : false);
-        chart.showLabels(_.has(options, 'showLabels') ? options.showLabels : true);
-        chart.labelThreshold(options.labelThreshold || .05);
-        chart.labelType(options.labelType || 'percent');   // key, value, percent
-
-        chart.donut(options.donut || false);
-        if(options.donut) chart.donutRatio(options.donutRatio || .35);
-
-        React.unmountComponentAtNode(document.getElementById(`chart${chartNum}`));
-        ReactDOM.render(<svg></svg>, document.getElementById(`chart${chartNum}`));
-
-        d3.select(`#chart${chartNum} svg`).datum(data).transition().duration(350).call(chart);
-
-        return chart;
-    });
+    // nv.addGraph(function() {
+    //     var chart = nv.models.pieChart().x(d => d.label).y(d => d.value);
+    //
+    //     chart.showLegend(_.has(options, 'showLegend') ? options.showLegend : false);
+    //     chart.showLabels(_.has(options, 'showLabels') ? options.showLabels : true);
+    //     chart.labelThreshold(options.labelThreshold || .05);
+    //     chart.labelType(options.labelType || 'percent');   // key, value, percent
+    //
+    //     chart.donut(options.donut || false);
+    //     if(options.donut) chart.donutRatio(options.donutRatio || .35);
+    //
+    //     const chartEl = document.getElementById(`chart${chartNum}`);
+    //     for(const child of chartEl.childNodes) {
+    //         chartEl.removeChild(child);
+    //     }
+    //
+    //     chartEl.appendChild(document.createElement('svg'));
+    //
+    //     d3.select(`#chart${chartNum} svg`).datum(data).transition().duration(350).call(chart);
+    //
+    //     return chart;
+    // });
 }
 
 function googleApiInit() {
     return new Promise(resolve => {
+        // @ts-ignore
         window.gapi.analytics.ready(resolve);
     });
 }
@@ -62,14 +65,11 @@ function googleApiInit() {
     styles: [require('./dashboard.scss')]
 })
 export class DashboardComponent {
-    static parameters = [AuthHttp];
-    constructor(authHttp: AuthHttp) {
-        this.AuthHttp = authHttp;
+    tableItems = [];
 
-        this.tableItems = [];
-
+    constructor(private readonly authHttp: AuthHttp) {
         _.forEach(apiItems, item => {
-            this.AuthHttp.get(`api/${item.path}/count`)
+            this.authHttp.get(`api/${item.path}/count`)
                 .toPromise()
                 .then(function(res: Response) {
                     if(!res.text()) return {};
@@ -210,10 +210,5 @@ export class DashboardComponent {
         // });
     }
 
-    ngOnInit() {
-        ReactDOM.render(<preloader></preloader>, document.getElementById('chart1'));
-        ReactDOM.render(<preloader></preloader>, document.getElementById('chart2'));
-        ReactDOM.render(<preloader></preloader>, document.getElementById('chart3'));
-        ReactDOM.render(<preloader></preloader>, document.getElementById('chart4'));
-    }
+    ngOnInit() {}
 }

@@ -7,12 +7,11 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development'; // eslint-disable-
 
 import express from 'express';
 import mongoose from 'mongoose';
-// mongoose.Promise = require('bluebird');
 import config from './config/environment';
 import Grid from 'gridfs-stream';
 import raven from 'raven';
 import http from 'http';
-import initWebSocketServer from './config/websockets';
+import {initWebSocketServer} from './config/websockets';
 import expressConfig from './config/express';
 import registerRoutes from './routes';
 import { seed } from './config/seed';
@@ -31,10 +30,10 @@ mongoose.connection.on('error', err => {
 
 // Setup server
 const app = express();
-const server = http.createServer(app);
-const wsInitPromise = initWebSocketServer(server);
 expressConfig(app);
 registerRoutes(app);
+const server = http.createServer(app);
+const wsInitPromise = initWebSocketServer(server);
 
 // let mongoPromise = mongooseConnectionPromise.then((conn) => {
 //     Grid.mongo = mongoose.mongo;
@@ -50,10 +49,13 @@ registerRoutes(app);
 // Start server
 function startServer() {
     console.log(config.ip);
-    app.angularFullstack = app.listen(config.port, config.ip, (...args) => {
-        console.log(args);
+    server.listen(config.port, config.ip, () => {
         console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
     });
+    // app.angularFullstack = app.listen(config.port, config.ip, (/*...args*/) => {
+    //     // console.log(args);
+    //     console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
+    // });
 }
 
 Promise.all([wsInitPromise, mongooseConnectionPromise])
@@ -63,7 +65,9 @@ Promise.all([wsInitPromise, mongooseConnectionPromise])
         if(config.seedDB) {
             // wait for DB seed
             return seed()
-                .then(startServer);
+                .then(() => {
+                    startServer();
+                });
         } else {
             return startServer();
         }

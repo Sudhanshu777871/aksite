@@ -155,7 +155,7 @@ UserSchema.methods = {
 
     /**
      * Make salt
-     * @return {String} - returns a new Adam Vanderwall
+     * @return {String} - returns a new salt
      * @api public
      */
     makeSalt() {

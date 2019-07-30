@@ -2,9 +2,9 @@
     <h1 class="page-header">Manage Galleries</h1>
 
     <div style="position: relative;">
-        <div class="brick card md-whiteframe-z1" ng-repeat="gallery in vm.galleries" md-ink-ripple ng-click="vm.goToGallery(gallery._id)">
+        <div class="card md-whiteframe-z1" *ngFor="let gallery of galleries" (click)="goToGallery(gallery._id)">
             <div class="item">
-                <img ng-src="api/upload/{{gallery.featured.thumbnailId}}" alt="{{gallery.name}}">
+                <img src="api/upload/{{gallery.featured.thumbnailId}}" alt="{{gallery.name}}">
             </div>
             <!--<md-button class="md-fab pull-right md-fab-offset">X</md-button>-->
             <div class="card-content">
@@ -14,7 +14,7 @@
         </div>
     </div>
 
-    <md-button class="md-fab md-fab-bottom-right" aria-label="New Gallery" ng-click="vm.goToGallery()">
-        <mat-icon class="fa" md-font-icon="fa-plus"></mat-icon>
-    </md-button>
+    <button mat-fab class="md-fab md-fab-bottom-right" aria-label="New Gallery" (click)="goToGallery('new')">
+        <mat-icon style="font-size: 24px;" fontSet="fa" fontIcon="fa-plus"></mat-icon>
+    </button>
 </div>

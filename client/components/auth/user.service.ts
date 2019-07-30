@@ -13,6 +13,8 @@ export interface User {
     email?: string;
     password?: string;
     role?: string;
+    imageId: string;
+    smallImageId?: string;
 }
 
 @Injectable()
@@ -25,8 +27,8 @@ export class UserService {
             .then(extractData)
             .catch(handleError);
     }
-    get(user: User = {id: 'me'}): Promise<User&{token: string}> {
-        return this.authHttp.get(`/api/users/${user.id}`)
+    get(user?: User): Promise<User&{token: string}> {
+        return this.authHttp.get(`/api/users/${user ? user.id : 'me'}`)
             .toPromise()
             .then(extractData)
             .catch(handleError) as Promise<User&{token: string}>;
@@ -37,8 +39,8 @@ export class UserService {
             .then(extractData)
             .catch(handleError) as Promise<{token: string}>;
     }
-    changePassword(user: User, oldPassword: string, newPassword: string): Promise<User> {
-        return this.authHttp.put(`/api/users/${user.id}/password`, {oldPassword, newPassword})
+    changePassword(id: string, oldPassword: string, newPassword: string): Promise<User> {
+        return this.authHttp.put(`/api/users/${id}/password`, {oldPassword, newPassword})
             .toPromise()
             .then(extractData)
             .catch(handleError) as Promise<User>;

@@ -338,7 +338,7 @@ module.exports = function makeWebpackConfig(options) {
             }
         }),
 
-        new HardSourceWebpackPlugin(),
+        // new HardSourceWebpackPlugin(),
     ];
 
     if(DEV) {
@@ -394,7 +394,7 @@ module.exports = function makeWebpackConfig(options) {
                 inject: 'body',
                 alwaysWriteToDisk: true
             }),
-            new HtmlWebpackHarddiskPlugin()
+            // new HtmlWebpackHarddiskPlugin()
         );
     }
 
@@ -464,7 +464,7 @@ module.exports = function makeWebpackConfig(options) {
                 secure: false,
             },
             '/primus': {
-                target: 'localhost:9050',
+                target: '[::1]:9050',
                 secure: false,
                 ws: true,
             },
@@ -476,7 +476,7 @@ module.exports = function makeWebpackConfig(options) {
             chunks: false,
         },
         historyApiFallback: {
-            index: '_index.html'
+            index: 'index.html'
         },
     };
 

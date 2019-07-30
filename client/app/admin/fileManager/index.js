@@ -1,6 +1,6 @@
 import angular from 'angular';
 
-import FileManagerController from './fileManager.controller';
+import FileManagerController from './fileManager.component';
 
 //import '!raw!sass!./fileManager.scss';
 

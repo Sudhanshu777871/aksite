@@ -1,6 +1,6 @@
 import angular from 'angular';
 
-import GalleryManagerController from './galleryManager.controller';
+import GalleryManagerController from './galleryManager.component';
 
 //import '!raw!sass!./galleryManager.scss';
 

@@ -24,15 +24,15 @@ export class BlogManagerComponent {
     postDeletions = [];
     postChanges = [];
     dirty = false;
+    page: {};
+    pages: number;
+    items: number;
 
-    static parameters = [Http, Router];
-    constructor(http: Http, router: Router) {
-        this.Http = http;
-        this.router = router;
-    }
+    constructor(private readonly http: Http,
+                private readonly router: Router) {}
 
     ngOnInit() {
-        return this.Http.get('/api/posts')
+        return this.http.get('/api/posts')
             .toPromise()
             .then(extractData)
             .then(data => {
@@ -77,7 +77,7 @@ export class BlogManagerComponent {
     saveChanges() {
         // Delete posts
         _.forEach(this.postDeletions, post => {
-            this.Http.delete(`/api/posts/${post._id}`)
+            this.http.delete(`/api/posts/${post._id}`)
                 .toPromise()
                 .then(res => {
                     _.remove(this.posts, post);

@@ -5,18 +5,26 @@ import { noop, find, remove } from 'lodash';
 
 @Injectable()
 export class SocketService {
-    // primus: Primus;
+    private primus: Primus;
+    private open = false;
+    private queue: any[] = [];
 
     constructor() {
         // this.socket = io('', {
         //     // Send auth token on connection, you will need to DI the Auth service above
         //     // 'query': 'token=' + Auth.getToken()
         // });
-        const primus = Primus.connect();
+        const primus = Primus.connect('http://localhost:9050');
         primus.plugin('emit', primusEmit);
 
-        primus.on('open', function open() {
+        primus.on('open', () => {
             console.log('Connection opened');
+            primus.emit('info');
+
+            this.open = true;
+            while(this.queue.length) {
+                this.emit(this.queue.pop());
+            }
         });
 
         if(process.env.NODE_ENV === 'development') {
@@ -80,5 +88,13 @@ export class SocketService {
     unsyncUpdates(modelName) {
         this.primus.removeAllListeners(`${modelName}:save`);
         this.primus.removeAllListeners(`${modelName}:remove`);
+    }
+
+    emit(data: any[]) {
+        if(this.open) {
+            this.primus.emit.apply(this.primus, data);
+        } else {
+            this.queue.push(data);
+        }
     }
 }

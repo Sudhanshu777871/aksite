@@ -109,3 +109,9 @@ $admin-button-transition: all 0.4s ease-in-out;
 .dashboard-pie-row > * {
     height: 250px;
 }
+
+admin .sidenav-menu li button {
+    font-size: 22px;
+    width: 100%;
+    padding: 10px 0;
+}

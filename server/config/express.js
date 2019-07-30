@@ -1,6 +1,4 @@
-/**
- * Express configuration
- */
+/** Express configuration */
 
 import express from 'express';
 import favicon from 'serve-favicon';
@@ -18,15 +16,15 @@ import session from 'express-session';
 import mongoose from 'mongoose';
 import connectMongo from 'connect-mongo';
 import raven from 'raven';
+
 const MongoStore = connectMongo(session);
 raven.config(config.sentry.dsn).install();
 
 export default function(app) {
-    var env = app.get('env');
+    const env = app.get('env');
 
     app.use(raven.requestHandler());
     app.set('views', `${config.root}/server/views`);
-    app.engine('html', require('ejs').renderFile);
     app.set('view engine', 'html');
     app.set('appPath', path.join(config.root, 'client'));
     app.use(compression());

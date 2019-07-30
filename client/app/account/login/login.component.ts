@@ -14,7 +14,10 @@ interface User {
     styles: [require('./login.scss')],
 })
 export class LoginComponent {
-    user: User;
+    user: User = {
+        email: '',
+        password: '',
+    };
     errors: {
         login?: string;
     } = {};

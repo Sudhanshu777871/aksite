@@ -4,9 +4,15 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operator/switchMap';
 // import Raven from 'raven-js';
 
+// @ts-ignore
 import moment from 'moment';
 import { Converter } from 'showdown';
 const converter = new Converter({tables: true});
+
+interface Post {
+    content: string;
+    date: string;
+}
 
 @Component({
     selector: 'post',
@@ -16,16 +22,13 @@ const converter = new Converter({tables: true});
 })
 export class PostComponent {
     error;
-    post = {author: {}};
+    post: Post;
 
-    static parameters = [ActivatedRoute, HttpClient];
-    constructor(route: ActivatedRoute, http: HttpClient) {
-        this.route = route;
-        this.http = http;
-    }
+    constructor(private readonly route: ActivatedRoute,
+                private readonly http: HttpClient) {}
 
     ngOnInit() {
-        switchMap.call(this.route.params, (params: ParamMap) => this.http.get(`api/posts/${params.id}`))
+        switchMap.call(this.route.params, (params: {id: string}) => this.http.get(`api/posts/${params.id}`))
             .subscribe(res => {
                 this.post = res;
                 this.post.content = converter.makeHtml(this.post.content);

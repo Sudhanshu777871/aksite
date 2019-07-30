@@ -1,4 +1,4 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import {
     wrapperLodash as _,
     mixin,
@@ -17,7 +17,7 @@ mixin(_, {
 });
 import {autobind} from 'core-decorators';
 import {GalleryService} from '../../../components/gallery/gallery.service';
-import {PhotoService} from '../../../components/photo/photo.service';
+import {Photo, PhotoService} from '../../../components/photo/photo.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operator/switchMap';
 
@@ -34,6 +34,10 @@ const Grid = makeResponsive(measureItems(CSSGrid, { measureImages: true }), {
     minPadding: 50
 });
 
+interface Gallery {
+    photos: Photo[];
+}
+
 @Component({
     selector: 'gallery',
     template: require('./gallery.html'),
@@ -45,23 +49,21 @@ const Grid = makeResponsive(measureItems(CSSGrid, { measureImages: true }), {
 })
 export class GalleryComponent {
     galleryId;
-    gallery = {};
+    gallery: Gallery;
     errors = [];
     photos = [];
     items = [];
 
-    static parameters = [ActivatedRoute, PhotoService, GalleryService];
-    constructor(route: ActivatedRoute, Photo: PhotoService, Gallery: GalleryService) {
-        this.route = route;
-        this.galleryId = this.route.params.id;
-        this.Photo = Photo;
-        this.Gallery = Gallery;
+    constructor(private readonly route: ActivatedRoute,
+                private readonly photoService: PhotoService,
+                private readonly galleryService: GalleryService) {
+        this.galleryId = (this.route.params as unknown as {id: string}).id;
 
         // this.ngOnInit();
     }
 
     ngOnInit() {
-        switchMap.call(this.route.params, (params: ParamMap) => this.Gallery.get({id: params.id}))
+        switchMap.call(this.route.params, (params: {id: string}) => this.galleryService.get({id: params.id}))
             .subscribe(gallery => {
                 this.gallery = gallery;
 
@@ -70,36 +72,56 @@ export class GalleryComponent {
     }
 
     async onGallery() {
-        let photoArray = await Promise.map(this.gallery.photos, async (photo, i) => {
-            photo = await this.Photo.get({id: photo});
+        const photos = [];
+        for(let i = 0; i < this.gallery.photos.length; i++) {
+            const photo: Photo = await this.photoService.get({id: this.gallery.photos[i] as unknown as string});
 
             this.gallery.photos[i] = photo;
 
-            return <li className="" style={{padding: 0, margin: 0}} key={i} data-index={i} data-size={`${photo.width}x${photo.height}`} onClick={this.onThumbnailsClick}>
-                <img src={`/api/upload/${photo.thumbnailId}.jpg`} style={{width: '300px'}} alt={photo.name} />
-            </li>;
-        });
+            // return <li className='' style={{padding: 0, margin: 0}} key={i} data-index={i} data-size={`${photo.width}x${photo.height}`} onClick={this.onThumbnailsClick}>
+            //     <img src={`/api/upload/${photo.thumbnailId}.jpg`} style={{width: '300px'}} alt={photo.name} />
+            // </li>;
+            const img = React.createElement('img', {
+                src: `/api/upload/${photo.thumbnailId}.jpg`,
+                style: {
+                    width: '300px'
+                },
+                alt: photo.name,
+            });
+            const li = React.createElement('li', {
+                className: '',
+                style: {
+                    padding: 0,
+                    margin: 0
+                },
+                key: i,
+                'data-index': i,
+                'data-size': `${photo.width}x${photo.height}`,
+                onClick: this.onThumbnailsClick,
+            }, img);
+
+            photos.push(li);
+        }
 
         ReactDOM.render(
-            <Grid
-                className="grid"
-                component="ul"
-                columnWidth={300}
-                itemHeight={340}
-                gutterWidth={0}
-                gutterHeight={0}
-                layout={layout.pinterest}
-                duration={800}
-                easing="ease-out">
-                {photoArray}
-            </Grid>,
+            React.createElement(Grid, {
+                className: 'grid',
+                component: 'ul',
+                columnWidth: 300,
+                itemHeight: 340,
+                gutterWidth: 0,
+                gutterHeight: 0,
+                layout: layout.pinterest,
+                duration: 800,
+                easing: 'ease-out',
+            }, photos),
             document.getElementById('stonecutter'));
     }
 
     @autobind
     onThumbnailsClick(event) {
         // FIX: looks like photoswipe doesn't always make sure there's a start to the query parameters
-        if(!window.location.href.includes('?')) window.location = `${window.location.href}?pswp`;
+        if(!window.location.href.includes('?')) window.location = `${window.location.href}?pswp` as unknown as Location;
 
         const index = Number(event.currentTarget.attributes['data-index'].value);
 

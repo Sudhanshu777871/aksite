@@ -20,7 +20,7 @@ export class ProjectComponent implements OnInit {
     }
 
     ngOnInit() {
-        switchMap.call(this.route.params, (params: ParamMap) => this.projectService.get({id: params.get('id')}))
+        switchMap.call(this.route.params, (params: {id: string}) => this.projectService.get({id: params.id}))
             .subscribe(project => {
                 this.project = project;
                 this.content = converter.makeHtml(project.content);
