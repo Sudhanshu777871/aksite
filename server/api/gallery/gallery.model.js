@@ -1,14 +1,13 @@
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+import {model, Schema} from 'mongoose';
 
-var GallerySchema = new Schema({
+export const GallerySchema = new Schema({
     name: String,
     info: String,
     date: Date,
     hidden: Boolean,
     photos: [String],
     featuredId: String,
-    metadata : {}
+    metadata: {},
 });
 
-module.exports = mongoose.model('Gallery', GallerySchema);
+export const Gallery = model('Gallery', GallerySchema);

@@ -3,13 +3,18 @@ import {Http, Response} from '@angular/http';
 import {AuthHttp} from 'angular2-jwt';
 import 'rxjs/add/operator/toPromise';
 
+export interface Photo {
+    _id: string;
+    thumbnailId: string;
+    name: string;
+    width: number;
+    height: number;
+}
+
 @Injectable()
 export class PhotoService {
-    static parameters = [Http, AuthHttp];
-    constructor(http, authHttp) {
-        this.http = http;
-        this.authHttp = authHttp;
-    }
+    constructor(private readonly http: Http,
+                private readonly authHttp: AuthHttp) {}
 
     handleError(err) {
         throw err;

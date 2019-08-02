@@ -1,7 +1,8 @@
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+import mongoose from 'mongoose';
 
-var PhotoSchema = new Schema({
+const Schema = mongoose.Schema;
+
+export const PhotoSchema = new Schema({
     name: String,
     info: String,
     height: Number,
@@ -11,7 +12,7 @@ var PhotoSchema = new Schema({
     fileId: String,
     thumbnailId: String,
     sqThumbnailId: String,
-    metadata: {}
+    metadata: {},
 });
 
-module.exports = mongoose.model('Photo', PhotoSchema);
+export const Photo = mongoose.model('Photo', PhotoSchema);

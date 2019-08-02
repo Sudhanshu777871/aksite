@@ -7,6 +7,7 @@ import { AuthService } from '../auth/auth.service';
 @Component({
     selector: 'navbar',
     template: require('./navbar.html'),
+    styles: [require('./navbar.scss')]
 })
 export class NavbarComponent {
     isCollapsed = true;
@@ -27,16 +28,13 @@ export class NavbarComponent {
         link: '/blog',
     }];
 
-    static parameters = [AuthService, Router];
-    constructor(authService: AuthService, router: Router) {
-        this.AuthService = authService;
-        this.router = router;
+    isLoggedIn = () => this.authService.isLoggedInSync();
+    isAdmin = () => this.authService.isAdmin();
+    getCurrentUser = () => this.authService.getCurrentUser();
+    authLogout = () => this.authService.logout();
 
-        this.isLoggedIn = (...args) => authService.isLoggedInSync(...args);
-        this.isAdmin = (...args) => authService.isAdmin(...args);
-        this.getCurrentUser = (...args) => authService.getCurrentUser(...args);
-        this.authLogout = () => authService.logout();
-    }
+    constructor(private readonly authService: AuthService,
+                private readonly router: Router) {}
 
     logout() {
         let promise = this.authLogout();

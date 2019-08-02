@@ -67,7 +67,8 @@
     "reflect-metadata": "^0.1.13",
     "request": "~2.87.0",
     "serve-favicon": "^2.3.0",
-    "showdown": "^1.5.5"
+    "showdown": "^1.5.5",
+    "ws": "^7.1.1"
   },
   "devDependencies": {
     "@angular/animations": "^5.0.1",

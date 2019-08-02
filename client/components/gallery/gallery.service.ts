@@ -2,14 +2,23 @@ import {Injectable} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import {AuthHttp} from 'angular2-jwt';
 import 'rxjs/add/operator/toPromise';
+// import {GallerySchema} from '../../../server/api/gallery/gallery.model';
+
+export interface Gallery {
+    _id: '';
+    name: string;
+    info: string;
+    date: Date;
+    hidden: boolean;
+    photos: string[];
+    featuredId: string;
+    metadata: {};
+}
 
 @Injectable()
 export class GalleryService {
-    static parameters = [Http, AuthHttp];
-    constructor(http, authHttp) {
-        this.http = http;
-        this.authHttp = authHttp;
-    }
+    constructor(private readonly http: Http,
+                private readonly authHttp: AuthHttp) {}
 
     handleError(err) {
         throw err;

@@ -1,6 +1,6 @@
 import config from '../../config/environment';
 import _ from 'lodash';
-import Photo from './photo.model';
+import {Photo} from './photo.model';
 
 function handleError(res, err) {
     return res.status(500).send(err);

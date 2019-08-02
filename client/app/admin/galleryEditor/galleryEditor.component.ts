@@ -10,7 +10,6 @@ import {Component} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Gallery, GalleryService} from '../../../components/gallery/gallery.service';
-import {switchMap} from 'rxjs/operator/switchMap';
 
 @Component({
     selector: 'gallery-editor',
@@ -45,13 +44,14 @@ export class GalleryEditorComponent {
 
         if(!this.id || this.id === 'new') {
             this.gallery = {
+                _id: '',
                 name: 'Untitled Gallery',
                 info: '',
                 photos: [],
                 featuredId: '',
-                _id: '',
-                date: '',
+                date: new Date(),
                 hidden: false,
+                metadata: {},
             };
             this.loadingGallery = false;
             this.newGallery = true;

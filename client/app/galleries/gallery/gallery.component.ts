@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import {
     wrapperLodash as _,
     mixin,
@@ -16,7 +16,7 @@ mixin(_, {
     noop
 });
 import {autobind} from 'core-decorators';
-import {GalleryService} from '../../../components/gallery/gallery.service';
+import {Gallery, GalleryService} from '../../../components/gallery/gallery.service';
 import {Photo, PhotoService} from '../../../components/photo/photo.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operator/switchMap';
@@ -34,18 +34,14 @@ const Grid = makeResponsive(measureItems(CSSGrid, { measureImages: true }), {
     minPadding: 50
 });
 
-interface Gallery {
-    photos: Photo[];
-}
+import '../../../assets/scss/photoswipe.scss';
 
 @Component({
     selector: 'gallery',
     template: require('./gallery.html'),
     styles: [
         require('./gallery.scss'),
-        require('../../../assets/scss/photoswipe.scss'),
     ],
-    encapsulation: ViewEncapsulation.None
 })
 export class GalleryComponent {
     galleryId;
@@ -58,8 +54,6 @@ export class GalleryComponent {
                 private readonly photoService: PhotoService,
                 private readonly galleryService: GalleryService) {
         this.galleryId = (this.route.params as unknown as {id: string}).id;
-
-        // this.ngOnInit();
     }
 
     ngOnInit() {
@@ -74,13 +68,10 @@ export class GalleryComponent {
     async onGallery() {
         const photos = [];
         for(let i = 0; i < this.gallery.photos.length; i++) {
-            const photo: Photo = await this.photoService.get({id: this.gallery.photos[i] as unknown as string});
+            const photo: Photo = await this.photoService.get({id: this.gallery.photos[i]});
 
-            this.gallery.photos[i] = photo;
+            this.photos[i] = photo;
 
-            // return <li className='' style={{padding: 0, margin: 0}} key={i} data-index={i} data-size={`${photo.width}x${photo.height}`} onClick={this.onThumbnailsClick}>
-            //     <img src={`/api/upload/${photo.thumbnailId}.jpg`} style={{width: '300px'}} alt={photo.name} />
-            // </li>;
             const img = React.createElement('img', {
                 src: `/api/upload/${photo.thumbnailId}.jpg`,
                 style: {
@@ -161,7 +152,7 @@ export class GalleryComponent {
                 let size = el.getAttribute('data-size').split('x');
 
                 return {
-                    src: `/api/upload/${this.gallery.photos[i].fileId}.jpg`,
+                    src: `/api/upload/${this.photos[i].fileId}.jpg`,
                     w: parseInt(size[0], 10),
                     h: parseInt(size[1], 10),
                     el, // save link to element for getThumbBoundsFn

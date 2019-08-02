@@ -2,20 +2,20 @@
  * Populate DB with sample data on server start
  * to disable, edit config/environment/index.js, and set `seedDB: false`
  */
+
 import _ from 'lodash';
 import Thing from '../api/thing/thing.model';
 import User from '../api/user/user.model';
 import Post from '../api/post/post.model';
-import Photo from '../api/photo/photo.model';
+import {Photo} from '../api/photo/photo.model';
 import Project from '../api/project/project.model';
-import Gallery from '../api/gallery/gallery.model.js';
+import {Gallery} from '../api/gallery/gallery.model.js';
 import * as util from '../util';
 import moment from 'moment';
-import mongoose from 'mongoose';
+import {Schema, model} from 'mongoose';
 
-const Schema = mongoose.Schema;
 const gridSchema = new Schema({}, {strict: false});
-const gridModel1 = mongoose.model('gridModel1', gridSchema, 'fs.files');
+const gridModel1 = model('gridModel1', gridSchema, 'fs.files');
 
 function deleteThings() {
     return Thing.find({}).remove()
