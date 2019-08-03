@@ -2,7 +2,7 @@
  * Broadcast updates to client when the model changes
  */
 
-var Photo = require('./photo.model');
+import {Photo} from './photo.model';
 
 export function register(socket) {
     Photo.schema.post('save', function(doc) {

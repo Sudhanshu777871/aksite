@@ -2,7 +2,7 @@
  * Broadcast updates to client when the model changes
  */
 
-var Gallery = require('./gallery.model');
+import {Gallery} from './gallery.model';
 
 export function register(socket) {
     Gallery.schema.post('save', function(doc) {
