@@ -1,6 +1,6 @@
 import config from '../../config/environment';
 import _ from 'lodash';
-import Gallery from './gallery.model';
+import {Gallery} from './gallery.model';
 // import Photo from '../photo/photo.model';
 // import auth from '../../auth/auth.service';
 
