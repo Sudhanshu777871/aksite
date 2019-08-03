@@ -25,7 +25,7 @@ jobs:
       - run: gcloud --quiet config set container/cluster $CLUSTER_NAME
       # Reading the zone from the env var is not working so we set it here
       - run: gcloud config set compute/zone ${CLOUDSDK_COMPUTE_ZONE}
-      - run: gcloud --quiet container clusters get-credentials $CLUSTER_NAME
+#      - run: gcloud --quiet container clusters get-credentials $CLUSTER_NAME
 #      - run: docker build --rm=false -t $EXTERNAL_REGISTRY_ENDPOINT/aksite:$CIRCLE_SHA1 .
 
       # Global npm dependencies
@@ -75,13 +75,13 @@ jobs:
       - run: gulp build
       - run: npm test
 
-      - deploy:
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              cd dist && docker build --rm=false -t gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 .
-              # Using a separate tag command until Docker 1.10 is available on CircleCI, then we can use two tags in the build command above
-              docker tag gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 gcr.io/${PROJECT_NAME}/aksite:latest
-              gcloud auth activate-service-account --key-file ~/account-auth.json
-              chmod 0744 ./scripts/deploy.sh
-              ./scripts/deploy.sh
-            fi
+#      - deploy:
+#          command: |
+#            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+#              cd dist && docker build --rm=false -t gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 .
+#              # Using a separate tag command until Docker 1.10 is available on CircleCI, then we can use two tags in the build command above
+#              docker tag gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 gcr.io/${PROJECT_NAME}/aksite:latest
+#              gcloud auth activate-service-account --key-file ~/account-auth.json
+#              chmod 0744 ./scripts/deploy.sh
+#              ./scripts/deploy.sh
+#            fi
