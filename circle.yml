@@ -33,7 +33,6 @@ jobs:
           keys:
             - aksite-npm-global-{{ .Branch }}
             - aksite-npm-global-
-      - run: npm install --global gulp-cli
       - save_cache:
           key: aksite-npm-global-{{ .Branch }}
           paths:
@@ -51,8 +50,6 @@ jobs:
           paths:
             - ~/aksite/node_modules
 
-#      - run: gulp build
-
       # docker dependencies
 #      - restore_cache:
 #          keys:
@@ -62,7 +59,7 @@ jobs:
 #        # If we have a cached image, load it into docker
 #        - run: if [[ -e ~/docker/image.tar ]]; then docker load -i ~/docker/image.tar; fi
 #        # Else make a new build and save the docker image to the cache
-#        - run: if [[ ! -e ~/docker/image.tar ]]; then gulp build && cd dist && docker build --rm=false -t gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 .; fi
+#        - run: if [[ ! -e ~/docker/image.tar ]]; then npm run build && cd dist && docker build --rm=false -t gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 .; fi
 #        - run: if [[ ! -e ~/docker/image.tar ]]; then mkdir -p ~/docker; docker save gcr.io/${PROJECT_NAME}/aksite:$CIRCLE_SHA1 > ~/docker/image.tar; fi
 #        # The problem here is that the CircleCI cache is created at the end of the 'dependencies' section,
 #        # so the build in the deployment step can't be cached.
@@ -72,7 +69,7 @@ jobs:
 #            - ~/kubernetes
 #            - ~/docker
 
-      - run: gulp build
+      - run: npm run build
       - run: npm test
 
 #      - deploy:
