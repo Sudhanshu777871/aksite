@@ -144,7 +144,7 @@ module.exports = function makeWebpackConfig(options) {
                         'transform-decorators-legacy',
                         'transform-class-properties',
                         'transform-export-extensions',
-                    ].concat(TEST ? ['istanbul'] : []),
+                    ]/*.concat(TEST ? ['istanbul'] : [])*/,
                     shouldPrintComment(commentContents) {
                         let regex = DEV
                             // keep `// @flow`, `/*@ngInject*/`, & flow type comments in dev

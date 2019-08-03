@@ -2,7 +2,10 @@
 // http://karma-runner.github.io/0.13/config/configuration-file.html
 /*eslint-env node*/
 
-import makeWebpackConfig from './webpack.make';
+// import makeWebpackConfig from './webpack.make';
+const makeWebpackConfig = require('./webpack.make');
+
+process.env.CHROME_BIN = require('puppeteer').executablePath();
 
 module.exports = function(config) {
     config.set({
@@ -25,7 +28,6 @@ module.exports = function(config) {
 
         webpackMiddleware: {
             // webpack-dev-middleware configuration
-            // i. e.
             noInfo: true,
             stats: 'errors-only'
         },
@@ -81,6 +83,16 @@ module.exports = function(config) {
         // - PhantomJS
         // - IE (only Windows)
         browsers: ['PhantomJS'],
+        // browsers: ['Chrome'],
+        // browsers: ['ChromeHeadless'],
+        // browserDisconnectTimeout: 10000,
+        // browserDisconnectTolerance: 3,
+        // browserNoActivityTimeout: 60000,
+        // flags: [
+        //     '--disable-web-security',
+        //     '--disable-gpu',
+        //     '--no-sandbox'
+        // ],
 
         // Continuous Integration mode
         // if true, it capture browsers, run tests and exit
