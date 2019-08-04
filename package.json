@@ -169,7 +169,7 @@
     "start": "node server",
     "start:client": "webpack-dev-server --config webpack.dev.js",
     "start:server": "nodemon --watch server server",
-    "test": "gulp test",
+    "test": "",
     "update-webdriver": "node node_modules/grunt-protractor-runner/node_modules/protractor/bin/webdriver-manager update",
     "build": "cross-env NODE_ENV=production webpack --config webpack.build.js --bail",
     "test:live": "karma start --auto-watch --no-single-run"
