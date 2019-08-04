@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Converter } from 'showdown';
 const converter = new Converter();
-import { ProjectService } from '../../../components/Project/Project.service';
+import {Project, ProjectService} from '../../../components/Project/Project.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operator/switchMap';
+import {switchMap} from 'rxjs/operators';
+import {Observable} from 'rxjs';
 
 @Component({
     selector: 'project',
@@ -12,18 +13,20 @@ import { switchMap } from 'rxjs/operator/switchMap';
 })
 export class ProjectComponent implements OnInit {
     error;
-    project = {};
+    project: Project;
     content: string|undefined;
 
-    constructor(private readonly projectService: ProjectService, private readonly route: ActivatedRoute) {
-        // this.projectId = $stateParams.projectId;
-    }
+    constructor(private readonly projectService: ProjectService,
+                private readonly route: ActivatedRoute) {}
 
     ngOnInit() {
-        switchMap.call(this.route.params, (params: {id: string}) => this.projectService.get({id: params.id}))
-            .subscribe(project => {
-                this.project = project;
-                this.content = converter.makeHtml(project.content);
-            });
+        this.route.paramMap.pipe(
+            switchMap((params: ParamMap) =>
+                this.projectService.get({id: params.get('id')}))
+        ).subscribe((project?: Project) => {
+            if(!project) throw new Error('Project not found');
+            this.project = project;
+            this.content = converter.makeHtml(this.project.content);
+        });
     }
 }

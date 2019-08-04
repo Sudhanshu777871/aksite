@@ -19,7 +19,7 @@ import {autobind} from 'core-decorators';
 import {Gallery, GalleryService} from '../../../components/gallery/gallery.service';
 import {Photo, PhotoService} from '../../../components/photo/photo.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { switchMap } from 'rxjs/operator/switchMap';
+import {switchMap} from 'rxjs/operators';
 
 import PhotoSwipe from 'photoswipe';
 import PhotoSwipeUiDefault from 'photoswipe/dist/photoswipe-ui-default';
@@ -35,6 +35,7 @@ const Grid = makeResponsive(measureItems(CSSGrid, { measureImages: true }), {
 });
 
 import '../../../assets/scss/photoswipe.scss';
+import {Project} from "../../../components/Project/Project.service";
 
 @Component({
     selector: 'gallery',
@@ -57,18 +58,22 @@ export class GalleryComponent {
     }
 
     ngOnInit() {
-        switchMap.call(this.route.params, (params: {id: string}) => this.galleryService.get({id: params.id}))
-            .subscribe(gallery => {
-                this.gallery = gallery;
-
-                this.onGallery();
-            });
+        this.route.paramMap.pipe(
+            switchMap((params: ParamMap) =>
+                this.galleryService.get({id: params.get('id')}))
+        ).subscribe((gallery?: Gallery) => {
+            if(!gallery) throw new Error('Gallery not found');
+            this.gallery = gallery;
+            this.onGallery();
+        });
     }
 
     async onGallery() {
         const photos = [];
         for(let i = 0; i < this.gallery.photos.length; i++) {
-            const photo: Photo = await this.photoService.get({id: this.gallery.photos[i]});
+            const photo: Photo|void = await this.photoService.get({id: this.gallery.photos[i]});
+
+            if(!photo) continue;
 
             this.photos[i] = photo;
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import {HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import {
     wrapperLodash as _,
@@ -11,6 +11,13 @@ mixin(_, {
     forEach,
     remove
 });
+
+interface PostQueryData {
+    items: {}[];
+    page: number;
+    pages: number;
+    numItems: number;
+}
 
 @Component({
     selector: 'blog-manager',
@@ -28,13 +35,12 @@ export class BlogManagerComponent {
     pages: number;
     items: number;
 
-    constructor(private readonly http: Http,
+    constructor(private readonly http: HttpClient,
                 private readonly router: Router) {}
 
     ngOnInit() {
-        return this.http.get('/api/posts')
+        return this.http.get<PostQueryData>('/api/posts')
             .toPromise()
-            .then(extractData)
             .then(data => {
                 this.posts = data.items;
                 this.posts.forEach(post => {
@@ -89,9 +95,4 @@ export class BlogManagerComponent {
                 });
         });
     }
-}
-
-function extractData(res: Response) {
-    if(!res.text()) return {};
-    return res.json() || { };
 }

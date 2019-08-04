@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AuthHttp} from "angular2-jwt";
+import {HttpClient} from '@angular/common/http';
 
 @Component({
     selector: 'file-manager',
@@ -12,15 +12,14 @@ export default class FileManagerController {
     pages: number;
     numItems: number;
 
-    constructor(private readonly http: AuthHttp) {
+    constructor(private readonly http: HttpClient) {
         this.http.get('/api/upload')
             .toPromise()
             .then((res: any) => {
-                const data = res.json();
-                this.files = data.items;
-                this.page = data.page;
-                this.pages = data.pages;
-                this.numItems = data.numItems;
+                this.files = res.items;
+                this.page = res.page;
+                this.pages = res.pages;
+                this.numItems = res.numItems;
             }, console.log.bind(console));
     }
 

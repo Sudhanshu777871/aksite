@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
-import { AuthHttp } from 'angular2-jwt';
-import { Http } from '@angular/http';
+import {HttpClient} from '@angular/common/http';
 import {User, UserService} from './user.service';
-import 'rxjs/add/operator/toPromise';
 import {
     wrapperLodash as _,
     isFunction,
@@ -37,16 +34,15 @@ export class AuthService {
     };
 
     constructor(
-        private readonly http: Http,
-        private readonly authHttp: AuthHttp,
+        private readonly http: HttpClient,
         private readonly userService: UserService) {
-        if(localStorage.getItem('id_token')) {
+        if(localStorage.getItem(AUTH_TOKEN_KEY)) {
             this.userService.get().then((user: User) => {
                 this.currentUser = user;
             }).catch(err => {
                 console.log(err);
 
-                localStorage.removeItem('id_token');
+                localStorage.removeItem(AUTH_TOKEN_KEY);
             });
         }
     }
@@ -60,9 +56,8 @@ export class AuthService {
             password
         })
             .toPromise()
-            .then(extractData)
-            .then(res => {
-                localStorage.setItem('id_token', res.token);
+            .then((res: {token: string}) => {
+                localStorage.setItem(AUTH_TOKEN_KEY, res.token);
                 return this.userService.get();
             })
             .then((user: User) => {
@@ -85,7 +80,7 @@ export class AuthService {
     logout(): Promise<void> {
         // this.$cookies.remove('token');
         localStorage.removeItem('user');
-        localStorage.removeItem('id_token');
+        localStorage.removeItem(AUTH_TOKEN_KEY);
         this.currentUser = {
             imageId: '',
         };
@@ -102,7 +97,7 @@ export class AuthService {
     createUser(user: User, callback?: (error, user: User) => void) {
         return this.userService.create(user)
             .then((data: {token: string}) => {
-                localStorage.setItem('id_token', data.token);
+                localStorage.setItem(AUTH_TOKEN_KEY, data.token);
                 return this.userService.get();
             })
             .then((_user: User) => {
@@ -162,11 +157,8 @@ export class AuthService {
      * @return {String} - a token string used for authenticating
      */
     getToken() {
-        return localStorage.getItem('id_token');
+        return localStorage.getItem(AUTH_TOKEN_KEY);
     }
 }
 
-function extractData(res: Response) {
-    if(!res.text()) return {};
-    return res.json() || { };
-}
+export const AUTH_TOKEN_KEY = 'id_token';

@@ -5,16 +5,16 @@
 
             <form class="login-form" name="loginForm" (ngSubmit)="login()">
                 <section class="input-section">
-                    <mat-input-container>
+                    <mat-form-field>
                         <input mdInput type="text" maxlength="60" required name="email" type="email" placeholder="Email" [(ngModel)]="user.email">
-                    </mat-input-container>
+                    </mat-form-field>
                     <!--<div ng-messages="loginForm.email.$error">-->
                         <!--<div ng-message="required">This is required.</div>-->
                         <!--<div ng-message="md-maxlength">The email can be at most 60 characters long.</div>-->
                     <!--</div>-->
-                    <mat-input-container>
+                    <mat-form-field>
                         <input mdInput type="text" type="password" required name="password" placeholder="Password" [(ngModel)]="user.password">
-                    </mat-input-container>
+                    </mat-form-field>
                     <!--<div ng-messages="loginForm.password.$error">-->
                         <!--<div ng-message="required">This is required.</div>-->
                     <!--</div>-->

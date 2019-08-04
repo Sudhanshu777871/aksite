@@ -14,21 +14,21 @@
     <!--</md-toolbar>-->
     <!--<md-content class="md-padding" style="min-height: 300px;">-->
         <form name="userForm" (submit)="changePassword(userForm)">
-            <!--<mat-input-container flex>-->
+            <!--<mat-form-field flex>-->
                 <label>Old Password</label>
                 <input [(ngModel)]="user.oldPassword" name="oldPassword" type="password">
                 <!--<div ng-messages="userForm.oldPassword.$error">-->
                     <!--<div ng-message="wrongPassword">Incorrect password</div>-->
                 <!--</div>-->
-            <!--</mat-input-container>-->
+            <!--</mat-form-field>-->
 
-            <!--<mat-input-container flex>-->
+            <!--<mat-form-field flex>-->
                 <label>New Password</label>
                 <input [(ngModel)]="user.newPassword" name="newPassword" type="password" minlength="3">
                 <!--<div ng-messages="userForm.newPassword.$error">-->
                     <!--<div ng-message="minlength">Your password has to be at least 3 characters long.</div>-->
                 <!--</div>-->
-            <!--</mat-input-container>-->
+            <!--</mat-form-field>-->
 
             <button mat-button class="md-primary" type="submit">Save changes</button>
         </form>

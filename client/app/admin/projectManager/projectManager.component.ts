@@ -8,12 +8,8 @@ mixin(_, {
     forEach
 });
 
-import { Component, ViewEncapsulation } from '@angular/core';
-import { Response } from '@angular/http';
-import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../../../components/auth/auth.service';
+import {Component} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {AuthHttp} from 'angular2-jwt';
 // @ts-ignore
 import moment from "moment";
 
@@ -31,8 +27,7 @@ export class ProjectManagerComponent {
     dirty = false;
 
     /*@ngInject*/
-    constructor(private readonly http: HttpClient,
-                private readonly authHttp: AuthHttp) {
+    constructor(private readonly http: HttpClient) {
         this.http.get('/api/projects/')
             .toPromise()
             .then(res => {

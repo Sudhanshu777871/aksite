@@ -5,23 +5,23 @@
 
             <form class="signup-form" name="signupForm" (ngSubmit)="register()">
                 <section class="input-section">
-                    <mat-input-container>
+                    <mat-form-field>
                         <input mdInput maxlength="60" required name="name" type="text" placeholder="Name" [(ngModel)]="user.name">
-                    </mat-input-container>
+                    </mat-form-field>
                     <!--<div ng-messages="signupForm.name.$error">-->
                         <!--<div ng-message="required">This is required.</div>-->
                         <!--<div ng-message="md-maxlength">The email can be at most 60 characters long.</div>-->
                     <!--</div>-->
-                    <mat-input-container>
+                    <mat-form-field>
                         <input mdInput maxlength="60" required name="email" type="email" placeholder="Email" [(ngModel)]="user.email">
-                    </mat-input-container>
+                    </mat-form-field>
                     <!--<div ng-messages="signupForm.email.$error">-->
                         <!--<div ng-message="required">This is required.</div>-->
                         <!--<div ng-message="md-maxlength">The email can be at most 60 characters long.</div>-->
                     <!--</div>-->
-                    <mat-input-container>
+                    <mat-form-field>
                         <input mdInput type="password" required name="password" placeholder="Password" [(ngModel)]="user.password">
-                    </mat-input-container>
+                    </mat-form-field>
                     <!--<div ng-messages="signupForm.password.$error">-->
                         <!--<div ng-message="required">This is required.</div>-->
                     <!--</div>-->

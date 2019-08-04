@@ -5,20 +5,19 @@ import {
     deleteFile,
     isValidObjectId
 } from '../../util';
-import Photo from '../photo/photo.model';
-import Gallery from '../gallery/gallery.model';
+import {Photo} from '../photo/photo.model';
+import {Gallery} from '../gallery/gallery.model';
 import Project from '../project/project.model';
 import User from '../user/user.model';
 import config from '../../config/environment';
-import mongoose from 'mongoose';
 import gridform from 'gridform';
 import {ExifImage} from 'exif';
 import gm from 'gm';
-import {Schema} from 'mongoose';
+import {default as mongoose, model, Schema} from 'mongoose';
 import Grid from 'gridfs-stream';
 
 let gridSchema = new Schema({}, {strict: false});
-let gridModel = mongoose.model('gridModel', gridSchema, 'fs.files');
+let gridModel = model('gridModel', gridSchema, 'fs.files');
 let gfs;
 let conn = mongoose.createConnection(config.mongo.uri);
 

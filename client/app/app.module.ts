@@ -1,6 +1,6 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule, Http } from '@angular/http';
+import { JwtModule } from '@auth0/angular-jwt';
 import { HttpClientModule } from '@angular/common/http';
 import {
     MatButtonModule,
@@ -14,7 +14,6 @@ import {
 } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { AppComponent } from './app.component';
 import { MainModule } from './main/main.module';
 import { DirectivesModule } from '../components/directives.module';
@@ -30,6 +29,7 @@ import { SettingsModule } from './settings/settings.module';
 import constants from './app.constants';
 // @ts-ignore
 import Raven from 'raven-js';
+import {AUTH_TOKEN_KEY} from '../components/auth/auth.service';
 
 if(process.env.NODE_ENV === 'production') {
     Raven
@@ -43,12 +43,8 @@ class RavenErrorHandler implements ErrorHandler {
     }
 }
 
-export function getAuthHttp(http) {
-    return new AuthHttp(new AuthConfig({
-        noJwtError: true,
-        globalHeaders: [{Accept: 'application/json'}],
-        tokenGetter: () => localStorage.getItem('id_token'),
-    }), http);
+export function tokenGetter() {
+    return localStorage.getItem(AUTH_TOKEN_KEY);
 }
 
 const appRoutes: Routes = [
@@ -69,17 +65,18 @@ const appRoutes: Routes = [
 
 @NgModule({
     providers: [
-        {
-            provide: AuthHttp,
-            useFactory: getAuthHttp,
-            deps: [Http],
-        },
         { provide: ErrorHandler, useClass: RavenErrorHandler }
     ],
     imports: [
         BrowserModule,
-        HttpModule,
         HttpClientModule,
+        JwtModule.forRoot({
+            config: {
+                tokenGetter: tokenGetter,
+                whitelistedDomains: ["andrewk.me"],
+                // blacklistedRoutes: ["example.com/examplebadroute/"]
+            }
+        }),
         MatButtonModule,
         MatIconModule,
         MatInputModule,

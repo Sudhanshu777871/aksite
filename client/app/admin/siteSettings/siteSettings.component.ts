@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AuthHttp} from "angular2-jwt";
+import {HttpClient} from '@angular/common/http';
 
 @Component({
     selector: 'site-settings',
@@ -7,7 +7,7 @@ import {AuthHttp} from "angular2-jwt";
     styles: [require('./siteSettings.scss')]
 })
 export class SiteSettingsComponent {
-    constructor(private readonly http: AuthHttp) {}
+    constructor(private readonly http: HttpClient) {}
 
     cleanOrphans() {
         this.http.get('/api/upload/clean')

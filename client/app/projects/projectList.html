@@ -12,7 +12,7 @@
     <div [hidden]="projects.length <= 0" class="row cards-container">
         <ul class="project-list">
             <li *ngFor="let project of projects">
-                <a class="card md-whiteframe-z1" id="{{project._id}}" style="display: block;">
+                <a class="card md-whiteframe-z1" id="{{project._id}}" routerLink="/projects/{{project._id}}" style="display: block;">
                     <div class="item"><img src="/api/upload/{{project.thumbnailId}}.jpg" alt=""></div>
                     <div class="card-content">
                         <h2 class="md-title">{{project.name}}</h2>

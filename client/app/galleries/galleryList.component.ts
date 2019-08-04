@@ -10,7 +10,7 @@ mixin(_, {
 });
 
 import { Component, ViewEncapsulation, Inject } from '@angular/core';
-import { Http } from '@angular/http';
+import {HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 import { autobind } from 'core-decorators';
 import React from 'react';
@@ -18,6 +18,7 @@ import ReactDOM from 'react-dom';
 import { CSSGrid, makeResponsive, layout } from 'react-stonecutter';
 
 import {GalleryService} from '../../components/gallery/gallery.service';
+import {Photo} from "../../components/photo/photo.service";
 
 const Grid = makeResponsive(CSSGrid, {
     maxWidth: 1920
@@ -34,11 +35,15 @@ export class GalleryListComponent {
     loadingGalleries = true;
 
     constructor(private readonly Gallery: GalleryService,
-                private readonly http: Http,
+                private readonly http: HttpClient,
                 private readonly router: Router) {}
 
     async ngOnInit() {
-        this.galleries = await this.Gallery.query();
+        const galleryQueryResult = await this.Gallery.query();
+
+        if(!galleryQueryResult) throw new Error('Gallery query returned nothing');
+
+        this.galleries = galleryQueryResult;
 
         this.loadingGalleries = false;
 
@@ -47,7 +52,7 @@ export class GalleryListComponent {
         for(let i = 0; i < this.galleries.length; i++) {
             const gallery = this.galleries[i];
 
-            let data = await this.http.get(`api/photos/${gallery.featuredId}`).toPromise().then(extractData);
+            let data = await this.http.get<Photo>(`api/photos/${gallery.featuredId}`).toPromise();
 
             const galleryEl = React.createElement("li", {
                 style: {
@@ -95,9 +100,4 @@ export class GalleryListComponent {
     goToGallery(event) {
         this.router.navigate(['/galleries', event.currentTarget.id]);
     }
-}
-
-function extractData(res) {
-    if(!res.text()) return {};
-    return res.json() || { };
 }

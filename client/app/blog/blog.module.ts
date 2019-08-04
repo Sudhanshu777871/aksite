@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { PaginationModule, AlertModule } from 'ngx-bootstrap';
@@ -20,7 +19,6 @@ const routes: Routes = [{
     imports: [
         FormsModule,
         BrowserModule,
-        HttpModule,
         PaginationModule.forRoot(),
         AlertModule,
         RouterModule.forChild(routes),

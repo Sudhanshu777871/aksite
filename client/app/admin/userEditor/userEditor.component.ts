@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthHttp } from 'angular2-jwt';
 import { AuthService } from '../../../components/auth/auth.service';
-import { Response } from '@angular/http';
+import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import {User} from "../../../components/auth/user.service";
 
@@ -19,7 +18,7 @@ export class UserEditorComponent {
     filename: string;
     fileToUpload?: File;
 
-    constructor(private readonly http: AuthHttp,
+    constructor(private readonly http: HttpClient,
                 private readonly authService: AuthService,
                 private readonly route: ActivatedRoute,
                 private readonly router: Router) {}
@@ -38,10 +37,10 @@ export class UserEditorComponent {
         } else {
             await this.http.get(`/api/users/${this.id}`)
                 .toPromise()
-                .then(extractData)
                 .then(data => {
                     console.log(data);
-                    this.user = data;
+                    // TODO
+                    this.user = data as any;
                     this.filename = this.user.imageId;
                 })
                 .catch(res => {
@@ -116,9 +115,4 @@ export class UserEditorComponent {
         // }
         this.router.navigate(['/admin/users']);
     }
-}
-
-function extractData(res: Response) {
-    if(!res.text()) return {};
-    return res.json() || { };
 }

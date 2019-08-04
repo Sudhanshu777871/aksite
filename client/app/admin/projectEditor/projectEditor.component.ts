@@ -11,7 +11,7 @@ const converter = new Converter();
 import { Component, ViewEncapsulation } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import { switchMap } from 'rxjs/operator/switchMap';
+import {switchMap} from 'rxjs/operators';
 import {Project, ProjectService} from "../../../components/Project/Project.service";
 import {DomSanitizer} from "@angular/platform-browser";
 import {SecurityContext} from "@angular/core";

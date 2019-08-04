@@ -13,7 +13,6 @@ interface Project {
     hidden?: boolean;
 }
 
-
 @Component({
     selector: 'project-list',
     template: require('./projectList.html'),
@@ -28,7 +27,8 @@ export class ProjectListComponent {
 
     ngOnInit() {
         this.Project.query()
-            .then((projects: Project[]) => {
+            .then(projects => {
+                if(!projects) throw new Error('No projects found');
                 this.loadingProjects = false;
                 this.projects = projects;
             })

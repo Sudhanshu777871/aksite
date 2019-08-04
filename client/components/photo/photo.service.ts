@@ -1,11 +1,10 @@
 import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
-import {AuthHttp} from 'angular2-jwt';
-import 'rxjs/add/operator/toPromise';
+import {HttpClient} from '@angular/common/http';
 
 export interface Photo {
     _id: string;
     thumbnailId: string;
+    sqThumbnailId: string;
     name: string;
     width: number;
     height: number;
@@ -13,40 +12,30 @@ export interface Photo {
 
 @Injectable()
 export class PhotoService {
-    constructor(private readonly http: Http,
-                private readonly authHttp: AuthHttp) {}
+    constructor(private readonly http: HttpClient) {}
 
     handleError(err) {
         throw err;
     }
 
     query() {
-        return this.http.get('/api/photos/')
+        return this.http.get<Photo[]>('/api/photos/')
             .toPromise()
-            .then(extractData)
             .catch(this.handleError);
     }
     get(photo: {id: string}) {
-        return this.http.get(`/api/photos/${photo.id}`)
+        return this.http.get<Photo>(`/api/photos/${photo.id}`)
             .toPromise()
-            .then(extractData)
             .catch(this.handleError);
     }
     create(photo) {
-        return this.http.post('/api/photos/', photo)
+        return this.http.post<Photo>('/api/photos/', photo)
             .toPromise()
-            .then(extractData)
             .catch(this.handleError);
     }
     remove(photo: {id: string}) {
-        return this.authHttp.delete(`/api/photos/${photo.id}`)
+        return this.http.delete(`/api/photos/${photo.id}`)
             .toPromise()
-            .then(extractData)
             .catch(this.handleError);
     }
-}
-
-function extractData(res: Response) {
-    if(!res.text()) return {};
-    return res.json() || { };
 }

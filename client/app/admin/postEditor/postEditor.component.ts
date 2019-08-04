@@ -1,6 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { Response } from '@angular/http';
-import { AuthHttp } from 'angular2-jwt';
+import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import { AuthService } from '../../../components/auth/auth.service';
 
@@ -55,7 +54,7 @@ export class PostEditorComponent {
     filename?: string;
     fileToUpload?: File;
 
-    constructor(private readonly authHttp: AuthHttp,
+    constructor(private readonly http: HttpClient,
                 private readonly route: ActivatedRoute,
                 private readonly router: Router,
                 private readonly authService: AuthService
@@ -91,12 +90,8 @@ export class PostEditorComponent {
             this.loadingPost = false;
             this.newPost = true;
         } else {
-            await this.authHttp.get(`/api/posts/${this.id}`)
+            await this.http.get<Post>(`/api/posts/${this.id}`)
                 .toPromise()
-                .then(function(res: Response) {
-                    if(!res.text()) return {};
-                    return res.json() || {};
-                })
                 .then(data => {
                     console.log(data);
                     this.post = data;
@@ -162,8 +157,7 @@ export class PostEditorComponent {
             }
         };
 
-        this.authHttp.request(options.url, {
-            method: options.method,
+        this.http.request(options.method, options.url, {
             body: options.fields,
         })
             .toPromise()

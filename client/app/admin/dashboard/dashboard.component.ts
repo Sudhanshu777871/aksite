@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { Response } from '@angular/http';
-import { AuthHttp } from 'angular2-jwt';
+import {HttpClient} from '@angular/common/http';
 
 import _ from 'lodash-es';
 // import d3 from 'd3';
-//import nv from 'nvd3';
+// import nv from 'nvd3';
 // const d3 = {};
 // const nv = {};
 // import moment from 'moment';
@@ -67,15 +66,13 @@ function googleApiInit() {
 export class DashboardComponent {
     tableItems = [];
 
-    constructor(private readonly authHttp: AuthHttp) {
+    constructor(private readonly http: HttpClient) {
         _.forEach(apiItems, item => {
-            this.authHttp.get(`api/${item.path}/count`)
+            this.http.get(`api/${item.path}/count`)
                 .toPromise()
-                .then(function(res: Response) {
-                    if(!res.text()) return {};
-                    let json = res.json();
-                    return _.isNumber(json)
-                        ? json
+                .then((res) => {
+                    return _.isNumber(res)
+                        ? res
                         : {};
                 })
                 .then(data => {

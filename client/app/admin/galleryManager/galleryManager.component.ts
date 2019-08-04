@@ -32,6 +32,7 @@ export class GalleryManagerComponent {
     ngOnInit() {
         this.galleryService.query()
             .then(galleries => {
+                if(!galleries) throw new Error('Gallery not found');
                 this.galleries = galleries;
                 _.forEach(this.galleries, gallery => {
                     this.http.get(`/api/photos/${gallery.featuredId}`)

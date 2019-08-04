@@ -1,4 +1,7 @@
 {
+    "angularCompilerOptions": {
+        "preserveWhitespaces": "off",
+    },
     "awesomeTypescriptLoaderOptions": {
         /* ... */
         "useCache": false,

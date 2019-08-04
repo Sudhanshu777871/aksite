@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthHttp } from 'angular2-jwt';
-import { Response } from '@angular/http';
+import {HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,19 +10,16 @@ import { Router } from '@angular/router';
 export class UserManagerComponent {
     users = [];
 
-    constructor(private readonly http: AuthHttp,
+    constructor(private readonly http: HttpClient,
                 private readonly router: Router) {}
 
     ngOnInit() {
         return this.http.get('/api/users')
             .toPromise()
-            .then(function(res: Response) {
-                if(!res.text()) return {};
-                return res.json() || {};
-            })
             .then(users => {
                 console.log(users);
-                this.users = users;
+                // TODO
+                this.users = users as any;
                 this.users.forEach(user => {
                     user.bgImg = `url("api/upload/${user.smallImageId}.jpg")`;
                 });
