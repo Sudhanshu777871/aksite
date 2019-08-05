@@ -10,8 +10,8 @@ interface User {
 
 @Component({
     selector: 'login',
-    template: require('./login.html'),
-    styles: [require('./login.scss')],
+    templateUrl: './login.html',
+    styleUrls: ['./login.scss'],
 })
 export class LoginComponent {
     user: User = {

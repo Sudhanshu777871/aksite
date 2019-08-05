@@ -1,3 +1,3 @@
-import 'reflect-metadata';
+require('reflect-metadata');
 
-require('./app');
+import './app';

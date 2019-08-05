@@ -17,8 +17,8 @@ interface Post {
 
 @Component({
     selector: 'post',
-    template: require('./post.html'),
-    styles: [require('./post.scss'), require('../blog.scss')],
+    templateUrl: './post.html',
+    styleUrls: ['./post.scss', '../blog.scss'],
     encapsulation: ViewEncapsulation.None
 })
 export class PostComponent {

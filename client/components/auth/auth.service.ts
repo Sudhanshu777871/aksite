@@ -22,7 +22,13 @@ function safeCb(cb) {
     return _.isFunction(cb) ? cb : noop;
 }
 
-interface Credentials {
+export interface Credentials {
+    email: string;
+    password: string;
+}
+
+export interface SignupInfo {
+    name: string;
     email: string;
     password: string;
 }
@@ -47,9 +53,7 @@ export class AuthService {
         }
     }
 
-    /**
-     * Authenticate user and save token
-     */
+    /** Authenticate user and save token */
     login({email, password}: Credentials, callback?: (error, user) => void): Promise<User> {
         return this.http.post('/auth/local', {
             email,
@@ -74,9 +78,7 @@ export class AuthService {
             });
     }
 
-    /**
-     * Delete access token and user info
-     */
+    /** Delete access token and user info */
     logout(): Promise<void> {
         // this.$cookies.remove('token');
         localStorage.removeItem('user');
@@ -87,14 +89,7 @@ export class AuthService {
         return Promise.resolve();
     }
 
-    /**
-     * Create a new user
-     *
-     * @param  {Object}   user     - user info
-     * @param  {Function} callback - optional, function(error, user)
-     * @return {Promise}
-     */
-    createUser(user: User, callback?: (error, user: User) => void) {
+    createUser(user: SignupInfo, callback?: (error, user: User) => void) {
         return this.userService.create(user)
             .then((data: {token: string}) => {
                 localStorage.setItem(AUTH_TOKEN_KEY, data.token);

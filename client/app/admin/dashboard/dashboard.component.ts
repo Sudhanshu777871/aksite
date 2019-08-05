@@ -60,8 +60,8 @@ function googleApiInit() {
 
 @Component({
     selector: 'admin-dashboard',
-    template: require('./dashboard.html'),
-    styles: [require('./dashboard.scss')]
+    templateUrl: './dashboard.html',
+    styleUrls: ['./dashboard.scss']
 })
 export class DashboardComponent {
     tableItems = [];

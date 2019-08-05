@@ -139,10 +139,18 @@
 </div>
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12 vendor-section">
-            <h1 class="page-header">Powered by:</h1>
-            <div id="stonecutter"></div>
+    <div class="vendor-section-v2">
+        <h1 class="page-header">Powered by:</h1>
+        <div class="columns" #columns>
+            <ul *ngFor="let col of cols" class="column">
+                <div>
+                    <li *ngFor="let image of col" class="">
+                        <a href="{{image.href}}">
+                            <img src="{{image.src}}" alt="{{image.alt}}">
+                        </a>
+                    </li>
+                </div>
+            </ul>
         </div>
     </div>
 </div>

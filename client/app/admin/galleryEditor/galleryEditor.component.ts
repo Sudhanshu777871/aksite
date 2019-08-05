@@ -13,7 +13,7 @@ import {Gallery, GalleryService} from '../../../components/gallery/gallery.servi
 
 @Component({
     selector: 'gallery-editor',
-    template: require('./galleryEditor.html'),
+    templateUrl: './galleryEditor.html',
 })
 export class GalleryEditorComponent {
     photos = [];

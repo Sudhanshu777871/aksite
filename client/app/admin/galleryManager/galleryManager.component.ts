@@ -15,7 +15,7 @@ import {GalleryService} from "../../../components/gallery/gallery.service";
 
 @Component({
     selector: 'gallery-manager',
-    template: require('./galleryManager.html'),
+    templateUrl: './galleryManager.html',
 })
 export class GalleryManagerComponent {
     errors = [];

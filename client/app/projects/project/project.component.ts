@@ -8,8 +8,8 @@ import {Observable} from 'rxjs';
 
 @Component({
     selector: 'project',
-    template: require('./project.html'),
-    styles: [require('./project.scss')],
+    templateUrl: './project.html',
+    styleUrls: ['./project.scss'],
 })
 export class ProjectComponent implements OnInit {
     error;

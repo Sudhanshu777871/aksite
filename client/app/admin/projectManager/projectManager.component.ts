@@ -15,8 +15,8 @@ import moment from "moment";
 
 @Component({
     selector: 'project-manger',
-    template: require('./projectManager.html'),
-    styles: [require('./projectManager.scss')],
+    templateUrl: './projectManager.html',
+    styleUrls: ['./projectManager.scss'],
 })
 export class ProjectManagerComponent {
     errors = [];

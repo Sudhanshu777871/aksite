@@ -4,8 +4,8 @@ import {User} from "../../components/auth/user.service";
 
 @Component({
     selector: 'user-settings',
-    template: require('./settings.html'),
-    // styles: [require('./settings.scss')]
+    templateUrl: './settings.html',
+    // styleUrls: ['./settings.scss']
 })
 export class SettingsComponent {
     sections = [{

@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'user-manager',
-    template: require('./userManager.html'),
-    styles: [require('./userManager.scss')]
+    templateUrl: './userManager.html',
+    styleUrls: ['./userManager.scss']
 })
 export class UserManagerComponent {
     users = [];

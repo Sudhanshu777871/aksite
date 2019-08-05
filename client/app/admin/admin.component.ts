@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import template from './admin.html';
 
 @Component({
     selector: 'admin',
-    template,
+    templateUrl: './admin.html',
 })
 export class AdminComponent {
     sections = [{
@@ -35,11 +34,6 @@ export class AdminComponent {
         icon: 'fa-cog',
         link: 'settings',
     }];
-
-    // static parameters = [];
-    // constructor() {
-    //     this.$mdSidenav = $mdSidenav;
-    // }
 
     // toggleLeft() {
     //     this.$mdSidenav('left').toggle()

@@ -21,8 +21,8 @@ interface PostQueryData {
 
 @Component({
     selector: 'blog-manager',
-    template: require('./blogManager.html'),
-    styles: [require('./blogManager.scss')]
+    templateUrl: './blogManager.html',
+    styleUrls: ['./blogManager.scss']
 })
 export class BlogManagerComponent {
     errors = [];

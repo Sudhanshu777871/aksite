@@ -3,8 +3,8 @@ import { AuthService } from '../../../components/auth/auth.service';
 
 @Component({
     selector: 'settings-dashboard',
-    template: require('./dashboard.html'),
-    styles: [require('./dashboard.scss')]
+    templateUrl: './dashboard.html',
+    styleUrls: ['./dashboard.scss']
 })
 export class SettingsDashboardComponent {
     submitted = false;
@@ -13,10 +13,7 @@ export class SettingsDashboardComponent {
         newPassword: undefined
     };
 
-    static parameters = [AuthService];
-    constructor(authService: AuthService) {
-        this.authService = authService;
-
+    constructor(private readonly authService: AuthService) {
         // un-mark password as wrong when changed
         // $scope.$watch(() => this.userForm.oldPassword.$modelValue, () => {
         //     this.userForm.oldPassword.$setValidity('wrongPassword', true);
@@ -38,11 +35,11 @@ export class SettingsDashboardComponent {
     }
 
     showSimpleToast(text) {
-        this.$mdToast.show(
-            this.$mdToast.simple()
-                .textContent(text)
-                .position('bottom right')
-                .hideDelay(3000)
-        );
+        // this.$mdToast.show(
+        //     this.$mdToast.simple()
+        //         .textContent(text)
+        //         .position('bottom right')
+        //         .hideDelay(3000)
+        // );
     }
 }

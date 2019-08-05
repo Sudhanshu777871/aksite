@@ -39,10 +39,8 @@ import {Project} from "../../../components/Project/Project.service";
 
 @Component({
     selector: 'gallery',
-    template: require('./gallery.html'),
-    styles: [
-        require('./gallery.scss'),
-    ],
+    templateUrl: './gallery.html',
+    styleUrls: ['./gallery.scss'],
 })
 export class GalleryComponent {
     galleryId;
@@ -114,7 +112,6 @@ export class GalleryComponent {
             document.getElementById('stonecutter'));
     }
 
-    @autobind
     onThumbnailsClick(event) {
         // FIX: looks like photoswipe doesn't always make sure there's a start to the query parameters
         if(!window.location.href.includes('?')) window.location = `${window.location.href}?pswp` as unknown as Location;

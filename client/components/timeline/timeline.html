@@ -1,31 +1,34 @@
 <ul class="timeline">
-    <li class="timeline-item" ng-repeat="item in items | orderBy:date:true" ng-class="{open: item.open}">
+    <li class="timeline-item" *ngFor="let item of items" [class.open]="item.open">
         <div class="clearfix">
             <span class="timeline-date-line1">
-                {{::item.dateLine1}}
+                {{item.dateLine1}}
             </span>
             <span class="timeline-date-line2 text-muted">
-                {{::item.dateLine2}}
+                {{item.dateLine2}}
             </span>
             <div class="timeline-card md-whiteframe-z1">
-                <img ng-class="{'pull-left': (item.imagePosition === 'left' || !item.imagePosition), 'pull-right': item.imagePosition === 'right'}"
-                     ng-if="item.image"
-                     ng-src="{{::item.image}}"
+                <img [class.pull-left]="item.imagePosition === 'left' || !item.imagePosition"
+                     [class.pull-right]="item.imagePosition === 'right'"
+                     *ngIf="item.image"
+                     src="{{item.image}}"
                      alt=""/>
                 <div class="timeline-content">
-                    <h2>{{::item.heading}}</h2>
-                    <p>{{::item.content}}</p>
+                    <h2>{{item.heading}}</h2>
+                    <p>{{item.content}}</p>
                     <div class="badge-section"
-                         ng-class="{left: (item.image && (item.imagePosition === 'left' || !item.imagePosition)), right: (item.image && item.imagePosition === 'right')}">
-                        <span ng-repeat="badge in item.badges">
-                            <img ng-src="{{badge.src}}" alt="{{badge.alt}}"/>
-                            <md-tooltip>{{badge.alt}}</md-tooltip>
+                         [class.left]="item.image && (item.imagePosition === 'left' || !item.imagePosition))">
+                         [class.right]="item.image && item.imagePosition === 'right')">
+                        <span *ngFor="let badge of item.badges">
+                            <img src="{{badge.src}}" alt="{{badge.alt}}"/>
+                            <mat-tooltip>{{badge.alt}}</mat-tooltip>
                         </span>
                     </div>
                 </div>
-                <md-button class="mat-icon-button md-button-toggle-rotate-180" aria-label="More" ng-click="toggleCardOpen(item)">
+                <button mat-button class="mat-icon-button md-button-toggle-rotate-180" aria-label="More" (click)="toggleCardOpen(item)">
                     <mat-icon class="fa md-toggle-icon" md-font-icon="fa-angle-down" ng-class="{toggled: item.open}"></mat-icon>
-                </md-button>
+                    <mat-icon fontSet="fa" fontIcon="fa-angle-down" [class.toggled]="item.open"></mat-icon>
+                </button>
             </div>
         </div>
     </li>

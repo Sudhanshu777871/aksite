@@ -3,8 +3,8 @@ import {HttpClient} from '@angular/common/http';
 
 @Component({
     selector: 'file-manager',
-    template: require('./fileManager.html'),
-    styles: [require('./fileManager.scss')]
+    templateUrl: './fileManager.html',
+    styleUrls: ['./fileManager.scss']
 })
 export default class FileManagerController {
     files: number;

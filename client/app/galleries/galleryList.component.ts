@@ -26,8 +26,8 @@ const Grid = makeResponsive(CSSGrid, {
 
 @Component({
     selector: 'gallery-list',
-    template: require('./galleryList.html'),
-    styles: [require('./galleryList.scss')],
+    templateUrl: './galleryList.html',
+    styleUrls: ['./galleryList.scss'],
     encapsulation: ViewEncapsulation.None,
 })
 export class GalleryListComponent {
@@ -96,7 +96,6 @@ export class GalleryListComponent {
         ReactDOM.render(grid, document.getElementById('stonecutter'));
     }
 
-    @autobind
     goToGallery(event) {
         this.router.navigate(['/galleries', event.currentTarget.id]);
     }

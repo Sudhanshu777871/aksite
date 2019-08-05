@@ -22,19 +22,25 @@ mixin(_, {
 });
 
 import { Component, OnInit } from '@angular/core';
+import {ViewChild} from '@angular/core'
+import {
+    trigger,
+    state,
+    style,
+    animate,
+    transition,
+} from '@angular/animations';
 
 import { SocketService } from '../../components/socket/socket.service';
 
 import MiniDaemon from '../../components/minidaemon';
 import classie from 'classie';
-import React from 'react';
-import ReactDOM from 'react-dom';
 import { CSSGrid, measureItems, makeResponsive, layout } from 'react-stonecutter';
 
 let texts = ['dashed-stroke-text', 'gradient-text', 'pattern-text', /*'diag-striped-text',*/ 'bg-img-text'];
 let usedTexts = [];
 let currentText = _.sample(texts); // Load first random text
-let vendorImages = [{
+let vendorImages: VendorImage[] = [{
     href: 'https://angular.io/',
     src: 'assets/images/angular.svg',
     alt: 'angular'
@@ -108,6 +114,12 @@ let vendorImages = [{
     alt: 'WebStorm'
 }];
 
+interface VendorImage {
+    href: string;
+    src: string;
+    alt?: string;
+}
+
 const Grid = makeResponsive(measureItems(CSSGrid, { measureImages: true }), {
     maxWidth: 1920,
     minPadding: 100
@@ -115,45 +127,33 @@ const Grid = makeResponsive(measureItems(CSSGrid, { measureImages: true }), {
 
 @Component({
     selector: 'main',
-    template: require('./main.html'),
-    styles: [require('./main.scss')],
+    templateUrl: './main.html',
+    styleUrls: ['./main.scss'],
+    animations: []
 })
 export class MainComponent implements OnInit {
+    vendorImages: VendorImage[];
+    cols: VendorImage[][] = [[], [], []];
+    @ViewChild('columns', {static: false}) columnEls;
+
     constructor(private readonly socketService: SocketService) {
         console.log(socketService);
         socketService.emit([{}]);
         socketService.emit(['data', {}]);
         socketService.emit(['chungus']);
-        vendorImages = _.shuffle(vendorImages);
+        this.vendorImages = _.shuffle(vendorImages);
     }
 
     ngOnInit() {
-        let imageArray = [];
+        let addImage = (img: VendorImage, i: number) => {
+            const columnEls = Array.from(this.columnEls.nativeElement.children);
 
-        let addImage = (image, i) => {
-            imageArray.push(React.createElement('li', {
-                className: 'grid-item',
-                key: i
-            }, React.createElement('a', {
-                href: image.href
-            }, React.createElement('img', {
-                src: image.src,
-                alt: image.alt
-            }))));
+            const min = columnEls.reduce((acc: {min: number, el: HTMLUListElement, i: number}, el: HTMLUListElement, j) => {
+                const localMin = Math.min(acc.min, (el.children[0] as HTMLDivElement).offsetHeight);
+                return localMin < acc.min ? {min: localMin, el, i: j} : acc;
+            }, {min: Infinity, el: columnEls[0], i: -1});
 
-            ReactDOM.render(
-                React.createElement(Grid, {
-                    className: 'grid',
-                    component: 'ul',
-                    columnWidth: 250,
-                    gutterWidth: 5,
-                    gutterHeight: 5,
-                    layout: layout.pinterest,
-                    duration: 500,
-                    easing: 'ease-out'
-                }, imageArray),
-                document.getElementById('stonecutter')
-            );
+            this.cols[min.i].push(img);
         };
 
         let i = 0;

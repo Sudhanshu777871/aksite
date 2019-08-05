@@ -1,22 +1,19 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../components/auth/auth.service';
+import { AuthService, SignupInfo } from '../../../components/auth/auth.service';
 
 @Component({
     selector: 'signup',
-    template: require('./signup.html'),
-    styles: [require('./signup.scss')],
+    templateUrl: './signup.html',
+    styleUrls: ['./signup.scss'],
 })
 export class SignupComponent {
-    user = {};
+    user: SignupInfo;
     errors = {};
     submitted = false;
 
-    static parameters = [AuthService, Router];
-    constructor(authService: AuthService, router: Router) {
-        this.authService = authService;
-        this.router = router;
-    }
+    constructor(private readonly authService: AuthService,
+                private readonly router: Router) {}
 
     register() {
         this.submitted = true;

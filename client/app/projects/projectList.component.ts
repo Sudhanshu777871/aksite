@@ -15,8 +15,8 @@ interface Project {
 
 @Component({
     selector: 'project-list',
-    template: require('./projectList.html'),
-    styles: [require('./projectList.scss')],
+    templateUrl: './projectList.html',
+    styleUrls: ['./projectList.scss'],
 })
 export class ProjectListComponent {
     projects = [];

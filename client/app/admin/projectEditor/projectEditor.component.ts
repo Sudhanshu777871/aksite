@@ -18,8 +18,8 @@ import {SecurityContext} from "@angular/core";
 
 @Component({
     selector: 'project-editor',
-    template: require('./projectEditor.html'),
-    styles: [require('../../projects/project/project.scss'), require('./projectEditor.scss')],
+    templateUrl: './projectEditor.html',
+    styleUrls: ['../../projects/project/project.scss', './projectEditor.scss'],
     encapsulation: ViewEncapsulation.None
 })
 export class ProjectEditorComponent {

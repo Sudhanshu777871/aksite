@@ -39,8 +39,8 @@ interface Post {
 
 @Component({
     selector: 'post-editor',
-    template: require('./postEditor.html'),
-    styles: [require('../../blog/post/post.scss'), require('./postEditor.scss')],
+    templateUrl: './postEditor.html',
+    styleUrls: ['../../blog/post/post.scss', './postEditor.scss'],
     encapsulation: ViewEncapsulation.None
 })
 export class PostEditorComponent {

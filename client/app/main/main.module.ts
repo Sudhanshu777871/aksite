@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main.component';
 import { SocketService } from '../../components/socket/socket.service';
+import { CommonModule } from '@angular/common';
 
 export const ROUTES: Routes = [
     { path: 'home', component: MainComponent },
@@ -10,6 +11,7 @@ export const ROUTES: Routes = [
 @NgModule({
     imports: [
         RouterModule.forChild(ROUTES),
+        CommonModule,
     ],
     declarations: [
         MainComponent,

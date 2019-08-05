@@ -6,8 +6,8 @@ import {User} from "../../../components/auth/user.service";
 
 @Component({
     selector: 'user-editor',
-    template: require('./userEditor.html'),
-    // styles: [require('./userEditor.scss')]
+    templateUrl: './userEditor.html',
+    // styleUrls: ['./userEditor.scss']
 })
 export class UserEditorComponent {
     loadingUser = true;

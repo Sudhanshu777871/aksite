@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {SignupInfo} from "./auth.service";
 
 export interface User {
     // TODO: use Mongoose model
@@ -27,7 +28,7 @@ export class UserService {
             .toPromise()
             .catch(handleError) as Promise<User&{token: string}>;
     }
-    create(user: User): Promise<{token: string}> {
+    create(user: SignupInfo): Promise<{token: string}> {
         return this.http.post('/api/users/', user)
             .toPromise()
             .catch(handleError) as Promise<{token: string}>;

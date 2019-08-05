@@ -7,7 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 })
 class ResumeComponent {
     constructor() {
-        window.location = 'https://www.linkedin.com/in/koroluka';
+        window.location.href = 'https://www.linkedin.com/in/koroluka';
     }
 }
 

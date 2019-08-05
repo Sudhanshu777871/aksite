@@ -2,6 +2,7 @@
 const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+// const {AngularCompilerPlugin} = require('@ngtools/webpack');
 const _ = require('lodash');
 const CompressionPlugin = require('compression-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
@@ -46,13 +47,6 @@ module.exports = function makeWebpackConfig(options) {
         config.entry = {
             polyfills: './client/app/polyfills.js',
             app: './client/app/index.js',
-            vendor: [
-                'hammerjs',
-                'raven-js',
-                'react',
-                'react-dom',
-                'showdown'
-            ]
         };
     }
 
@@ -86,7 +80,7 @@ module.exports = function makeWebpackConfig(options) {
 
     config.resolve = {
         modules: ['node_modules'],
-        extensions: ['.js', '.ts', '.tsx'],
+        extensions: ['.js', '.ts'],
         alias: {
             primus: !TEST ? path.resolve(__dirname, 'client/components/socket/primus.js')
                 : path.resolve(__dirname, 'client/components/socket/primus.mock.js'),
@@ -164,17 +158,20 @@ module.exports = function makeWebpackConfig(options) {
             // TS LOADER
             // Reference: https://github.com/s-panferov/awesome-typescript-loader
             // Transpile .ts files using awesome-typescript-loader
-            test: /\.tsx?$/,
+            test: /\.ts$/,
             use: [{
                 loader: 'awesome-typescript-loader',
                 options: {
                     tsconfig: path.resolve(__dirname, 'tsconfig.json')
                 },
-            }].concat(DEV ? '@angularclass/hmr-loader' : []),
+            }, 'angular2-template-loader'].concat(DEV ? '@angularclass/hmr-loader' : []),
             include: [
                 path.resolve(__dirname, 'client/')
             ]
         }, {
+        //     test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
+        //     use: '@ngtools/webpack',
+        // }, {
             // ASSET LOADER
             // Reference: https://github.com/webpack/file-loader
             // Copy png, jpg, jpeg, gif, svg, woff, woff2, ttf, eot files to output
@@ -337,6 +334,12 @@ module.exports = function makeWebpackConfig(options) {
                 noAutoWrap: true,
             }
         }),
+
+        // new AngularCompilerPlugin({
+        //     tsConfigPath: './tsconfig.json',
+        //     entryModule: './client/app/app.module#AppModule',
+        //     sourceMap: true,
+        // }),
 
         // new HardSourceWebpackPlugin(),
     ];
