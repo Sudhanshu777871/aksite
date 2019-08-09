@@ -132,7 +132,7 @@
     "mini-css-extract-plugin": "~0.4.0",
     "mocha": "^4.0.0",
     "ng2-file-upload": "^1.1.0",
-    "ngx-bootstrap": "^3.3.0",
+    "ngx-bootstrap": "^5.1.0",
     "node-sass": "^4.12.0",
     "nodemon": "^1.18.9",
     "null-loader": "^0.1.1",
@@ -160,8 +160,9 @@
     "uglify-js": "git://github.com/mishoo/UglifyJS2.git#harmony",
     "uglifyjs-webpack-plugin": "^1.2.5",
     "webpack": "^4.28.4",
-    "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2",
+    "webpack-visualizer-plugin": "^0.1.11",
     "zone.js": "~0.8.26"
   },
   "engines": {

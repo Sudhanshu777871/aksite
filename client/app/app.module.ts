@@ -26,7 +26,7 @@ import { BlogModule } from './blog/blog.module';
 import { ResumeModule } from './resume/resume.module';
 import { SettingsModule } from './settings/settings.module';
 
-import constants from './app.constants';
+import {constants} from './app.constants';
 // @ts-ignore
 import Raven from 'raven-js';
 import {AUTH_TOKEN_KEY} from '../components/auth/auth.service';
@@ -37,7 +37,7 @@ if(process.env.NODE_ENV === 'production') {
         .install();
 }
 
-class RavenErrorHandler implements ErrorHandler {
+export class RavenErrorHandler implements ErrorHandler {
     handleError(err: Error) : void {
         Raven.captureException((err as any).originalError);
     }
@@ -55,11 +55,11 @@ const appRoutes: Routes = [
     //   component: MainComponent,
     //   data: { title: 'Home' }
     // },
-    {
-        path: '',
-        redirectTo: '/home',
-        pathMatch: 'full',
-    },
+    // {
+    //     path: '',
+    //     redirectTo: '/home',
+    //     pathMatch: 'full',
+    // },
     // { path: '**', component: AppComponent }
 ];
 

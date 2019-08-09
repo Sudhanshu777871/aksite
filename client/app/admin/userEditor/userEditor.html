@@ -7,7 +7,7 @@
     <br/>
 
     <div class="row">
-        <form class="form-horizontal" name="form" (submit)="saveUser(form)">
+        <form class="form-horizontal" name="form" (submit)="saveUser()">
 
             <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">Name</label>
@@ -37,7 +37,7 @@
                     <span class="input-group-btn">
                         <span class="btn btn-primary btn-file">
                             Browse
-                            <input type="file" accept="images/*" id="fileInput" name="myFiles[]" ng-file-select="onFileSelect($files)">
+<!--                            <input type="file" accept="images/*" id="fileInput" name="myFiles[]" ng-file-select="onFileSelect($files)">-->
                         </span>
                     </span>
                 </div>

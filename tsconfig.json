@@ -1,6 +1,7 @@
 {
     "angularCompilerOptions": {
         "preserveWhitespaces": "off",
+        "enableIvy": false
     },
     "awesomeTypescriptLoaderOptions": {
         /* ... */
@@ -18,8 +19,7 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "lib": [ "es2015", "dom" ],
-        "moduleResolution": "node",
-        "jsx": "react"
+        "moduleResolution": "node"
     },
     "include": [
         "./client/**/*.ts"

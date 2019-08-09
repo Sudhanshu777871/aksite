@@ -6,19 +6,19 @@ import { ProgressbarModule } from 'ngx-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
 // import { FileUploadModule } from 'ng2-file-upload';
 
-import { AdminComponent } from './admin.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { BlogManagerComponent } from './blog/blogManager.component';
-import { PostEditorComponent } from './postEditor/postEditor.component';
-import { UserManagerComponent } from './userManager/userManager.component';
-import { UserEditorComponent } from './userEditor/userEditor.component';
+import {AdminComponent} from './admin.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
+import {BlogManagerComponent} from './blog/blogManager.component';
+import {PostEditorComponent} from './postEditor/postEditor.component';
+import {UserManagerComponent} from './userManager/userManager.component';
+import {UserEditorComponent} from './userEditor/userEditor.component';
 import {ProjectManagerComponent} from './projectManager/projectManager.component';
 import {ProjectEditorComponent} from './projectEditor/projectEditor.component';
 import {GalleryManagerComponent} from './galleryManager/galleryManager.component';
 import {GalleryEditorComponent} from './galleryEditor/galleryEditor.component';
 import {DirectivesModule} from '../../components/directives.module';
 import {SiteSettingsComponent} from './siteSettings/siteSettings.component';
-import FileManagerComponent from './fileManager/fileManager.component';
+import {FileManagerComponent} from './fileManager/fileManager.component';
 
 //import '!raw!sass!./admin.scss
 

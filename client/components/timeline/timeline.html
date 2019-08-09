@@ -17,17 +17,16 @@
                     <h2>{{item.heading}}</h2>
                     <p>{{item.content}}</p>
                     <div class="badge-section"
-                         [class.left]="item.image && (item.imagePosition === 'left' || !item.imagePosition))">
+                         [class.left]="item.image && (item.imagePosition === 'left' || !item.imagePosition)">
                          [class.right]="item.image && item.imagePosition === 'right')">
                         <span *ngFor="let badge of item.badges">
                             <img src="{{badge.src}}" alt="{{badge.alt}}"/>
-                            <mat-tooltip>{{badge.alt}}</mat-tooltip>
+<!--                            <mat-tooltip>{{badge.alt}}</mat-tooltip>-->
                         </span>
                     </div>
                 </div>
                 <button mat-button class="mat-icon-button md-button-toggle-rotate-180" aria-label="More" (click)="toggleCardOpen(item)">
-                    <mat-icon class="fa md-toggle-icon" md-font-icon="fa-angle-down" ng-class="{toggled: item.open}"></mat-icon>
-                    <mat-icon fontSet="fa" fontIcon="fa-angle-down" [class.toggled]="item.open"></mat-icon>
+<!--                    <mat-icon fontSet="fa" fontIcon="fa-angle-down" [class.toggled]="item.open"></mat-icon>-->
                 </button>
             </div>
         </div>

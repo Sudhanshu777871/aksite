@@ -2,7 +2,7 @@
 
 import path from 'path';
 import _ from 'lodash';
-import shared from './shared';
+import shared from '../../../client/shared';
 
 //function requiredProcessEnv(name) {
 //    if(!process.env[name]) {

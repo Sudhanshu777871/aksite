@@ -2,7 +2,7 @@
 
 // Development specific configuration
 // ==================================
-export default {
+export const constants = {
     // List of user roles
     userRoles: ['guest', 'user', 'admin'],
 

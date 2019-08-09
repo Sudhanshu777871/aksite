@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 
 @Component({
     templateUrl: './timeline.html',
-    styleUrls: ['./timelin.scss'],
+    styleUrls: ['./timeline.scss'],
 })
 export class TimelineComponent {
     openedCard;

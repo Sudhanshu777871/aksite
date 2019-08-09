@@ -64,8 +64,8 @@ export class UserEditorComponent {
         }
     }
 
-    saveUser(form) {
-        if(!form.$valid) return;
+    saveUser() {
+        // if(!form.$valid) return;
 
         this.submitted = true;
 

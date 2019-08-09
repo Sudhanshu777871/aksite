@@ -5,7 +5,7 @@
         <!--</h2>-->
     <!--</md-toolbar>-->
     <!--<md-content class="md-padding" style="min-height: 300px;">-->
-        <img src="/api/upload/{{settings.currentUser.imageId}}.jpg" alt="Current User Image" class="settings-profile-img" />
+<!--        <img src="/api/upload/{{user.imageId}}.jpg" alt="Current User Image" class="settings-profile-img" />-->
     <!--</md-content>-->
     <!--<md-toolbar class="md-theme-light">-->
         <!--<h2 class="md-toolbar-tools">-->
@@ -13,7 +13,7 @@
         <!--</h2>-->
     <!--</md-toolbar>-->
     <!--<md-content class="md-padding" style="min-height: 300px;">-->
-        <form name="userForm" (submit)="changePassword(userForm)">
+        <form name="userForm" (submit)="changePassword()">
             <!--<mat-form-field flex>-->
                 <label>Old Password</label>
                 <input [(ngModel)]="user.oldPassword" name="oldPassword" type="password">

@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { PreloaderComponent } from './preloader/preloader.component';
+import {TimelineComponent} from './timeline/timeline.component';
 
 @NgModule({
     imports: [
@@ -20,11 +21,13 @@ import { PreloaderComponent } from './preloader/preloader.component';
         NavbarComponent,
         FooterComponent,
         PreloaderComponent,
+        TimelineComponent,
     ],
     exports: [
         NavbarComponent,
         FooterComponent,
         PreloaderComponent,
+        TimelineComponent,
     ]
 })
 export class DirectivesModule {}

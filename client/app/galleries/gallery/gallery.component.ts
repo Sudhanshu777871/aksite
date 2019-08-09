@@ -15,7 +15,6 @@ mixin(_, {
     map,
     noop
 });
-import {autobind} from 'core-decorators';
 import {Gallery, GalleryService} from '../../../components/gallery/gallery.service';
 import {Photo, PhotoService} from '../../../components/photo/photo.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
@@ -35,7 +34,6 @@ const Grid = makeResponsive(measureItems(CSSGrid, { measureImages: true }), {
 });
 
 import '../../../assets/scss/photoswipe.scss';
-import {Project} from "../../../components/Project/Project.service";
 
 @Component({
     selector: 'gallery',
@@ -45,7 +43,8 @@ import {Project} from "../../../components/Project/Project.service";
 export class GalleryComponent {
     galleryId;
     gallery: Gallery;
-    errors = [];
+    error?: Error;
+    noPhotos = false;
     photos = [];
     items = [];
 

@@ -14,7 +14,7 @@ describe('Controller: FileManagerComponent', function() {
         inject(function(_$controller_, _$rootScope_, _$http_) {
             //scope = _$rootScope_.$new();
             $http = _$http_;
-            FileManagerController = _$controller_('FileManagerController', {
+            FileManagerController = _$controller_('FileManagerComponent', {
                 //$scope: scope,
                 $http: _$http_
             });

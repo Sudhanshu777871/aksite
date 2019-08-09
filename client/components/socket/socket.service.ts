@@ -1,20 +1,40 @@
 import { Injectable } from '@angular/core';
-import Primus from 'primus';
 import primusEmit from 'primus-emit';
 import { noop, find, remove } from 'lodash';
+// @ts-ignore
+import Raven from 'raven-js';
+
+interface PrimusType {
+    constructor(url?: string, options?: {}): PrimusInstance;
+    connect(url?: string, options?: {}): PrimusInstance;
+}
+interface PrimusInstance {
+    emit(dat: any): void;
+    plugin(name: string, plugin: Function): void;
+    on(event: string, cb: Function): void;
+    removeAllListeners(name?: string): void;
+}
 
 @Injectable()
 export class SocketService {
-    private primus: Primus;
+    private readonly primus: PrimusInstance;
     private open = false;
     private queue: any[] = [];
 
     constructor() {
+        // @ts-ignore
+        const Primus: PrimusType = window.Primus;
+
+        if(!Primus) {
+            Raven.captureException(new Error('Primus not found'));
+            return;
+        }
+
         // this.socket = io('', {
         //     // Send auth token on connection, you will need to DI the Auth service above
         //     // 'query': 'token=' + Auth.getToken()
         // });
-        const primus = Primus.connect('http://localhost:9050');
+        const primus = Primus.connect();
         primus.plugin('emit', primusEmit);
 
         primus.on('open', () => {

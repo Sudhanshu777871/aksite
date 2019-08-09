@@ -35,7 +35,6 @@ import { SocketService } from '../../components/socket/socket.service';
 
 import MiniDaemon from '../../components/minidaemon';
 import classie from 'classie';
-import { CSSGrid, measureItems, makeResponsive, layout } from 'react-stonecutter';
 
 let texts = ['dashed-stroke-text', 'gradient-text', 'pattern-text', /*'diag-striped-text',*/ 'bg-img-text'];
 let usedTexts = [];
@@ -119,11 +118,6 @@ interface VendorImage {
     src: string;
     alt?: string;
 }
-
-const Grid = makeResponsive(measureItems(CSSGrid, { measureImages: true }), {
-    maxWidth: 1920,
-    minPadding: 100
-});
 
 @Component({
     selector: 'main',

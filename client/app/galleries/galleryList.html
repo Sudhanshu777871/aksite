@@ -9,7 +9,26 @@
         <!--<preloader></preloader>-->
     </div>
     <!--<alert [hidden]="!loadingGalleries && galleries.length !== 0" type="info">No Galleries</alert>-->
-    <div [hidden]="galleries.length <= 0" class="row cards-container">
+    <div class="row cards-container">
         <div id="stonecutter"></div>
+    </div>
+    <div class="row cards-container">
+        <ul class="card-list">
+            <li *ngFor="let gallery of galleries | async; index as i">
+                <a class="card md-whiteframe-z1" id="{{gallery._id}}" routerLink="/galleries/{{gallery._id}}" style="display: block;">
+                    <div class="item">
+                        <img *ngIf="featuredPhotos[i]" src="/api/upload/{{featuredPhotos[i].sqThumbnailId}}.jpg" alt="">
+<!--                        <div *ngFor="let photo of featuredPhotos">-->
+<!--                            {{photo.sqThumbnailId}}-->
+<!--                            <img src="/api/upload/{{photo.sqThumbnailId}}.jpg" alt="">-->
+<!--                        </div>-->
+                    </div>
+                    <div class="card-content">
+                        <h2 class="md-title">{{gallery.name}}</h2>
+                        <p>{{gallery.info}}</p>
+                    </div>
+                </a>
+            </li>
+        </ul>
     </div>
 </div>

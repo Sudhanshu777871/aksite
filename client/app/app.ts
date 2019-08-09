@@ -1,9 +1,3 @@
-// class RavenExceptionHandler {
-//     call(err) {
-//         Raven.captureException(err.originalException);
-//     }
-// }
-
 //     .factory('authInterceptor', function($rootScope, $q, $cookies, $injector) {
 //         'ngInject';
 //         var state;

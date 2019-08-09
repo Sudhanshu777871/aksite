@@ -14,11 +14,6 @@ import moment from 'moment';
 import { Converter } from 'showdown';
 const converter = new Converter();
 
-// @ts-ignore
-import template from './blog.html';
-// @ts-ignore
-import blogCss from './blog.scss';
-
 interface Page {
     imageId: string;
     _id: string;
@@ -40,8 +35,8 @@ interface BlogData {
 
 @Component({
     selector: 'blog',
-    template,
-    styles: [blogCss]
+    templateUrl: './blog.html',
+    styleUrls: ['./blog.scss']
 })
 export class BlogComponent {
     loadingItems = true;

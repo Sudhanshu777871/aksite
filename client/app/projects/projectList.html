@@ -10,7 +10,7 @@
     </div>
     <!--<alert [hidden]="!loadingProjects && projects.length !== 0" type="info">No Projects</alert>-->
     <div [hidden]="projects.length <= 0" class="row cards-container">
-        <ul class="project-list">
+        <ul class="card-list">
             <li *ngFor="let project of projects">
                 <a class="card md-whiteframe-z1" id="{{project._id}}" routerLink="/projects/{{project._id}}" style="display: block;">
                     <div class="item"><img src="/api/upload/{{project.thumbnailId}}.jpg" alt=""></div>

@@ -65,7 +65,7 @@ export function initWebSocketServer(server) {
     if(process.env.NODE_ENV === 'development') {
         return new Promise((resolve, reject) => {
             // Save the primus client library configured for our server settings
-            primus.save(path.join(__dirname, '../../client/components/socket/primus.js'), err => {
+            primus.save(path.join(__dirname, '../../client/assets/js/primus.js'), err => {
                 if(err) return reject(err);
 
                 resolve();

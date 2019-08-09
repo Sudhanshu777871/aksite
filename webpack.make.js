@@ -2,7 +2,7 @@
 const autoprefixer = require('autoprefixer');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-// const {AngularCompilerPlugin} = require('@ngtools/webpack');
+const {AngularCompilerPlugin} = require('@ngtools/webpack');
 const _ = require('lodash');
 const CompressionPlugin = require('compression-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
@@ -13,6 +13,7 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
+const Visualizer = require('webpack-visualizer-plugin');
 
 module.exports = function makeWebpackConfig(options) {
     /**
@@ -45,8 +46,8 @@ module.exports = function makeWebpackConfig(options) {
         config.entry = undefined;
     } else {
         config.entry = {
-            polyfills: './client/app/polyfills.js',
-            app: './client/app/index.js',
+            polyfills: './client/app/polyfills.ts',
+            app: './client/app/index.ts',
         };
     }
 
@@ -112,6 +113,9 @@ module.exports = function makeWebpackConfig(options) {
     // Initialize module
     config.module = {
         rules: [{
+            test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
+            use: '@ngtools/webpack',
+        }, {
             // JS LOADER
             // Reference: https://github.com/babel/babel-loader
             // Transpile .js files using babel-loader
@@ -120,7 +124,7 @@ module.exports = function makeWebpackConfig(options) {
             use: {
                 loader: 'babel-loader',
                 options: {
-                    // babelrc: false,
+                    babelrc: false,
                     presets: [
                         ['babel-preset-env', {
                             // debug: true,
@@ -155,22 +159,19 @@ module.exports = function makeWebpackConfig(options) {
                 path.resolve(__dirname, 'node_modules/lodash-es/')
             ]
         }, {
-            // TS LOADER
-            // Reference: https://github.com/s-panferov/awesome-typescript-loader
-            // Transpile .ts files using awesome-typescript-loader
-            test: /\.ts$/,
-            use: [{
-                loader: 'awesome-typescript-loader',
-                options: {
-                    tsconfig: path.resolve(__dirname, 'tsconfig.json')
-                },
-            }, 'angular2-template-loader'].concat(DEV ? '@angularclass/hmr-loader' : []),
-            include: [
-                path.resolve(__dirname, 'client/')
-            ]
-        }, {
-        //     test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
-        //     use: '@ngtools/webpack',
+        //     // TS LOADER
+        //     // Reference: https://github.com/s-panferov/awesome-typescript-loader
+        //     // Transpile .ts files using awesome-typescript-loader
+        //     test: /\.ts$/,
+        //     use: [{
+        //         loader: 'awesome-typescript-loader',
+        //         options: {
+        //             tsconfig: path.resolve(__dirname, 'tsconfig.json')
+        //         },
+        //     }, 'angular2-template-loader'].concat(DEV ? '@angularclass/hmr-loader' : []),
+        //     include: [
+        //         path.resolve(__dirname, 'client/')
+        //     ]
         // }, {
             // ASSET LOADER
             // Reference: https://github.com/webpack/file-loader
@@ -335,17 +336,21 @@ module.exports = function makeWebpackConfig(options) {
             }
         }),
 
-        // new AngularCompilerPlugin({
-        //     tsConfigPath: './tsconfig.json',
-        //     entryModule: './client/app/app.module#AppModule',
-        //     sourceMap: true,
-        // }),
+        new AngularCompilerPlugin({
+            tsConfigPath: './tsconfig.json',
+            entryModule: './client/app/app.module#AppModule',
+            sourceMap: true,
+        }),
 
         // new HardSourceWebpackPlugin(),
+
+        new Visualizer(),
     ];
 
     if(DEV) {
-        config.plugins.push(new webpack.HotModuleReplacementPlugin());
+        config.plugins.push(
+            new webpack.HotModuleReplacementPlugin(),
+        );
     }
 
     if(BUILD) {
@@ -405,17 +410,19 @@ module.exports = function makeWebpackConfig(options) {
     try {
         localEnv = require('./server/config/local.env').default;
     } catch(e) {
+        console.error('local.env not found');
         localEnv = {};
     }
     localEnv = _.mapValues(localEnv, value => `"${value}"`);
     localEnv = _.mapKeys(localEnv, (value, key) => `process.env.${key}`);
 
-    let env = _.merge({
+    let env = Object.assign(localEnv, {
         'process.env.NODE_ENV': DEV ? '"development"'
             : BUILD ? '"production"'
-            : TEST ? '"test"'
-            : '"development"'
-    }, localEnv);
+                : TEST ? '"test"'
+                    : '"development"'
+    });
+    console.log('env:', env);
 
     // Reference: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
     // Define free global variables
@@ -467,7 +474,7 @@ module.exports = function makeWebpackConfig(options) {
                 secure: false,
             },
             '/primus': {
-                target: '[::1]:9050',
+                target: 'http://localhost:9050',
                 secure: false,
                 ws: true,
             },

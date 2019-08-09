@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
     selector: 'resume',
     template: 'REDIRECTING',
 })
-class ResumeComponent {
+export class ResumeComponent {
     constructor() {
         window.location.href = 'https://www.linkedin.com/in/koroluka';
     }

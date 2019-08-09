@@ -1,6 +1,10 @@
+@import '../../app/variables';
+
 $timelineBaseTransitionTime: .5s;
 $timelineCardHeight: 200px;
 $timelineCardOpenHeight: 500px;
+
+$resume-bg-color: rgb(237, 240, 242);
 
 .timeline {
     padding: 0;

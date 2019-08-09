@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {autobind} from 'core-decorators';
 
 import {ProjectService} from '../../components/Project/Project.service';
 
@@ -37,7 +36,6 @@ export class ProjectListComponent {
             });
     }
 
-    @autobind
     goToProject(event) {
         this.router.navigate(['/projects', event.currentTarget.id]);
     }

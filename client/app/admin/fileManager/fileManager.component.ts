@@ -6,7 +6,7 @@ import {HttpClient} from '@angular/common/http';
     templateUrl: './fileManager.html',
     styleUrls: ['./fileManager.scss']
 })
-export default class FileManagerController {
+export class FileManagerComponent {
     files: number;
     page: number;
     pages: number;

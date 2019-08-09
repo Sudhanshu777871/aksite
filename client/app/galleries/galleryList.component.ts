@@ -12,17 +12,11 @@ mixin(_, {
 import { Component, ViewEncapsulation, Inject } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
-import { autobind } from 'core-decorators';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { CSSGrid, makeResponsive, layout } from 'react-stonecutter';
 
-import {GalleryService} from '../../components/gallery/gallery.service';
+import {Gallery, GalleryService} from '../../components/gallery/gallery.service';
 import {Photo} from "../../components/photo/photo.service";
-
-const Grid = makeResponsive(CSSGrid, {
-    maxWidth: 1920
-});
+import {Observable} from "rxjs";
+import {tap} from "rxjs/operators";
 
 @Component({
     selector: 'gallery-list',
@@ -31,69 +25,32 @@ const Grid = makeResponsive(CSSGrid, {
     encapsulation: ViewEncapsulation.None,
 })
 export class GalleryListComponent {
-    galleries = [];
+    galleries: Observable<Gallery[]>;
     loadingGalleries = true;
+    featuredPhotos: Photo[] = [];
 
     constructor(private readonly Gallery: GalleryService,
                 private readonly http: HttpClient,
                 private readonly router: Router) {}
 
-    async ngOnInit() {
-        const galleryQueryResult = await this.Gallery.query();
+    ngOnInit() {
+        // const galleryQueryResult = await this.Gallery.query();
+        //
+        // if(!galleryQueryResult) throw new Error('Gallery query returned nothing');
 
-        if(!galleryQueryResult) throw new Error('Gallery query returned nothing');
-
-        this.galleries = galleryQueryResult;
+        this.galleries = this.http.get<Gallery[]>('/api/gallery/').pipe(tap((galleries => {
+            let i = 0;
+            for(const gallery of galleries) {
+                let j = i;
+                this.http.get<Photo>(`api/photos/${gallery.featuredId}`).subscribe((photo) => {
+                    console.log(photo);
+                    this.featuredPhotos[j] = photo;
+                });
+                i++;
+            }
+        })));
 
         this.loadingGalleries = false;
-
-        const galleries = [];
-
-        for(let i = 0; i < this.galleries.length; i++) {
-            const gallery = this.galleries[i];
-
-            let data = await this.http.get<Photo>(`api/photos/${gallery.featuredId}`).toPromise();
-
-            const galleryEl = React.createElement("li", {
-                style: {
-                    padding: '10px'
-                },
-                key: i,
-                itemHeight: 340
-            }, React.createElement("a", {
-                className: "card md-whiteframe-z1",
-                style: {
-                    display: 'block'
-                },
-                id: gallery._id,
-                onClick: this.goToGallery,
-            }, React.createElement("div", {
-                className: "item"
-            }, React.createElement("img", {
-                src: `api/upload/${data.sqThumbnailId}.jpg`,
-                alt: ''
-            })), React.createElement("div", {
-                className: "card-content"
-            }, React.createElement("h2", {
-                className: "md-title"
-            }, gallery.name), React.createElement("p", null, gallery.info))));
-
-            galleries.push(galleryEl);
-        }
-
-        const grid = React.createElement(Grid, {
-            className: "grid",
-            component: "ul",
-            columnWidth: 300,
-            itemHeight: 340,
-            gutterWidth: 15,
-            gutterHeight: 15,
-            layout: layout.pinterest,
-            duration: 800,
-            easing: "ease-out"
-        }, galleries);
-
-        ReactDOM.render(grid, document.getElementById('stonecutter'));
     }
 
     goToGallery(event) {
