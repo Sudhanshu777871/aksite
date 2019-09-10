@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {
     wrapperLodash as _,
     mixin,
@@ -15,25 +15,22 @@ mixin(_, {
     map,
     noop
 });
+
+import {ActivatedRoute, ParamMap} from '@angular/router';
+import {switchMap} from 'rxjs/operators';
+
 import {Gallery, GalleryService} from '../../../components/gallery/gallery.service';
 import {Photo, PhotoService} from '../../../components/photo/photo.service';
-import { ActivatedRoute, ParamMap } from '@angular/router';
-import {switchMap} from 'rxjs/operators';
 
 import PhotoSwipe from 'photoswipe';
 import PhotoSwipeUiDefault from 'photoswipe/dist/photoswipe-ui-default';
-
-// import MiniDaemon from '../../../components/minidaemon';
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { CSSGrid, measureItems, makeResponsive, layout } from 'react-stonecutter';
-
-const Grid = makeResponsive(measureItems(CSSGrid, { measureImages: true }), {
-    maxWidth: 1200,
-    minPadding: 50
-});
+// import MiniDaemon from "../../../components/minidaemon";
 
 import '../../../assets/scss/photoswipe.scss';
+
+interface GalleryPhoto extends Photo {
+    index?: number;
+}
 
 @Component({
     selector: 'gallery',
@@ -45,8 +42,11 @@ export class GalleryComponent {
     gallery: Gallery;
     error?: Error;
     noPhotos = false;
-    photos = [];
+    photos: GalleryPhoto[] = [];
     items = [];
+
+    cols: GalleryPhoto[][] = [[], [], []];
+    @ViewChild('columns', {static: false}) columnEls;
 
     constructor(private readonly route: ActivatedRoute,
                 private readonly photoService: PhotoService,
@@ -65,70 +65,60 @@ export class GalleryComponent {
         });
     }
 
-    async onGallery() {
-        const photos = [];
+    onLoad(event) {
+        console.log(event.path[0].height);
+    }
+
+    onGallery() {
+        let colIndex = 0;
+        let addPhoto = (photo: GalleryPhoto, i: number) => {
+            photo.index = i;
+
+            // const columnEls = Array.from(this.columnEls.nativeElement.children);
+            // const min = columnEls.reduce((acc: {min: number, el: HTMLUListElement, i: number}, el: HTMLUListElement, j) => {
+            //     const localMin = Math.min(acc.min, (el.children[0] as HTMLDivElement).offsetHeight);
+            //     return localMin < acc.min ? {min: localMin, el, i: j} : acc;
+            // }, {min: Infinity, el: columnEls[0], i: -1});
+
+            this.cols[colIndex].push(photo);
+
+            if(colIndex === this.cols.length - 1) colIndex = 0;
+            else colIndex++;
+        };
+
+        // const photos = [];
+        const promises = [];
+        let photoIndex = 0;
         for(let i = 0; i < this.gallery.photos.length; i++) {
-            const photo: Photo|void = await this.photoService.get({id: this.gallery.photos[i]});
+            promises.push(this.photoService.get({id: this.gallery.photos[i]}).then(photo => {
+                if(!photo) return;
 
-            if(!photo) continue;
+                this.photos[i] = photo;
 
-            this.photos[i] = photo;
-
-            const img = React.createElement('img', {
-                src: `/api/upload/${photo.thumbnailId}.jpg`,
-                style: {
-                    width: '300px'
-                },
-                alt: photo.name,
-            });
-            const li = React.createElement('li', {
-                className: '',
-                style: {
-                    padding: 0,
-                    margin: 0
-                },
-                key: i,
-                'data-index': i,
-                'data-size': `${photo.width}x${photo.height}`,
-                onClick: this.onThumbnailsClick,
-            }, img);
-
-            photos.push(li);
+                _.delay(addPhoto(photo, photoIndex++), 50);
+            }));
         }
-
-        ReactDOM.render(
-            React.createElement(Grid, {
-                className: 'grid',
-                component: 'ul',
-                columnWidth: 300,
-                itemHeight: 340,
-                gutterWidth: 0,
-                gutterHeight: 0,
-                layout: layout.pinterest,
-                duration: 800,
-                easing: 'ease-out',
-            }, photos),
-            document.getElementById('stonecutter'));
     }
 
     onThumbnailsClick(event) {
         // FIX: looks like photoswipe doesn't always make sure there's a start to the query parameters
         if(!window.location.href.includes('?')) window.location = `${window.location.href}?pswp` as unknown as Location;
 
-        const index = Number(event.currentTarget.attributes['data-index'].value);
+        const index = Number(event.currentTarget.attributes['id'].value);
 
         let pswpElement = document.querySelectorAll('.pswp')[0];
         let vscroll = document.body.scrollTop;
 
-        if(!this.items || this.items.length === 0) {
-            this.items = this.parseThumbnailElements(document.getElementById('stonecutter').childNodes[0].childNodes[0].childNodes);
-        }
+        // if(!this.items || this.items.length === 0) {
+        //     this.items = this.parseThumbnailElements();
+        // }
+        let button = document.getElementById(String(index));
 
-        let gallery = new PhotoSwipe(pswpElement, PhotoSwipeUiDefault, this.items, {
+        let gallery = new PhotoSwipe(pswpElement, PhotoSwipeUiDefault, this.parseThumbnailElements(), {
             index,
-            getThumbBoundsFn: i => {
+            getThumbBoundsFn: (i) => {
                 // See Options->getThumbBoundsFn section of docs for more info
-                let thumbnail = this.items[i].el.children[0];
+                let thumbnail = button.children[0];
                 let pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
                 let rect = thumbnail.getBoundingClientRect();
                 return {x: rect.left, y: rect.top + pageYScroll, w: rect.width};
@@ -145,22 +135,16 @@ export class GalleryComponent {
         });
     }
 
-    parseThumbnailElements(thumbElements) {
-        return _.chain(thumbElements)
-            .filter({nodeType: 1, localName: 'li'})
-            .map((el, i) => {
-                let childElements = el.children[0].children;
-                let size = el.getAttribute('data-size').split('x');
-
-                return {
-                    src: `/api/upload/${this.photos[i].fileId}.jpg`,
-                    w: parseInt(size[0], 10),
-                    h: parseInt(size[1], 10),
-                    el, // save link to element for getThumbBoundsFn
-                    msrc: childElements.length > 0 ? childElements[0].getAttribute('src') : undefined, // thumbnail url
-                    title: childElements.length > 1 ? childElements[1].innerHTML : undefined    // caption (contents of figure)
-                };
-            })
-            .value();
+    parseThumbnailElements() {
+        return this.photos
+            .sort((a, b) => a.index - b.index)
+            .map(photo => ({
+                title: photo.name,
+                src: `/api/upload/${photo.fileId}.jpg`,
+                msrc: `/api/upload/${photo.thumbnailId}.jpg`,
+                w: photo.width,
+                h: photo.height,
+                el: document.getElementById((photo as any).index),
+            }));
     }
 }

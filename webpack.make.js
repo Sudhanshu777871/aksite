@@ -134,7 +134,6 @@ module.exports = function makeWebpackConfig(options) {
                             debug: true,
                             modules: false,
                         }],
-                        'react',
                     ],
                     plugins: [
                         'angular2-annotations',
