@@ -4,6 +4,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const {AngularCompilerPlugin} = require('@ngtools/webpack');
 const _ = require('lodash');
+const CopyPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -304,6 +306,9 @@ module.exports = function makeWebpackConfig(options) {
      * List: http://webpack.github.io/docs/list-of-plugins.html
      */
     config.plugins = [
+        new webpack.ProgressPlugin(),
+        new CleanWebpackPlugin(),
+
         // Hides the 'the request of a dependency is an expression' warnings
         new webpack.ContextReplacementPlugin(
             /angular(\\|\/)core/,
@@ -342,8 +347,6 @@ module.exports = function makeWebpackConfig(options) {
         }),
 
         // new HardSourceWebpackPlugin(),
-
-        new Visualizer(),
     ];
 
     if(DEV) {
@@ -360,6 +363,11 @@ module.exports = function makeWebpackConfig(options) {
                 filename: '[name].[hash].css',
                 chunkFilename: '[id].[hash].css',
             }),
+            new CopyPlugin([
+                { from: 'client/shared.js', to: 'shared.js' },
+                { from: 'client/favicon.ico', to: 'favicon.ico' },
+                { from: 'client/assets/images', to: 'assets/images' },
+            ]),
         );
         config.optimization = {
             splitChunks: {
@@ -406,11 +414,13 @@ module.exports = function makeWebpackConfig(options) {
     }
 
     let localEnv;
-    try {
-        localEnv = require('./server/config/local.env').default;
-    } catch(e) {
-        console.error('local.env not found');
-        localEnv = {};
+    if(!BUILD) {
+        try {
+            localEnv = require('./server/config/local.env').default;
+        } catch(e) {
+            console.error('local.env not found', e);
+            localEnv = {};
+        }
     }
     localEnv = _.mapValues(localEnv, value => `"${value}"`);
     localEnv = _.mapKeys(localEnv, (value, key) => `process.env.${key}`);
