@@ -67,7 +67,7 @@ function createUsers(userImageId) {
         providers: { local: true },
         name: 'Test User',
         email: 'test@example.com',
-        password: 'test',
+        password: 'test1234',
         imageId: userImageId,
         smallImageId: userImageId
     }, {
@@ -76,7 +76,7 @@ function createUsers(userImageId) {
         role: 'admin',
         name: 'Admin',
         email: 'admin@example.com',
-        password: 'admin',
+        password: 'admin1234',
         imageId: userImageId,
         smallImageId: userImageId
     });
