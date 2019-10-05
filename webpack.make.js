@@ -15,7 +15,6 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const webpack = require('webpack');
-const Visualizer = require('webpack-visualizer-plugin');
 
 module.exports = function makeWebpackConfig(options) {
     /**
