@@ -35,11 +35,14 @@
 
 <mat-sidenav-container>
     <mat-sidenav #sidenav (open)="mybutton.focus()" [opened]="false">
-        <button mat-button #mybutton (click)="sidenav.close()"><i class="fa fa-bars fa-2x"></i></button> Admin
+        <mat-toolbar color="primary">
+            <button mat-button #mybutton (click)="sidenav.close()"><i class="fa fa-bars fa-2x"></i></button>
+            <span>Admin</span>
+        </mat-toolbar>
 
         <ul class="sidenav-menu">
             <li class="" *ngFor="let section of sections">
-                <button mat-button [routerLink]="section.link">
+                <button mat-button [routerLink]="section.link" (click)="sidenav.close()">
                     <i class="fa fa-fw {{section.icon}}"></i>
                     {{section.title}}
                 </button>

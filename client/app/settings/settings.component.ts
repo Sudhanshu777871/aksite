@@ -1,21 +1,21 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../components/auth/auth.service';
-import {User} from "../../components/auth/user.service";
+import {User} from '../../components/auth/user.service';
 
 @Component({
     selector: 'user-settings',
     templateUrl: './settings.html',
-    // styleUrls: ['./settings.scss']
+    styleUrls: ['./settings.scss']
 })
 export class SettingsComponent {
     sections = [{
         title: 'Dashboard',
         icon: 'fa-home',
-        link: 'dashboard'
+        link: '/settings'
     }, {
         title: 'Profile',
         icon: 'fa-user',
-        link: 'profile'
+        link: '/settings/profile'
     }];
 
     // heightStyle: CSSStyleDeclaration;
@@ -26,7 +26,9 @@ export class SettingsComponent {
         // };
     }
 
-    async ngOnInit() {
-        this.currentUser = await this.authService.getCurrentUser();
+    ngOnInit() {
+        this.authService.currentUserObservable.subscribe(user => {
+            this.currentUser = user;
+        });
     }
 }

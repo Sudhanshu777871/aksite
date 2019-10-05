@@ -8,19 +8,17 @@ mixin(_, {
 import { Converter } from 'showdown';
 const converter = new Converter();
 
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
 import {switchMap} from 'rxjs/operators';
-import {Project, ProjectService} from "../../../components/Project/Project.service";
+import {Project, ProjectService} from '../../../components/Project/Project.service';
 import {DomSanitizer} from "@angular/platform-browser";
-import {SecurityContext} from "@angular/core";
 
 @Component({
     selector: 'project-editor',
     templateUrl: './projectEditor.html',
     styleUrls: ['../../projects/project/project.scss', './projectEditor.scss'],
-    encapsulation: ViewEncapsulation.None
 })
 export class ProjectEditorComponent {
     loadingProject = true;

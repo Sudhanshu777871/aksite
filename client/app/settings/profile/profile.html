@@ -1,4 +1,4 @@
 <div class="container-fluid" style="padding: 20px;">
-    <h2>{{settings.currentUser.name}}</h2>
-    <img ng-src="/api/upload/{{settings.currentUser.imageId}}.jpg" alt="Current User Image" class="settings-profile-img" />
+    <h2>{{(currentUser | async).name}}</h2>
+    <img src="/api/upload/{{(currentUser | async).imageId}}.jpg" alt="Current User Image" class="settings-profile-img" />
 </div>

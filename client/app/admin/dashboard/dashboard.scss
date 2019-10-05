@@ -1,1 +1,9 @@
 .test {}
+
+.dashboard-pie-row {
+    display: flex;
+
+    .dashboard-donut {
+        flex: 1 1;
+    }
+}

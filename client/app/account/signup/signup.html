@@ -6,21 +6,22 @@
             <form class="signup-form" name="signupForm" (ngSubmit)="register()">
                 <section class="input-section">
                     <mat-form-field>
-                        <input mdInput maxlength="60" required name="name" type="text" placeholder="Name" [(ngModel)]="user.name">
+                        <input matInput maxlength="60" required name="name" type="text" placeholder="Name" [(ngModel)]="user.name">
                     </mat-form-field>
+
                     <!--<div ng-messages="signupForm.name.$error">-->
                         <!--<div ng-message="required">This is required.</div>-->
                         <!--<div ng-message="md-maxlength">The email can be at most 60 characters long.</div>-->
                     <!--</div>-->
                     <mat-form-field>
-                        <input mdInput maxlength="60" required name="email" type="email" placeholder="Email" [(ngModel)]="user.email">
+                        <input matInput maxlength="60" required name="email" type="email" placeholder="Email" [(ngModel)]="user.email">
                     </mat-form-field>
                     <!--<div ng-messages="signupForm.email.$error">-->
                         <!--<div ng-message="required">This is required.</div>-->
                         <!--<div ng-message="md-maxlength">The email can be at most 60 characters long.</div>-->
                     <!--</div>-->
                     <mat-form-field>
-                        <input mdInput type="password" required name="password" placeholder="Password" [(ngModel)]="user.password">
+                        <input matInput type="password" required name="password" placeholder="Password" [(ngModel)]="user.password">
                     </mat-form-field>
                     <!--<div ng-messages="signupForm.password.$error">-->
                         <!--<div ng-message="required">This is required.</div>-->
@@ -28,20 +29,18 @@
                 </section>
 
                 <section class="button-section">
-                    <button mat-button class="md-primary md-button-lg" type="submit" aria-label="Login">
+                    <button mat-button class="mat-primary md-button-lg" type="submit" aria-label="Sign up">
                         Sign up
                     </button>
-                    <a md-button class="md-button-lg" type="button" routerLink="/login" aria-label="Register">
-                        Log In
-                    </a>
+                    <a mat-button class="md-button-lg" type="button" routerLink="/login" aria-label="Log In">Log In</a>
                 </section>
             </form>
 
             <br/>
 
             <section class="oauth-button-section">
-                <button mat-button class="md-button-lg google-plus-color" aria-label="Sign up with Google" (click)="loginOauth('google')">
-                    <mat-icon fontSet="fa" fontIcon="fa-google-plus"></mat-icon>
+                <button mat-button class="md-button-lg google-color" aria-label="Sign up with Google" (click)="loginOauth('google')">
+                    <mat-icon fontSet="fa" fontIcon="fa-google"></mat-icon>
                     Sign up with Google
                 </button>
                 <button mat-button class="md-button-lg github-color" aria-label="Sign up with Github" (click)="loginOauth('github')">

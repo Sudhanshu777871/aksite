@@ -1,4 +1,4 @@
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule, ErrorHandler, Injectable } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { JwtModule } from '@auth0/angular-jwt';
 import { HttpClientModule } from '@angular/common/http';
@@ -26,19 +26,20 @@ import { ResumeModule } from './resume/resume.module';
 import { SettingsModule } from './settings/settings.module';
 
 import {constants} from './app.constants';
-// @ts-ignore
-import Raven from 'raven-js';
-import {AUTH_TOKEN_KEY} from '../components/auth/auth.service';
+import * as Sentry from '@sentry/browser';
+import {AUTH_TOKEN_KEY, AuthService} from '../components/auth/auth.service';
 
 if(process.env.NODE_ENV === 'production') {
-    Raven
-        .config(constants.sentry.publicDsn)
-        .install();
+    Sentry.init({
+        dsn: constants.sentry.publicDsn,
+    });
 }
 
-export class RavenErrorHandler implements ErrorHandler {
-    handleError(err: Error) : void {
-        Raven.captureException((err as any).originalError);
+@Injectable()
+export class SentryErrorHandler implements ErrorHandler {
+    handleError(error) {
+        const eventId = Sentry.captureException(error.originalError || error);
+        Sentry.showReportDialog({ eventId });
     }
 }
 
@@ -61,9 +62,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-    providers: [
-        { provide: ErrorHandler, useClass: RavenErrorHandler }
-    ],
+    providers: [{ provide: ErrorHandler, useClass: SentryErrorHandler }],
     imports: [
         BrowserModule,
         HttpClientModule,
@@ -83,7 +82,7 @@ const appRoutes: Routes = [
         MatToolbarModule,
         MatTooltipModule,
         BrowserAnimationsModule,
-        RouterModule.forRoot(appRoutes, { enableTracing: process.env.NODE_ENV === 'development' }),
+        RouterModule.forRoot(appRoutes, { enableTracing: true }),
         MainModule,
         DirectivesModule,
         AccountModule,

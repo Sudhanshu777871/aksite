@@ -11,7 +11,7 @@ mixin(_, {
 import {Component} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Router} from '@angular/router';
-import {GalleryService} from "../../../components/gallery/gallery.service";
+import {GalleryService} from '../../../components/gallery/gallery.service';
 
 @Component({
     selector: 'gallery-manager',

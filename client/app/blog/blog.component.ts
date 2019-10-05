@@ -27,10 +27,13 @@ interface Page {
     date: string;
 }
 
+interface Post {}
+
 interface BlogData {
-    // pages
+    page: number;
+    pages: number;
     numItems: number;
-    items
+    items: Post[];
 }
 
 @Component({
@@ -46,6 +49,7 @@ export class BlogComponent {
     collectionSize = 0;
     posts = [];
     // pages;
+    data?: BlogData;
 
     constructor(private readonly http: HttpClient,
                 private readonly router: Router) {
@@ -57,8 +61,8 @@ export class BlogComponent {
         return this.getPageData();
     }
 
-    pageChanged({page}) {
-        this.currentPage = page;
+    pageChanged(newPage: number) {
+        this.currentPage = newPage;
         // this.router.navigate('blog', {page, pagesize: this.pagesize}, { notify: false, reload: false });
         // this.router.navigate(['blog', {page, pagesize: this.pagesize}]);
 
@@ -70,6 +74,7 @@ export class BlogComponent {
             .toPromise()
             .then((data: BlogData) => {
                 // this.pages = data.pages;
+                this.data = data;
                 this.collectionSize = data.numItems;
                 this.posts = data.items;
                 for(const post of this.posts) {

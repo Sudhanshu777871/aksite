@@ -67,7 +67,7 @@ export class DashboardComponent {
     tableItems = [];
 
     constructor(private readonly http: HttpClient) {
-        _.forEach(apiItems, item => {
+        for(const item of apiItems) {
             this.http.get(`api/${item.path}/count`)
                 .toPromise()
                 .then((res) => {
@@ -82,7 +82,11 @@ export class DashboardComponent {
                     console.log(status);
                     console.log(data);
                 });
-        });
+        }
+    }
+
+    async ngOnInit() {
+        await googleApiInit();
 
         // // FIXME: Temp fix for unit tests
         // var gapi = window.gapi;
@@ -206,6 +210,4 @@ export class DashboardComponent {
         //     });
         // });
     }
-
-    ngOnInit() {}
 }

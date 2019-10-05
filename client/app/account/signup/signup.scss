@@ -1,14 +1,1 @@
 @import '../account';
-
-.signup-form {
-    .input-section {
-        @extend %flex-row-col-xs;
-    }
-    .button-section {
-        @extend %flex-row;
-    }
-}
-
-.oauth-button-section {
-    @extend %flex-row-col-xs;
-}

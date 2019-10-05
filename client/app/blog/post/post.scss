@@ -1,4 +1,3 @@
-@import '~bootstrap-sass/assets/stylesheets/bootstrap/variables';
 @import '../../variables';
 
 .post-header {
@@ -11,6 +10,16 @@
 
 .post-date {
     color: $text-muted;
+}
+@media (prefers-color-scheme: dark) {
+    .block-author .block-meta {
+        .meta-summary {
+            color: #ddd;
+        }
+        .post-date {
+            color: #ddd;
+        }
+    }
 }
 
 .post iframe {

@@ -1,6 +1,6 @@
-<div class="container">
-    <div *ngIf="error" class="row">
-        <!--<alert type="danger">Error: {{error | json}}</alert>-->
+<div style="padding: 0 40px;">
+    <div *ngIf="error" class="">
+        <span class="danger">Error: {{error}}</span>
     </div>
 
     <div *ngIf="!error" class="container post">
@@ -11,7 +11,7 @@
             <div class="block-meta">
                 <div class="meta-avatar">
                     <a href="/users/{{post.author.id}}" class="avatar avatar--small" title="Go to {{post.author.name}}'s profile">
-                        <img src="/api/upload/{{post.author.imageId}}" class="img-circle" title="{{post.author.name}}">
+                        <img src="/api/upload/{{post.author.imageId}}" class="img-circle" title="{{post.author.name}}" alt="author avatar">
                     </a>
                 </div>
                 <div class="meta-summary">
@@ -19,7 +19,7 @@
                     <a href="/users/{{post.author.id}}" title="Go to {{post.author.name}}'s profile" class="link">
                         {{post.author.name}}
                     </a>
-                    <span class="metaInline metaInline--supplemental">
+                    <span class="metaInline">
                         {{post.date}}
                     </span>
                 </div>
@@ -31,7 +31,7 @@
         <div class="lead" [innerHtml]="post.content"></div>
     </div>
 
-    <div class="row">
+    <div class="">
         <div id="disqus_thread"></div>
         <script type="text/javascript">
             /* * * CONFIGURATION VARIABLES * * */

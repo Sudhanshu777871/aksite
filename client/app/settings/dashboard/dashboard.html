@@ -1,4 +1,4 @@
-<div layout="column" flex layout-fill style="position: absolute;">
+<div class="dashboard">
     <!--<md-toolbar class="md-theme-light">-->
         <!--<h2 class="md-toolbar-tools">-->
             <!--<span>Overview</span>-->
@@ -7,30 +7,28 @@
     <!--<md-content class="md-padding" style="min-height: 300px;">-->
 <!--        <img src="/api/upload/{{user.imageId}}.jpg" alt="Current User Image" class="settings-profile-img" />-->
     <!--</md-content>-->
-    <!--<md-toolbar class="md-theme-light">-->
-        <!--<h2 class="md-toolbar-tools">-->
-            <!--<span>Change Password</span>-->
-        <!--</h2>-->
-    <!--</md-toolbar>-->
-    <!--<md-content class="md-padding" style="min-height: 300px;">-->
-        <form name="userForm" (submit)="changePassword()">
-            <!--<mat-form-field flex>-->
-                <label>Old Password</label>
-                <input [(ngModel)]="user.oldPassword" name="oldPassword" type="password">
-                <!--<div ng-messages="userForm.oldPassword.$error">-->
-                    <!--<div ng-message="wrongPassword">Incorrect password</div>-->
-                <!--</div>-->
-            <!--</mat-form-field>-->
+    <mat-toolbar color="primary">
+        <span>Change Password</span>
+    </mat-toolbar>
+    <form name="userForm" (submit)="changePassword()">
+        <!--<mat-form-field flex>-->
+            <mat-form-field>
+                <input matInput [(ngModel)]="user.oldPassword" name="oldPassword" type="password" placeholder="Old Password" required>
+            </mat-form-field>
+            <!--<div ng-messages="userForm.oldPassword.$error">-->
+                <!--<div ng-message="wrongPassword">Incorrect password</div>-->
+            <!--</div>-->
+        <!--</mat-form-field>-->
 
-            <!--<mat-form-field flex>-->
-                <label>New Password</label>
-                <input [(ngModel)]="user.newPassword" name="newPassword" type="password" minlength="3">
-                <!--<div ng-messages="userForm.newPassword.$error">-->
-                    <!--<div ng-message="minlength">Your password has to be at least 3 characters long.</div>-->
-                <!--</div>-->
-            <!--</mat-form-field>-->
+        <!--<mat-form-field flex>-->
+            <mat-form-field>
+                <input matInput [(ngModel)]="user.newPassword" name="newPassword" type="password" placeholder="New Password" required minlength="3">
+            </mat-form-field>
+            <!--<div ng-messages="userForm.newPassword.$error">-->
+                <!--<div ng-message="minlength">Your password has to be at least 3 characters long.</div>-->
+            <!--</div>-->
+        <!--</mat-form-field>-->
 
-            <button mat-button class="md-primary" type="submit">Save changes</button>
-        </form>
-    <!--</md-content>-->
+        <button mat-button class="md-primary" type="submit">Save changes</button>
+    </form>
 </div>

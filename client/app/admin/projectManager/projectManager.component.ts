@@ -11,7 +11,7 @@ mixin(_, {
 import {Component} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 // @ts-ignore
-import moment from "moment";
+import moment from 'moment';
 
 @Component({
     selector: 'project-manger',

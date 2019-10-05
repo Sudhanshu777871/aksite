@@ -13,7 +13,7 @@ $btnGithubBackgroundHighlight: #ccc;
 // Social buttons
 // --------------------------------------------------
 
-.btn-google-plus {
+.btn-google {
     color: $btnGooglePlusBackground;
 }
 
@@ -27,26 +27,4 @@ mat-form-field {
 
 mat-sidenav {
     width: 200px;
-}
-
-%flex-row {
-    display: flex;
-    flex-direction: row;
-    align-content: center;
-
-    md-input, [md-button] {
-        flex-grow: 1;
-    }
-    md-input {
-        margin: 0 10px;
-    }
-}
-
-%flex-row-col-xs {
-    @extend %flex-row;
-
-    flex-direction: column;
-    @media screen and (min-width: $breakpoint-xs) {
-        flex-direction: row;
-    }
 }

@@ -2,16 +2,24 @@
     <h1 class="page-header">Manage Galleries</h1>
 
     <div style="position: relative;">
-        <div class="card md-whiteframe-z1" *ngFor="let gallery of galleries" (click)="goToGallery(gallery._id)">
-            <div class="item">
-                <img src="api/upload/{{gallery.featured.thumbnailId}}" alt="{{gallery.name}}">
-            </div>
-            <!--<md-button class="md-fab pull-right md-fab-offset">X</md-button>-->
-            <div class="card-content">
-                <h3>{{gallery.name}}</h3>
-                <p>{{gallery.info}}</p>
-            </div>
-        </div>
+        <mat-card *ngFor="let gallery of galleries" class="example-card">
+            <mat-card-header>
+                <div mat-card-avatar class="example-header-image"></div>
+                <mat-card-title>{{gallery.name}}</mat-card-title>
+                <mat-card-subtitle>{{gallery.info}}</mat-card-subtitle>
+            </mat-card-header>
+            <img mat-card-image src="api/upload/{{gallery.featured.thumbnailId}}" alt="{{gallery.name}}">
+<!--            <mat-card-content>-->
+<!--                <p>-->
+<!--                    The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.-->
+<!--                    A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally-->
+<!--                    bred for hunting.-->
+<!--                </p>-->
+<!--            </mat-card-content>-->
+            <mat-card-actions>
+                <button mat-button (click)="goToGallery(gallery._id)">EDIT</button>
+            </mat-card-actions>
+        </mat-card>
     </div>
 
     <button mat-fab class="md-fab md-fab-bottom-right" aria-label="New Gallery" (click)="goToGallery('new')">

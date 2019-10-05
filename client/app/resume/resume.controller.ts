@@ -14,7 +14,7 @@ export default class ResumeController {
                 this.jobs = [{
                     date: moment('05-19-2014', 'MM-DD-YYYY'),
                     dateLine1: moment('05-19-2014', 'MM-DD-YYYY').format('MMM YYYY'),
-                    dateLine2: 'to ' + moment('12-31-2014', 'MM-DD-YYYY').format('MMM YYYY'),
+                    dateLine2: `to ${moment('12-31-2014', 'MM-DD-YYYY').format('MMM YYYY')}`,
                     image: 'assets/images/inin.svg',
                     heading: 'Interactive Intelligence',
                     content: 'Front-end web application development using KnockoutJS for PureCloud Telephony Admin.',
@@ -37,7 +37,7 @@ export default class ResumeController {
                 }, {
                     date: moment('01-25-2015', 'MM-DD-YYYY'),
                     dateLine1: moment('02-15-2015', 'MM-DD-YYYY').format('MMM YYYY'),
-                    dateLine2: 'to ' + moment('04-15-2015', 'MM-DD-YYYY').format('MMM YYYY'),
+                    dateLine2: `to ${moment('04-15-2015', 'MM-DD-YYYY').format('MMM YYYY')}`,
                     image: 'assets/images/mimir.png',
                     heading: 'Mimir LLC',
                     content: 'Full-stack web development',

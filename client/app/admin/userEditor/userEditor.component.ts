@@ -2,58 +2,80 @@ import { Component } from '@angular/core';
 import { AuthService } from '../../../components/auth/auth.service';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
-import {User} from "../../../components/auth/user.service";
+import {User} from '../../../components/auth/user.service';
+import {FormControl, Validators} from '@angular/forms';
+import {constants} from '../../app.constants';
 
 @Component({
     selector: 'user-editor',
     templateUrl: './userEditor.html',
-    // styleUrls: ['./userEditor.scss']
+    styleUrls: ['./userEditor.scss'],
 })
 export class UserEditorComponent {
     loadingUser = true;
     submitted = false;
     id: string;
-    currentUser: User;
     user: User;
     filename: string;
     fileToUpload?: File;
+
+    userRoles: string[] = constants.userRoles;
+
+    email = new FormControl('', [
+        Validators.required,
+        Validators.email,
+    ]);
+    name = new FormControl('', [
+        Validators.required,
+        Validators.min(3),
+        Validators.max(60),
+    ]);
+    role = new FormControl('');
 
     constructor(private readonly http: HttpClient,
                 private readonly authService: AuthService,
                 private readonly route: ActivatedRoute,
                 private readonly router: Router) {}
 
-    async ngOnInit() {
-        this.id = await new Promise(resolve => this.route.params.subscribe(params => resolve(params.id)));
+    ngOnInit() {
+        this.route.params.subscribe(({id}) => {
+            this.id = id;
 
-        this.currentUser = await this.authService.getCurrentUser();
+            if(!this.id) {
+                this.user = {
+                    name: 'New User',
+                    email: 'test@example.com',
+                    imageId: '',
+                };
+                this.set();
+            } else {
+                this.http.get(`/api/users/${this.id}`)
+                    .toPromise()
+                    .then(data => {
+                        console.log(data);
+                        // TODO
+                        this.user = data as any;
+                        this.filename = this.user.imageId;
+                        this.set();
+                    })
+                    .catch(res => {
+                        console.error(res);
+                    });
+            }
+        });
+    }
 
-        if(!this.id) {
-            this.user = {
-                name: 'New User',
-                email: 'test@example.com',
-                imageId: '',
-            };
-        } else {
-            await this.http.get(`/api/users/${this.id}`)
-                .toPromise()
-                .then(data => {
-                    console.log(data);
-                    // TODO
-                    this.user = data as any;
-                    this.filename = this.user.imageId;
-                })
-                .catch(res => {
-                    console.error(res);
-                });
-        }
+    set() {
+        this.name.setValue(this.user.name);
+        this.email.setValue(this.user.email);
+        this.role.setValue(this.user.role);
 
         this.loadingUser = false;
     }
 
     onFileSelect($files) {
         //$files: an array of files selected, each file has name, size, and type.
-        var file = $files[0];
+        const file = $files[0];
 
         if(!file) {
             this.filename = null;

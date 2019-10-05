@@ -5,6 +5,7 @@ export interface Photo {
     _id: string;
     thumbnailId: string;
     sqThumbnailId: string;
+    fileId: string;
     name: string;
     width: number;
     height: number;

@@ -1,9 +1,7 @@
-$icon-font-path: "/assets/fonts/bootstrap/";
 $fa-font-path: "/assets/fonts/font-awesome/";
 @import 'variables';
 
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,900|Roboto:300,500,700,900);
-@import '~bootstrap-sass/assets/stylesheets/bootstrap';
 @import '~font-awesome/scss/font-awesome';
 @import '~photoswipe/dist/photoswipe.css';
 @import '~photoswipe/dist/default-skin/default-skin.css';
@@ -26,6 +24,12 @@ $theme: mat-light-theme($primary, $accent, $warn);
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include angular-material-theme($theme);
+
+@media (prefers-color-scheme: dark) {
+    $theme: mat-dark-theme($primary, $accent, $warn);
+
+    @include angular-material-theme($theme);
+}
 
 @import 'animations';
 @import 'account/login/login';
@@ -50,6 +54,13 @@ $theme: mat-light-theme($primary, $accent, $warn);
 @import '../components/preloader/preloader';
 @import '../components/timeline/timeline';
 @import '../assets/scss/whiteframe';
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #1d1e21;
+        color: white;
+    }
+}
 
 .grid {
     list-style: none;
@@ -97,6 +108,12 @@ $itemMdCardWidth: 300px;
         }
     }
 }
+@media (prefers-color-scheme: dark) {
+    .cards-container a.card {
+        color: $lightTextColor;
+        background-color: #232323;
+    }
+}
 
 /**
  * App-wide Styles
@@ -112,6 +129,10 @@ html, body {
     font-family: $font-stack;
 }
 
+body {
+    margin: 0;
+}
+
 .browsehappy {
     margin: 0.2em 0;
     background: #ccc;
@@ -123,7 +144,7 @@ html, body {
     display: none !important;
 }
 
-button.google-plus-color, .google-plus-color { color: $googlePlusColor }
+button.google-color, .google-color { color: $googlePlusColor }
 button.github-color, .github-color { color: $gitHubColor }
 button.linkedin-color, .linkedin-color { color: $linkedInColor }
 
@@ -362,4 +383,63 @@ ul.card-list {
 
 .overline {
     text-decoration: overline;
+}
+
+button[mat-button] mat-icon {
+    line-height: 36px;
+    height: 36px;
+}
+
+%flex-row {
+    display: flex;
+    align-content: center;
+    margin: 0 40px;
+
+    mat-input, [mat-button] {
+        flex-grow: 1;
+    }
+    mat-input {
+        margin: 0 10px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        mat-input {
+            color: white;
+        }
+    }
+}
+
+%flex-row-col-xs {
+    @extend %flex-row;
+
+    flex-direction: column;
+
+    @media screen and (min-width: $breakpoint-xs) {
+        flex-direction: row;
+    }
+}
+
+.input-section {
+    @extend %flex-row-col-xs;
+}
+.button-section {
+    @extend %flex-row;
+}
+.oauth-button-section {
+    @extend %flex-row-col-xs;
+}
+
+.signup-form {
+    .input-section {
+        @extend %flex-row-col-xs;
+    }
+    .button-section {
+        @extend %flex-row;
+    }
+}
+
+.md-fab-bottom-right {
+    position: fixed;
+    right: 10px;
+    margin-top: -25px;
 }

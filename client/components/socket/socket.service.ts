@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import primusEmit from 'primus-emit';
-import { noop, find, remove } from 'lodash';
+import { noop, find, remove } from 'lodash-es';
 // @ts-ignore
 import Raven from 'raven-js';
 
@@ -9,7 +8,7 @@ interface PrimusType {
     connect(url?: string, options?: {}): PrimusInstance;
 }
 interface PrimusInstance {
-    emit(dat: any): void;
+    emit(event: string, data: any): void;
     plugin(name: string, plugin: Function): void;
     on(event: string, cb: Function): void;
     removeAllListeners(name?: string): void;
@@ -19,7 +18,7 @@ interface PrimusInstance {
 export class SocketService {
     private readonly primus: PrimusInstance;
     private open = false;
-    private queue: any[] = [];
+    private queue: Array<[string, any]> = [];
 
     constructor() {
         // @ts-ignore
@@ -35,15 +34,14 @@ export class SocketService {
         //     // 'query': 'token=' + Auth.getToken()
         // });
         const primus = Primus.connect();
-        primus.plugin('emit', primusEmit);
 
         primus.on('open', () => {
             console.log('Connection opened');
-            primus.emit('info');
+            primus.emit('info', 'suh');
 
             this.open = true;
             while(this.queue.length) {
-                this.emit(this.queue.pop());
+                this.emit(...this.queue.pop());
             }
         });
 
@@ -52,6 +50,10 @@ export class SocketService {
                 console.log('Socket:', data);
             });
         }
+
+        primus.on('wew', function message(data) {
+            console.log('wew:', data);
+        });
 
         primus.on('info', data => {
             console.log('info:', data);
@@ -110,11 +112,11 @@ export class SocketService {
         this.primus.removeAllListeners(`${modelName}:remove`);
     }
 
-    emit(data: any[]) {
+    emit(event: string, data: any[]) {
         if(this.open) {
-            this.primus.emit.apply(this.primus, data);
+            this.primus.emit.apply(this.primus, [event, data]);
         } else {
-            this.queue.push(data);
+            this.queue.push([event, data]);
         }
     }
 }

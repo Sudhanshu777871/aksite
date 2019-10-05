@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {FormControl, Validators} from '@angular/forms';
 
 import { Router } from '@angular/router';
 import { AuthService } from '../../../components/auth/auth.service';
@@ -23,14 +24,25 @@ export class LoginComponent {
     } = {};
     submitted = false;
 
-    constructor(private readonly router: Router, private readonly authService: AuthService) {}
+    email = new FormControl('', [
+        Validators.required,
+        Validators.email,
+    ]);
+    password = new FormControl('', [
+        Validators.required,
+        Validators.min(8),
+        Validators.max(128),
+    ]);
+
+    constructor(private readonly router: Router,
+                private readonly authService: AuthService) {}
 
     login() {
         this.submitted = true;
 
         return this.authService.login({
-            email: this.user.email,
-            password: this.user.password,
+            email: this.email.value,
+            password: this.password.value,
         })
             .then(() => {
                 // Logged in, redirect to home

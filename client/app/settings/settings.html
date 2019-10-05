@@ -1,16 +1,18 @@
-<mat-sidenav-container>
-    <mat-sidenav #settingsNav [opened]="true">
+<mat-drawer-container>
+    <mat-drawer #settingsNav [opened]="true" mode="side">
         <ul class="sidenav-menu">
             <li class="" *ngFor="let section of sections">
                 <button mat-button [routerLink]="section.link">
-                    <i class="fa fa-fw {{section.icon}}"></i>
+                    <mat-icon class="" fontSet="fa" fontIcon="{{section.icon}}"></mat-icon>
                     {{section.title}}
                 </button>
             </li>
         </ul>
-    </mat-sidenav>
-
-    <button mat-button (click)="settingsNav.open()"><i class="fa fa-bars fa-2x"></i></button>
-
-    <router-outlet></router-outlet>
-</mat-sidenav-container>
+    </mat-drawer>
+    <mat-drawer-content style="min-height: 400px;">
+<!--        <button mat-icon-button (click)="settingsNav.open()">-->
+<!--            <mat-icon class="fa-2x" fontSet="fa" fontIcon="fa-bars"></mat-icon>-->
+<!--        </button>-->
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+</mat-drawer-container>

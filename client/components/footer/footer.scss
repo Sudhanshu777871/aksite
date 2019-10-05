@@ -1,27 +1,27 @@
 @import '../../app/variables';
+
 .footer {
     margin-top: 40px;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    align-items: center;
+
     a {
         text-decoration: underline;
         &:hover {
             color: darken($lightTextColor, 20%);
         }
     }
-    .container {
-        display: flex;
-        justify-content: space-around;
-        flex-direction: row;
-        align-items: center;
-    }
 }
 
 .footer {
     text-align: center;
     padding: 20px 0;
-    border-top: $subtle-border;
     background-color: $primaryColor;
     color: $ak-base-color-darkest;
     font-weight: 600;
+
     p {
         float: right;
         margin: 0;

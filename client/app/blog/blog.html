@@ -1,5 +1,5 @@
-<div class="container">
-    <alert *ngIf="noItems">No Items</alert>
+<div style="padding: 40px;">
+    <span *ngIf="noItems">No Items</span>
 
     <div class="container post-list">
         <div class="post-block" *ngFor="let post of posts">
@@ -19,8 +19,12 @@
             <div class="block-author">
                 <div class="block-meta">
                     <div class="meta-avatar">
-                        <a routerLink="/profile/{{post.author.id}}" class="avatar avatar--small" title="Go to {{post.author.name}}'s profile">
-                            <img src="/api/upload/{{post.author.imageId}}" class="img-circle" title="{{post.author.name}}">
+                        <a routerLink="/profile/{{post.author.id}}"
+                           class="avatar avatar--small"
+                           title="Go to {{post.author.name}}'s profile">
+                            <img src="/api/upload/{{post.author.imageId}}"
+                                 class="img-circle"
+                                 title="{{post.author.name}}">
                         </a>
                     </div>
                     <div class="meta-summary">
@@ -28,7 +32,7 @@
                         <a routerLink="/profile/{{post.author.id}}" title="Go to {{post.author.name}}'s profile" class="link">
                             {{post.author.name}}
                         </a>
-                        <span class="metaInline metaInline--supplemental">
+                        <span class="metaInline">
                             {{post.date}}
                         </span>
                     </div>
@@ -37,12 +41,12 @@
         </div>
     </div>
 
-    <pagination
-        (pageChanged)="pageChanged($event)"
-        [totalItems]="collectionSize"
-        [(ngModel)]="currentPage"
-        ngDefaultControl
-        class="center-block"
-        style="margin-bottom: 100px;">
+    <pagination [pages]="data.pages" [page]="currentPage" (pageChange)="pageChanged($event)">
+<!--        (pageChanged)="pageChanged($event)"-->
+<!--        [totalItems]="collectionSize"-->
+<!--        [(ngModel)]="currentPage"-->
+<!--        ngDefaultControl-->
+<!--        class="center-block"-->
+<!--        style="margin-bottom: 100px;">-->
     </pagination>
 </div>
