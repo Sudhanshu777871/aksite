@@ -26,7 +26,7 @@ export function index(req, res) {
     var pageSize = (req.query.pagesize && req.query.pagesize <= MAX_PAGESIZE && req.query.pagesize > 0) ? req.query.pagesize : DEFAULT_PAGESIZE;
     var page = parseInt(req.query.page) || 0;
 
-    File.count({}, function(err, count) {
+    File.countDocuments({}, function(err, count) {
         if(err) return util.handleError(res, err);
 
         File.find()
@@ -70,7 +70,7 @@ export function show(req, res) {
 
 // Get the number of files
 export function count(req, res) {
-    File.count({}, function(err, count) {
+    File.countDocuments({}, function(err, count) {
         if(err) handleError(res, err);
         else res.status(200).json(count);
     });
