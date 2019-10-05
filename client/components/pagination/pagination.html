@@ -1,0 +1,3 @@
+<button mat-button (click)="previous()" [disabled]="page === 1">Previous</button>
+<button mat-button *ngFor="let pb of pageButtons" (click)="go(pb)" [disabled]="page === pb">{{pb}}</button>
+<button mat-button (click)="next()" [disabled]="page === pages">Next</button>

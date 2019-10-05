@@ -1,0 +1,7 @@
+@import '../../app/variables';
+
+@media (prefers-color-scheme: dark) {
+    .mat-button[disabled] {
+        color: rgba(255, 255, 255, .26);
+    }
+}
