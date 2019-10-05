@@ -1,6 +1,5 @@
 /*eslint-env node*/
 const autoprefixer = require('autoprefixer');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const {AngularCompilerPlugin} = require('@ngtools/webpack');
 const _ = require('lodash');
