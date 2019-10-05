@@ -7,6 +7,8 @@ import {
     noop,
     mixin
 } from 'lodash-es';
+import {ReplaySubject} from 'rxjs';
+import { map } from 'rxjs/operators';
 mixin(_, {
     isFunction,
     noop
@@ -38,18 +40,24 @@ export class AuthService {
     currentUser: User = {
         imageId: '',
     };
+    currentUserObservable = new ReplaySubject<User|null>();
 
     constructor(
         private readonly http: HttpClient,
-        private readonly userService: UserService) {
+        private readonly userService: UserService) {}
+
+    checkToken() {
         if(localStorage.getItem(AUTH_TOKEN_KEY)) {
-            this.userService.get().then((user: User) => {
+            return this.userService.get().then((user: User) => {
                 this.currentUser = user;
+                this.currentUserObservable.next(user);
             }).catch(err => {
                 console.log(err);
 
                 localStorage.removeItem(AUTH_TOKEN_KEY);
             });
+        } else {
+            return Promise.resolve();
         }
     }
 
@@ -66,6 +74,7 @@ export class AuthService {
             })
             .then((user: User) => {
                 this.currentUser = user;
+                this.currentUserObservable.next(user);
                 localStorage.setItem('user', JSON.stringify(user));
                 console.log(this.currentUser);
                 safeCb(callback)(null, user);
@@ -86,10 +95,11 @@ export class AuthService {
         this.currentUser = {
             imageId: '',
         };
+        this.currentUserObservable.next(null);
         return Promise.resolve();
     }
 
-    createUser(user: SignupInfo, callback?: (error, user: User) => void) {
+    createUser(user: SignupInfo) {
         return this.userService.create(user)
             .then((data: {token: string}) => {
                 localStorage.setItem(AUTH_TOKEN_KEY, data.token);
@@ -97,11 +107,10 @@ export class AuthService {
             })
             .then((_user: User) => {
                 this.currentUser = _user;
-                return safeCb(callback)(null, _user);
+                this.currentUserObservable.next(_user);
             })
             .catch(err => {
                 this.logout();
-                return safeCb(callback)(err);
             });
     }
 
@@ -121,29 +130,27 @@ export class AuthService {
     /**
      * Check if a user is logged in
      */
-    isLoggedIn(): boolean {
-        return this.getCurrentUser().hasOwnProperty('role');
-    }
+    // isLoggedIn(): boolean {
+    //     return this.getCurrentUser().hasOwnProperty('role');
+    // }
 
     /**
      * Waits for this.currentUser to resolve before checking if user is logged in
      */
-    isLoggedInAsync() {
-        return Promise.resolve(this.currentUser.hasOwnProperty('role'));
-    }
+    // isLoggedInAsync() {
+    //     return Promise.resolve(this.currentUser.hasOwnProperty('role'));
+    // }
 
     /**
      * Waits for this.currentUser to resolve before checking if user is logged in
      */
-    isLoggedInSync() {
-        return this.currentUser.hasOwnProperty('role');
-    }
+    // isLoggedInSync() {
+    //     return this.currentUser.hasOwnProperty('role');
+    // }
 
-    /**
-     * Check if a user is an admin
-     */
-    isAdmin() {
-        return this.currentUser.role === 'admin';
+    /** Check if a user is an admin */
+    isAdminObservable() {
+        return this.currentUserObservable.pipe(map(user => user.role === 'admin'));
     }
 
     /**

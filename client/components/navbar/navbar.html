@@ -1,40 +1,35 @@
-<div class="navbar navbar-default navbar-static-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button class="navbar-toggle fa fa-bars" type="button" (click)="isCollapsed = !isCollapsed">
-                <span class="sr-only">Toggle navigation</span>
-            </button>
-            <a class="logo-portrait" style="cursor: pointer;" routerLink="home" aria-label="Go to the home page">
-                <img class="img-circle" src="assets/images/portrait_2014.jpg" alt="AK"/>
+<mat-toolbar color="primary">
+    <a class="logo-portrait" routerLink="home" aria-label="Go to the home page">
+        <img class="img-circle" src="assets/images/portrait_2014.jpg" alt="AK"/>
+    </a>
+    <ul class="nav">
+        <li *ngFor="let item of menu" routerLinkActive="active">
+            <a routerLink="{{item.link}}" [attr.aria-label]="item.title">{{item.title}}</a>
+        </li>
+        <li [hidden]="!(isAdminObservable | async)" routerLinkActive="active">
+            <a routerLink="/admin" aria-label="Admin">Admin</a>
+        </li>
+    </ul>
+    <span class="example-spacer"></span>
+    <ul class="nav navbar-nav navbar-right">
+        <!--<li [hidden]="!isLoggedIn()" routerLinkActive="active"><a href="/signup">Sign up</a></li>-->
+        <li [hidden]="currentUserObservable | async" routerLinkActive="active">
+            <a routerLink="/login" aria-label="Login">Log In</a>
+        </li>
+        <li *ngIf="currentUserObservable | async" style="margin-left: 5px; margin-right: 5px;">
+            <a routerLink="/user" style="padding: 0"><!--[uiParams]="{id: getCurrentUser()._id}"-->
+                <span class="user-image" style.background-image="url(/api/upload/{{(currentUserObservable | async).imageId}}.jpg)"></span>
             </a>
-        </div>
-        <div [collapse]="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
-            <ul class="nav navbar-nav">
-                <li *ngFor="let item of menu" routerLinkActive="active">
-                    <a routerLink="{{item.link}}" [attr.aria-label]="item.title">{{item.title}}</a>
-                </li>
-                <li [hidden]="!isAdmin()" routerLinkActive="active">
-                    <a routerLink="/admin" aria-label="Admin">Admin</a>
-                </li>
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-                <!--<li [hidden]="!isLoggedIn()" routerLinkActive="active"><a href="/signup">Sign up</a></li>-->
-                <li [hidden]="isLoggedIn()" routerLinkActive="active">
-                    <a routerLink="/login" aria-label="Login">Log In</a>
-                </li>
-                <li *ngIf="isLoggedIn()" style="margin-left: 5px; margin-right: 5px;">
-                    <a routerLink="/user" style="padding: 0"><!--[uiParams]="{id: getCurrentUser()._id}"-->
-                        <span class="user-image" style.background-image="url(/api/upload/{{getCurrentUser().imageId}}.jpg)"></span>
-                    </a>
-                </li>
-                <li [hidden]="!isLoggedIn()" routerLinkActive="active">
-                    <a routerLink="/settings" aria-label="Settings"><i class="fa fa-cog"></i></a>
-                </li>
-                <li [hidden]="!isLoggedIn()" routerLinkActive="active">
-                    <a (click)="logout()" aria-label="Logout">Log Out</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
+        </li>
+        <li [hidden]="!(currentUserObservable | async)" routerLinkActive="active">
+            <a routerLink="/settings" aria-label="Settings">
+                <mat-icon class="example-icon" aria-hidden="false" aria-label="Settings">settings_applications</mat-icon>
+            </a>
+        </li>
+        <li [hidden]="!(currentUserObservable | async)" routerLinkActive="active">
+            <a (click)="logout()" aria-label="Logout">Log Out</a>
+        </li>
+    </ul>
+<!--    <span>Third Line</span>-->
+<!--    <mat-icon class="example-icon" aria-hidden="false" aria-label="Example delete icon">delete</mat-icon>-->
+</mat-toolbar>

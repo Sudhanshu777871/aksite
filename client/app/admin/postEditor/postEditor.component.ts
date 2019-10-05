@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
 import { AuthService } from '../../../components/auth/auth.service';
@@ -14,7 +14,8 @@ mixin(_, {
     trim
 });
 import { Converter } from 'showdown';
-import {User} from "../../../components/auth/user.service";
+import {User} from '../../../components/auth/user.service';
+
 const converter = new Converter({tables: true});
 
 interface AuthorInfo {
@@ -41,7 +42,6 @@ interface Post {
     selector: 'post-editor',
     templateUrl: './postEditor.html',
     styleUrls: ['../../blog/post/post.scss', './postEditor.scss'],
-    encapsulation: ViewEncapsulation.None
 })
 export class PostEditorComponent {
     loadingPost = true;
@@ -67,7 +67,7 @@ export class PostEditorComponent {
             });
         });
 
-        this.currentUser = await this.authService.getCurrentUser();
+        this.currentUser = await this.authService.currentUserObservable.toPromise();
 
         if(!this.id || this.id === 'new') {
             this.post = {

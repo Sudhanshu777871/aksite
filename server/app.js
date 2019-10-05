@@ -32,7 +32,7 @@ mongoose.connection.on('error', err => {
 const app = express();
 expressConfig(app);
 registerRoutes(app);
-const server = http.createServer(app);
+export const server = http.createServer(app);
 const wsInitPromise = initWebSocketServer(server);
 
 // let mongoPromise = mongooseConnectionPromise.then((conn) => {

@@ -76,7 +76,9 @@ var all = {
     sentry: {
         dsn: process.env.SENTRY_DSN || '',
         publicDsn: process.env.SENTRY_PUBLIC_DSN || ''
-    }
+    },
+
+    userRoles: [],
 };
 
 // Export the config object based on the NODE_ENV

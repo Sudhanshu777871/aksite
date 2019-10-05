@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {SignupInfo} from "./auth.service";
+import {SignupInfo} from './auth.service';
 
 export interface User {
     // TODO: use Mongoose model
