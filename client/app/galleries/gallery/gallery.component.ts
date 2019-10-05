@@ -24,7 +24,6 @@ import {Photo, PhotoService} from '../../../components/photo/photo.service';
 
 import PhotoSwipe from 'photoswipe';
 import PhotoSwipeUiDefault from 'photoswipe/dist/photoswipe-ui-default';
-// import MiniDaemon from "../../../components/minidaemon";
 
 import '../../../assets/scss/photoswipe.scss';
 
@@ -50,19 +49,19 @@ export class GalleryComponent {
 
     constructor(private readonly route: ActivatedRoute,
                 private readonly photoService: PhotoService,
-                private readonly galleryService: GalleryService) {
+                private readonly galleryService: GalleryService,
+    ) {
         this.galleryId = (this.route.params as unknown as {id: string}).id;
     }
 
     ngOnInit() {
-        this.route.paramMap.pipe(
-            switchMap((params: ParamMap) =>
-                this.galleryService.get({id: params.get('id')}))
-        ).subscribe((gallery?: Gallery) => {
-            if(!gallery) throw new Error('Gallery not found');
-            this.gallery = gallery;
-            this.onGallery();
-        });
+        this.route.paramMap
+            .pipe(switchMap((params: ParamMap) => this.galleryService.get({id: params.get('id')})))
+            .subscribe((gallery?: Gallery) => {
+                if(!gallery) throw new Error('Gallery not found');
+                this.gallery = gallery;
+                this.onGallery();
+            });
     }
 
     onLoad(event) {
@@ -74,19 +73,12 @@ export class GalleryComponent {
         let addPhoto = (photo: GalleryPhoto, i: number) => {
             photo.index = i;
 
-            // const columnEls = Array.from(this.columnEls.nativeElement.children);
-            // const min = columnEls.reduce((acc: {min: number, el: HTMLUListElement, i: number}, el: HTMLUListElement, j) => {
-            //     const localMin = Math.min(acc.min, (el.children[0] as HTMLDivElement).offsetHeight);
-            //     return localMin < acc.min ? {min: localMin, el, i: j} : acc;
-            // }, {min: Infinity, el: columnEls[0], i: -1});
-
             this.cols[colIndex].push(photo);
 
             if(colIndex === this.cols.length - 1) colIndex = 0;
             else colIndex++;
         };
 
-        // const photos = [];
         const promises = [];
         let photoIndex = 0;
         for(let i = 0; i < this.gallery.photos.length; i++) {
@@ -109,9 +101,6 @@ export class GalleryComponent {
         let pswpElement = document.querySelectorAll('.pswp')[0];
         let vscroll = document.body.scrollTop;
 
-        // if(!this.items || this.items.length === 0) {
-        //     this.items = this.parseThumbnailElements();
-        // }
         let button = document.getElementById(String(index));
 
         let gallery = new PhotoSwipe(pswpElement, PhotoSwipeUiDefault, this.parseThumbnailElements(), {

@@ -1,6 +1,6 @@
-<div class="container">
-    <div class="styled-home-text">
-        <svg viewBox="0 0 600 100" (click)="changeText()" id="bg-img-text" class="hidden">
+<div class="styled-home-text">
+    <div [hidden]="activeText !== 0">
+        <svg viewBox="0 0 600 100" (click)="changeText()" id="bg-img-text">
             <symbol id="s-text">
                 <text text-anchor="middle" x="50%" y="50%" dy=".35em" class="text">
                     Andrew Koroluk
@@ -12,10 +12,13 @@
             </mask>
 
             <g mask="url(#masked-text)">
-                <image xlink:href="../assets/images/low_poly_texture.jpg" width="1500" height="350" x="-75%" y="-50%"></image>
+                <image xlink:href="../assets/images/low_poly_texture.jpg" width="1500" height="350" x="-75%"
+                       y="-50%"></image>
             </g>
         </svg>
-        <svg viewBox="0 0 600 100" (click)="changeText()" id="dashed-stroke-text" class="hidden">
+    </div>
+    <div [hidden]="activeText !== 1">
+        <svg viewBox="0 0 600 100" (click)="changeText()" id="dashed-stroke-text">
             <!-- Symbol -->
             <symbol id="s-text">
                 <text text-anchor="middle" x="50%" y="50%" dy=".35em">
@@ -30,13 +33,15 @@
             <use xlink:href="#s-text" class="dashed-stroke-text"></use>
             <use xlink:href="#s-text" class="dashed-stroke-text"></use>
         </svg>
-        <svg viewBox="0 0 600 100" (click)="changeText()" id="gradient-text" class="hidden">
+    </div>
+    <div [hidden]="activeText !== 2">
+        <svg viewBox="0 0 600 100" (click)="changeText()" id="gradient-text">
             <text text-anchor="middle"
-                x="50%"
-                y="50%"
-                dy=".35em"
-                class="text"
-                fill="url(#gr-simple)">
+                  x="50%"
+                  y="50%"
+                  dy=".35em"
+                  class="text"
+                  fill="url(#gr-simple)">
                 Andrew Koroluk
             </text>
             <linearGradient id="gr-simple" x1="0" y1="0" x2="100%" y2="100%">
@@ -44,12 +49,14 @@
                 <stop stop-color="hsl(320, 100%, 50%)" offset="90%"></stop>
             </linearGradient>
         </svg>
-        <svg viewBox="0 0 600 100" (click)="changeText()" id="pattern-text" class="hidden">
+    </div>
+    <div [hidden]="activeText !== 3">
+        <svg viewBox="0 0 600 100" (click)="changeText()" id="pattern-text">
             <text text-anchor="middle"
-            x="50%"
-            y="50%"
-            dy=".35em"
-            class="patterned-text">
+                  x="50%"
+                  y="50%"
+                  dy=".35em"
+                  class="patterned-text">
                 Andrew Koroluk
             </text>
             <pattern
@@ -71,21 +78,23 @@
                 </g>
             </pattern>
         </svg>
-        <svg viewBox="0 0 600 100" (click)="changeText()" id="diag-striped-text" class="hidden">
+    </div>
+    <div [hidden]="true">
+        <svg viewBox="0 0 600 100" (click)="changeText()" id="diag-striped-text">
             <!-- Symbol with text -->
             <symbol id="s-text">
                 <text text-anchor="middle"
-                    x="50%" y="50%" dy=".35em"
-                    class="text--line"
-                    >
+                      x="50%" y="50%" dy=".35em"
+                      class="text--line"
+                >
                     Andrew Koroluk
                 </text>
             </symbol>
             <clippath id="cp-text">
                 <text text-anchor="middle"
-                    x="50%" y="50%"
-                    dy=".35em"
-                    class="text--line">
+                      x="50%" y="50%"
+                      dy=".35em"
+                      class="text--line">
                     Andrew Koroluk
                 </text>
             </clippath>
@@ -142,15 +151,13 @@
     <div class="vendor-section-v2">
         <h1 class="page-header">Powered by:</h1>
         <div class="columns" #columns>
-            <ul *ngFor="let col of cols" class="column">
-                <div>
-                    <li *ngFor="let image of col" class="">
-                        <a href="{{image.href}}">
-                            <img src="{{image.src}}" alt="{{image.alt}}">
-                        </a>
-                    </li>
+            <div *ngFor="let col of cols" class="column">
+                <div *ngFor="let image of col" class="">
+                    <a href="{{image.href}}">
+                        <img src="{{image.src}}" alt="{{image.alt}}">
+                    </a>
                 </div>
-            </ul>
+            </div>
         </div>
     </div>
 </div>

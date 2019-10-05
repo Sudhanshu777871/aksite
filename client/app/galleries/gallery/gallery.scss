@@ -7,7 +7,7 @@
 }
 
 .pswp {
-    // Fix Bootstrap navbar on top of PhotoSwipe
+    // Fix navbar on top of PhotoSwipe
     z-index: 1500 !important;
 }
 
@@ -59,4 +59,8 @@
             }
         }
     }
+}
+
+.text-center {
+    text-align: center;
 }

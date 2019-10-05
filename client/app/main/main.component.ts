@@ -34,11 +34,7 @@ import {
 import { SocketService } from '../../components/socket/socket.service';
 
 import MiniDaemon from '../../components/minidaemon';
-import classie from 'classie';
 
-let texts = ['dashed-stroke-text', 'gradient-text', 'pattern-text', /*'diag-striped-text',*/ 'bg-img-text'];
-let usedTexts = [];
-let currentText = _.sample(texts); // Load first random text
 let vendorImages: VendorImage[] = [{
     href: 'https://angular.io/',
     src: 'assets/images/angular.svg',
@@ -129,21 +125,30 @@ export class MainComponent implements OnInit {
     vendorImages: VendorImage[];
     cols: VendorImage[][] = [[], [], []];
     @ViewChild('columns', {static: false}) columnEls;
+    activeText = Math.ceil(Math.random() * 4) - 1;
+    texts = Array(4).fill(0).map((val, i) => i);
+    usedTexts: number[] = [];
 
     constructor(private readonly socketService: SocketService) {
         console.log(socketService);
-        socketService.emit([{}]);
-        socketService.emit(['data', {}]);
-        socketService.emit(['chungus']);
+        socketService.emit('data', [{}]);
+        socketService.emit('data', ['data', {}]);
+        socketService.emit('data', ['chungus']);
         this.vendorImages = _.shuffle(vendorImages);
+
+        this.activeText = _.sample(this.texts); // Load first random text
     }
 
     ngOnInit() {
         let addImage = (img: VendorImage, i: number) => {
             const columnEls = Array.from(this.columnEls.nativeElement.children);
 
-            const min = columnEls.reduce((acc: {min: number, el: HTMLUListElement, i: number}, el: HTMLUListElement, j) => {
-                const localMin = Math.min(acc.min, (el.children[0] as HTMLDivElement).offsetHeight);
+            const min = columnEls.reduce((acc: {min: number, el: HTMLDivElement, i: number}, el: HTMLDivElement, j) => {
+                let total = 0;
+                for(const subEl of el.children as any) {
+                    total+= subEl.children[0].offsetHeight;
+                }
+                const localMin = Math.min(acc.min, total);
                 return localMin < acc.min ? {min: localMin, el, i: j} : acc;
             }, {min: Infinity, el: columnEls[0], i: -1});
 
@@ -156,23 +161,18 @@ export class MainComponent implements OnInit {
         }, 50, vendorImages.length);
         daemon.start();
 
-        classie.removeClass(document.getElementById(currentText), 'hidden');
-        usedTexts.push(_.remove(texts, _.partial(_.isEqual, currentText)));
+        this.usedTexts.push(_.remove(this.texts, _.partial(_.isEqual, this.activeText))[0]);
     }
 
     changeText() {
         // We've used all the styles; start over, using them all again
-        if(texts.length === 0) {
-            texts = usedTexts;
-            usedTexts = [];
+        if(this.texts.length === 0) {
+            this.texts = this.usedTexts;
+            this.usedTexts = [];
         }
-        // Hide the previously used text
-        classie.addClass(document.getElementById(currentText), 'hidden');
         // Get the new text ID
-        currentText = _.sample(texts);
+        this.activeText = _.sample(this.texts);
         // Move the new text ID to the usedTexts array, so that it's not used again until we run out of styles
-        usedTexts.push(_.remove(texts, _.partial(_.isEqual, currentText)));
-        // Show the new text
-        classie.removeClass(document.getElementById(currentText), 'hidden');
+        this.usedTexts.push(_.remove(this.texts, _.partial(_.isEqual, this.activeText))[0]);
     }
 }
