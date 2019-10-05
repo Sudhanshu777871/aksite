@@ -35,27 +35,12 @@ registerRoutes(app);
 export const server = http.createServer(app);
 const wsInitPromise = initWebSocketServer(server);
 
-// let mongoPromise = mongooseConnectionPromise.then((conn) => {
-//     Grid.mongo = mongoose.mongo;
-//     // const conn = mongoose.createConnection(config.mongo.uri);
-//
-//     // conn.once('open', err => {
-//     //     if(err) return reject(err);
-//     //
-//     //     resolve();
-//     // });
-// });
-
 // Start server
 function startServer() {
     console.log(config.ip);
     server.listen(config.port, config.ip, () => {
         console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
     });
-    // app.angularFullstack = app.listen(config.port, config.ip, (/*...args*/) => {
-    //     // console.log(args);
-    //     console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
-    // });
 }
 
 Promise.all([wsInitPromise, mongooseConnectionPromise])

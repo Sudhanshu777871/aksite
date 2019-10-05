@@ -2,7 +2,6 @@ var app = require('../../app').default;
 var request = require('supertest');
 
 describe('GET /api/gallery', function() {
-
     it('should respond with JSON array', function(done) {
         request(app)
             .get('/api/gallery')

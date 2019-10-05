@@ -39,17 +39,15 @@ exports.show = function(req, res) {
     if(!isValidObjectId(req.params.id)) {
         return res.status(400).send('Invalid ID');
     }
-    Project.findById(req.params.id, function(err, project) {
+    Project.findById(req.params.id, (err, project) => {
         if(err) {
             return handleError(res, err);
         } else if(!project) {
             return res.status(404).end();
+        } else if((!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) && project.hidden) {
+            return res.status(401).end();
         } else {
-            if( (!req.user || config.userRoles.indexOf(req.user.role) < config.userRoles.indexOf('admin')) && project.hidden ) {
-                return res.status(401).end();
-            } else {
-                return res.json(project);
-            }
+            return res.json(project);
         }
     });
 };
