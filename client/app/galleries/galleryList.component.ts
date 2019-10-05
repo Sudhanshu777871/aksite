@@ -9,20 +9,19 @@ mixin(_, {
     forEach
 });
 
-import { Component, ViewEncapsulation, Inject } from '@angular/core';
+import {Component} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { Router } from '@angular/router';
 
 import {Gallery, GalleryService} from '../../components/gallery/gallery.service';
-import {Photo} from "../../components/photo/photo.service";
-import {Observable} from "rxjs";
-import {tap} from "rxjs/operators";
+import {Photo} from '../../components/photo/photo.service';
+import {Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
 
 @Component({
     selector: 'gallery-list',
     templateUrl: './galleryList.html',
     styleUrls: ['./galleryList.scss'],
-    encapsulation: ViewEncapsulation.None,
 })
 export class GalleryListComponent {
     galleries: Observable<Gallery[]>;
@@ -34,10 +33,6 @@ export class GalleryListComponent {
                 private readonly router: Router) {}
 
     ngOnInit() {
-        // const galleryQueryResult = await this.Gallery.query();
-        //
-        // if(!galleryQueryResult) throw new Error('Gallery query returned nothing');
-
         this.galleries = this.http.get<Gallery[]>('/api/gallery/').pipe(tap((galleries => {
             let i = 0;
             for(const gallery of galleries) {

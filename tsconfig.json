@@ -19,7 +19,8 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "lib": [ "es2015", "dom" ],
-        "moduleResolution": "node"
+        "moduleResolution": "node",
+        "module": "esnext"
     },
     "include": [
         "./client/**/*.ts"

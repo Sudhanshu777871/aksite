@@ -1,31 +1,20 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AlertModule } from 'ngx-bootstrap';
 
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 import { DirectivesModule } from '../../components/directives.module';
 
 import { GalleryListComponent } from './galleryList.component';
 import { GalleryComponent } from './gallery/gallery.component';
+import {GalleriesRoutingModule} from './galleries-routing.module';
 
 import { GalleryService } from '../../components/gallery/gallery.service';
 import { PhotoService } from '../../components/photo/photo.service';
 
-const routes: Routes = [{
-    path: 'galleries',
-    component: GalleryListComponent,
-}, {
-    path: 'galleries/:id',
-    component: GalleryComponent,
-}];
-
 @NgModule({
     imports: [
-        BrowserModule,
-        AlertModule,
-        BrowserModule,
+        CommonModule,
         DirectivesModule,
-        RouterModule.forChild(routes),
+        GalleriesRoutingModule,
     ],
     providers: [
         GalleryService,

@@ -20,7 +20,6 @@ import { DirectivesModule } from '../components/directives.module';
 import { AccountModule } from './account/account.module';
 import { AdminModule } from './admin/admin.module';
 import { ProjectsModule } from './projects/projects.module';
-import { GalleriesModule } from './galleries/galleries.module';
 import { BlogModule } from './blog/blog.module';
 // import { UserModule } from './user/user.module';
 import { ResumeModule } from './resume/resume.module';
@@ -48,19 +47,17 @@ export function tokenGetter() {
 }
 
 const appRoutes: Routes = [
-    //{ path: 'crisis-center', component: CrisisListComponent },
-    //{ path: 'hero/:id',      component: HeroDetailComponent },
-    // {
-    //   path: 'home',
-    //   component: MainComponent,
-    //   data: { title: 'Home' }
-    // },
-    // {
-    //     path: '',
-    //     redirectTo: '/home',
-    //     pathMatch: 'full',
-    // },
-    // { path: '**', component: AppComponent }
+    {
+        path: '',
+        children: [{
+            path: '',
+            pathMatch: 'full',
+            redirectTo: '/home',
+        }, {
+            path: 'galleries',
+            loadChildren: () => import('./galleries/galleries.module').then(m => m.GalleriesModule),
+        }]
+    },
 ];
 
 @NgModule({
@@ -72,8 +69,8 @@ const appRoutes: Routes = [
         HttpClientModule,
         JwtModule.forRoot({
             config: {
-                tokenGetter: tokenGetter,
-                whitelistedDomains: ["andrewk.me"],
+                tokenGetter,
+                whitelistedDomains: ['andrewk.me'],
                 // blacklistedRoutes: ["example.com/examplebadroute/"]
             }
         }),
@@ -92,7 +89,6 @@ const appRoutes: Routes = [
         AccountModule,
         AdminModule,
         ProjectsModule,
-        GalleriesModule,
         BlogModule,
         // UserModule,
         ResumeModule,

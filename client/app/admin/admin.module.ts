@@ -19,6 +19,7 @@ import {GalleryEditorComponent} from './galleryEditor/galleryEditor.component';
 import {DirectivesModule} from '../../components/directives.module';
 import {SiteSettingsComponent} from './siteSettings/siteSettings.component';
 import {FileManagerComponent} from './fileManager/fileManager.component';
+import {AdminRoutingModule} from './admin-routing.module';
 
 //import '!raw!sass!./admin.scss
 
@@ -64,6 +65,7 @@ const routes: Routes = [{
 @NgModule({
     imports: [
         BrowserModule,
+        DirectivesModule,
         FormsModule,
         MatSlideToggleModule,
         MatSidenavModule,
@@ -72,8 +74,8 @@ const routes: Routes = [{
         MatListModule,
         ProgressbarModule.forRoot(),
         // FileUploadModule,
-        RouterModule.forChild(routes),
-        DirectivesModule,
+        // RouterModule.forChild(routes),
+        AdminRoutingModule,
     ],
     declarations: [
         AdminComponent,

@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import {switchMap} from 'rxjs/operators';
@@ -7,7 +7,7 @@ import {switchMap} from 'rxjs/operators';
 // @ts-ignore
 import moment from 'moment';
 import { Converter } from 'showdown';
-import {Gallery} from "../../../components/gallery/gallery.service";
+import {Gallery} from '../../../components/gallery/gallery.service';
 const converter = new Converter({tables: true});
 
 interface Post {
@@ -19,7 +19,6 @@ interface Post {
     selector: 'post',
     templateUrl: './post.html',
     styleUrls: ['./post.scss', '../blog.scss'],
-    encapsulation: ViewEncapsulation.None
 })
 export class PostComponent {
     error;
