@@ -6,9 +6,9 @@ const _ = require('lodash');
 const CopyPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
+// const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+// const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
@@ -110,53 +110,72 @@ module.exports = function makeWebpackConfig(options) {
      * This handles most of the magic responsible for converting modules
      */
 
+    // const POSTCSS_LOADER = {
+    //     loader: 'postcss-loader',
+    //     options: {
+    //         ident: 'postcss',
+    //         sourceMap: true,
+    //         config: {
+    //             plugins: [
+    //                 // require('cssnano')(),
+    //             ],
+    //             //         ctx: {
+    //             //             'postcss-preset-env': {
+    //             //                 browsers: 'last 2 version',
+    //             //             },
+    //             //             cssnano: {},
+    //             //         },
+    //         },
+    //     }
+    // };
+    const POSTCSS_LOADER = 'postcss-loader';
+
     // Initialize module
     config.module = {
         rules: [{
             test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
             use: '@ngtools/webpack',
-        }, {
-            // JS LOADER
-            // Reference: https://github.com/babel/babel-loader
-            // Transpile .js files using babel-loader
-            // Compiles ES6 and ES7 into ES5 code
-            test: /\.js$/,
-            use: {
-                loader: 'babel-loader',
-                options: {
-                    babelrc: false,
-                    presets: [
-                        ['babel-preset-env', {
-                            // debug: true,
-                            targets: {
-                                browsers: ['last 2 versions', 'not dead'],
-                            },
-                            debug: true,
-                            modules: false,
-                        }],
-                    ],
-                    plugins: [
-                        'angular2-annotations',
-                        'transform-runtime',
-                        'transform-decorators-legacy',
-                        'transform-class-properties',
-                        'transform-export-extensions',
-                    ].concat(TEST ? ['istanbul'] : []),
-                    shouldPrintComment(commentContents) {
-                        let regex = DEV
-                            // keep `// @flow`, `/*@ngInject*/`, & flow type comments in dev
-                            ? /(@flow|@ngInject|^:)/
-                            // keep `/*@ngInject*/`
-                            : /@ngInject/;
-                        return regex.test(commentContents);
-                    }
-                },
-            },
-            include: [
-                path.resolve(__dirname, 'client/'),
-                path.resolve(__dirname, 'server/config/environment/shared.js'),
-                path.resolve(__dirname, 'node_modules/lodash-es/')
-            ]
+        // }, {
+        //     JS LOADER
+        //     Reference: https://github.com/babel/babel-loader
+        //     Transpile .js files using babel-loader
+        //     Compiles ES6 and ES7 into ES5 code
+        //     test: /(?!(\.ngfactory|\.ngstyle))\.js$/,
+        //     use: {
+        //         loader: 'babel-loader',
+        //         options: {
+        //             babelrc: false,
+        //             presets: [
+        //                 ['babel-preset-env', {
+        //                     // debug: true,
+        //                     targets: {
+        //                         browsers: ['last 2 versions', 'not dead'],
+        //                     },
+        //                     debug: true,
+        //                     modules: false,
+        //                 }],
+        //             ],
+        //             plugins: [
+        //                 'transform-runtime',
+        //                 'transform-decorators-legacy',
+        //                 'transform-class-properties',
+        //                 'transform-export-extensions',
+        //             ].concat(TEST ? ['istanbul'] : []),
+        //             shouldPrintComment(commentContents) {
+        //                 let regex = DEV
+        //                     // keep `// @flow`, `/*@ngInject*/`, & flow type comments in dev
+        //                     ? /(@flow|@ngInject|^:)/
+        //                     // keep `/*@ngInject*/`
+        //                     : /@ngInject/;
+        //                 return regex.test(commentContents);
+        //             }
+        //         },
+        //     },
+        //     include: [
+        //         path.resolve(__dirname, 'client/'),
+        //         path.resolve(__dirname, 'server/config/environment/shared.js'),
+        //         path.resolve(__dirname, 'node_modules/lodash-es/')
+        //     ]
         }, {
         //     // TS LOADER
         //     // Reference: https://github.com/s-panferov/awesome-typescript-loader
@@ -196,18 +215,10 @@ module.exports = function makeWebpackConfig(options) {
             test: /\.css$/,
             use: [
                 DEV ? 'style-loader' : MiniCssExtractPlugin.loader,
-                'css-loader',
-                {
-                    loader: 'postcss-loader',
-                    options: {
-                        autoprefixer: {
-                            browsers: ['last 2 version']
-                        }
-                    }
-                },
+                { loader: 'css-loader', options: { importLoaders: 1 } },
+                POSTCSS_LOADER,
             ],
             include: [
-                path.resolve(__dirname, 'node_modules/bootstrap/dist/css/*.css'),
                 path.resolve(__dirname, 'client/app/app.css')
             ]
         }, {
@@ -216,15 +227,8 @@ module.exports = function makeWebpackConfig(options) {
             test: /\.(scss|sass)$/,
             use: [
                 DEV ? 'style-loader' : MiniCssExtractPlugin.loader,
-                'css-loader?sourceMap',
-                {
-                    loader: 'postcss-loader',
-                    options: {
-                        autoprefixer: {
-                            browsers: ['last 2 version']
-                        }
-                    }
-                },
+                { loader: 'css-loader', options: { importLoaders: 1, sourceMap: true, } },
+                POSTCSS_LOADER,
                 'sass-loader',
             ],
             include: [
@@ -237,15 +241,8 @@ module.exports = function makeWebpackConfig(options) {
             test: /\.(scss|sass)$/,
             use: [
                 'to-string-loader?sourceMap',
-                'css-loader?sourceMap',
-                {
-                    loader: 'postcss-loader',
-                    options: {
-                        autoprefixer: {
-                            browsers: ['last 2 version']
-                        }
-                    }
-                },
+                { loader: 'css-loader', options: { importLoaders: 1, sourceMap: true, } },
+                POSTCSS_LOADER,
                 'sass-loader?sourceMap',
             ],
             include: [
@@ -278,25 +275,25 @@ module.exports = function makeWebpackConfig(options) {
     //
     // Reference: https://github.com/postcss/postcss-loader
     // Postprocess your css with PostCSS plugins
-    const cssLoader = {
-        test: /\.css$/,
-        // Reference: https://github.com/webpack/extract-text-webpack-plugin
-        // Extract css files in production builds
-        //
-        // Reference: https://github.com/webpack/style-loader
-        // Use style-loader in development for hot-loading
-        use: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader?sourceMap!postcss-loader'})
-    };
-
-    // Skip loading css in test mode
-    if(TEST) {
-        // Reference: https://github.com/webpack/null-loader
-        // Return an empty module
-        cssLoader.use = 'null-loader';
-    }
+    // const cssLoader = {
+    //     test: /\.css$/,
+    //     // Reference: https://github.com/webpack/extract-text-webpack-plugin
+    //     // Extract css files in production builds
+    //     //
+    //     // Reference: https://github.com/webpack/style-loader
+    //     // Use style-loader in development for hot-loading
+    //     use: ExtractTextPlugin.extract({fallback: 'style-loader', use: 'css-loader?sourceMap!postcss-loader'})
+    // };
+    //
+    // // Skip loading css in test mode
+    // if(TEST) {
+    //     // Reference: https://github.com/webpack/null-loader
+    //     // Return an empty module
+    //     cssLoader.use = 'null-loader';
+    // }
 
     // Add cssLoader to the loader list
-    config.module.rules.push(cssLoader);
+    // config.module.rules.push(cssLoader);
 
     /**
      * Plugins
@@ -323,9 +320,7 @@ module.exports = function makeWebpackConfig(options) {
              * Add vendor prefixes to your css
              */
             postcss: [
-                autoprefixer({
-                    browsers: ['last 2 version']
-                })
+                autoprefixer()
             ],
             sassLoader: {
                 outputStyle: 'compressed',
