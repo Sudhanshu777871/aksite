@@ -1,26 +1,18 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {CommonModule} from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
 import {PaginationModule} from '../../components/pagination/pagination.module';
 
 import { BlogComponent } from './blog.component';
 import { PostComponent } from './post/post.component';
-
-const routes: Routes = [{
-    path: 'blog',
-    component: BlogComponent,
-}, {
-    path: 'blog/:id',
-    component: PostComponent,
-}];
+import {BlogRoutingModule} from './blog-routing.module';
 
 @NgModule({
     imports: [
         FormsModule,
-        BrowserModule,
+        CommonModule,
         PaginationModule,
-        RouterModule.forChild(routes),
+        BlogRoutingModule,
     ],
     declarations: [
         BlogComponent,

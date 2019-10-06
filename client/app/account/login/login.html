@@ -33,7 +33,7 @@
                     <button mat-button class="mat-primary md-button-lg" type="submit" aria-label="Login">
                         Log In
                     </button>
-                    <a mat-button class="md-button-lg" type="button" routerLink="/signup" aria-label="Register">
+                    <a mat-button class="md-button-lg" type="button" routerLink="/account/signup" aria-label="Register">
                         Sign Up
                     </a>
                 </section>
@@ -41,7 +41,7 @@
 
             <br/>
 
-            <section class="oauth-button-section">
+            <section class="oauth-button-section" hidden>
                 <button mat-button class="md-button-lg google-color" aria-label="Log in with Google" (click)="loginOauth('google')">
                     <mat-icon fontSet="fa" fontIcon="fa-google"></mat-icon>
                     Log in with Google

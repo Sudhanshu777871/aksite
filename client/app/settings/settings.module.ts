@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {CommonModule} from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule, Routes } from '@angular/router';
 import { MatSidenavModule, MatButtonModule, MatIconModule } from '@angular/material';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
@@ -10,33 +9,19 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import { SettingsComponent } from './settings.component';
 import { SettingsDashboardComponent } from './dashboard/dashboard.component';
 import {SettingsProfile} from './profile/profile.component';
-
-const routes: Routes = [{
-    path: 'settings',
-    component: SettingsComponent,
-    children: [{
-        path: '',
-        component: SettingsDashboardComponent,
-    }, {
-        path: 'profile',
-        component: SettingsProfile,
-        // }, {
-    //     path: 'blog',
-    //     component: BlogManagerComponent,
-    }]
-}];
+import {SettingsRoutingModule} from './settings-routing.module';
 
 @NgModule({
     imports: [
         FormsModule,
-        BrowserModule,
+        CommonModule,
         MatSidenavModule,
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
         MatToolbarModule,
         MatIconModule,
-        RouterModule.forChild(routes),
+        SettingsRoutingModule,
     ],
     declarations: [
         SettingsComponent,

@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { GalleryListComponent } from './galleryList.component';
-import { GalleryComponent } from './gallery/gallery.component';
+import {BlogComponent} from './blog.component';
+import {PostComponent} from './post/post.component';
 
 const routes: Routes = [{
     path: '',
-    component: GalleryListComponent,
+    component: BlogComponent,
 }, {
     path: ':id',
-    component: GalleryComponent,
+    component: PostComponent,
 }];
 
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
 })
-export class GalleriesRoutingModule {}
+export class BlogRoutingModule {}

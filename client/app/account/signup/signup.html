@@ -32,13 +32,13 @@
                     <button mat-button class="mat-primary md-button-lg" type="submit" aria-label="Sign up">
                         Sign up
                     </button>
-                    <a mat-button class="md-button-lg" type="button" routerLink="/login" aria-label="Log In">Log In</a>
+                    <a mat-button class="md-button-lg" type="button" routerLink="/account/login" aria-label="Log In">Log In</a>
                 </section>
             </form>
 
             <br/>
 
-            <section class="oauth-button-section">
+            <section class="oauth-button-section" hidden>
                 <button mat-button class="md-button-lg google-color" aria-label="Sign up with Google" (click)="loginOauth('google')">
                     <mat-icon fontSet="fa" fontIcon="fa-google"></mat-icon>
                     Sign up with Google

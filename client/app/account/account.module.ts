@@ -3,18 +3,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {CommonModule} from '@angular/common';
 import {MatInputModule, MatButtonModule, MatIconModule} from '@angular/material';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {RouterModule, Routes} from '@angular/router';
 
+import {AccountRoutingModule} from './account-routing.module';
 import {LoginComponent} from './login/login.component';
 import {SignupComponent} from './signup/signup.component';
-
-const accountRoutes: Routes = [{
-    path: 'login',
-    component: LoginComponent,
-}, {
-    path: 'signup',
-    component: SignupComponent,
-}];
 
 @NgModule({
     imports: [
@@ -25,7 +17,7 @@ const accountRoutes: Routes = [{
         MatInputModule,
         MatButtonModule,
         MatIconModule,
-        RouterModule.forChild(accountRoutes),
+        AccountRoutingModule,
     ],
     declarations: [
         LoginComponent,

@@ -1,27 +1,19 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {CommonModule} from '@angular/common';
 
-import { BrowserModule } from '@angular/platform-browser';
 import { DirectivesModule } from '../../components/directives.module';
 
 import { ProjectListComponent } from './projectList.component';
 import { ProjectComponent } from './project/project.component';
 
 import { ProjectService } from '../../components/Project/Project.service';
-
-const routes: Routes = [{
-    path: 'projects',
-    component: ProjectListComponent,
-}, {
-    path: 'projects/:id',
-    component: ProjectComponent,
-}];
+import {ProjectsRoutingModule} from './projects-routing.module';
 
 @NgModule({
     imports: [
-        BrowserModule,
+        CommonModule,
         DirectivesModule,
-        RouterModule.forChild(routes),
+        ProjectsRoutingModule,
     ],
     providers: [ProjectService],
     declarations: [

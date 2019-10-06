@@ -1,7 +1,7 @@
 // @ts-ignore
 import moment from 'moment';
 
-export default class ResumeController {
+export default class Resume {
     profile = {};
     jobs = [];
 

@@ -149,9 +149,7 @@ export class AuthService {
     // }
 
     /** Check if a user is an admin */
-    isAdminObservable() {
-        return this.currentUserObservable.pipe(map(user => user.role === 'admin'));
-    }
+    isAdminObservable = this.currentUserObservable.pipe(map(user => user.role === 'admin'));
 
     /**
      * Get auth token
