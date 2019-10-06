@@ -4,7 +4,6 @@
         "stage-0"
     ],
     "plugins": [
-        "angular2-annotations",
         "transform-runtime",
         "transform-decorators-legacy"
     ]
