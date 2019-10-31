@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: awk34/aksite-builder
       - image: mongo
-        command: [mongod, --smallfiles]
+        command: mongod
 
     working_directory: ~/aksite
 
