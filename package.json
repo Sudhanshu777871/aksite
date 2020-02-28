@@ -88,7 +88,7 @@
     "angular2-template-loader": "^0.6.2",
     "autoprefixer": "^9.6.4",
     "awesome-typescript-loader": "^5.2.1",
-    "babel-eslint": "^8.0.0",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^7.0.0",
     "chai": "^3.5.0",
     "chai-as-promised": "^7.0.0",
