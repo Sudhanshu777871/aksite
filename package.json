@@ -18,7 +18,7 @@
   "license": "Unlicense",
   "dependencies": {
     "@angularclass/hmr-loader": "^3.0.4",
-    "acorn": "^6.1.1",
+    "acorn": "^6.4.1",
     "babel-core": "^6.26.3",
     "babel-plugin-lodash": "^3.2.2",
     "babel-plugin-transform-runtime": "^6.6.0",
