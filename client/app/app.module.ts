@@ -2,16 +2,14 @@ import { NgModule, ErrorHandler, Injectable } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { JwtModule } from '@auth0/angular-jwt';
 import { HttpClientModule } from '@angular/common/http';
-import {
-    MatButtonModule,
-    MatIconModule,
-    MatInputModule,
-    MatListModule,
-    MatSidenavModule,
-    MatSlideToggleModule,
-    MatToolbarModule,
-    MatTooltipModule,
-} from '@angular/material';
+import {MatTooltipModule,} from '@angular/material/tooltip';
+import {MatButtonModule} from '@angular/material/button';
+import {MatListModule} from '@angular/material/list';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatIconModule} from '@angular/material/icon';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import {MatInputModule} from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
