@@ -115,6 +115,12 @@ interface VendorImage {
     alt?: string;
 }
 
+interface MinColumnData {
+    min: number;
+    el: HTMLDivElement;
+    i: number;
+}
+
 @Component({
     selector: 'main',
     templateUrl: './main.html',
@@ -143,14 +149,14 @@ export class MainComponent implements OnInit {
         let addImage = (img: VendorImage, i: number) => {
             const columnEls = Array.from(this.columnEls.nativeElement.children);
 
-            const min = columnEls.reduce((acc: {min: number, el: HTMLDivElement, i: number}, el: HTMLDivElement, j) => {
+            const min: MinColumnData = columnEls.reduce((acc: MinColumnData, el: HTMLDivElement, j) => {
                 let total = 0;
                 for(const subEl of el.children as any) {
-                    total+= subEl.children[0].offsetHeight;
+                    total += subEl.children[0].offsetHeight;
                 }
                 const localMin = Math.min(acc.min, total);
                 return localMin < acc.min ? {min: localMin, el, i: j} : acc;
-            }, {min: Infinity, el: columnEls[0], i: -1});
+            }, {min: Infinity, el: columnEls[0], i: -1}) as MinColumnData;
 
             this.cols[min.i].push(img);
         };
