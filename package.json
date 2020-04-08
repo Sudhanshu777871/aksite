@@ -133,7 +133,7 @@
     "mocha": "^6.2.3",
     "ng2-file-upload": "^1.4.0",
     "node-sass": "^4.13.1",
-    "nodemon": "^2.0.2",
+    "nodemon": "^2.0.3",
     "null-loader": "^3.0.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "phantomjs-prebuilt": "^2.1.16",
