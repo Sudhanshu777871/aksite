@@ -105,7 +105,7 @@
     "eslint": "^4.19.1",
     "eslint-plugin-lodash": "^2.7.0",
     "file-loader": "^6.0.0",
-    "flow-bin": "^0.121.0",
+    "flow-bin": "^0.126.1",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
     "hard-source-webpack-plugin": "^0.13.1",
