@@ -16,7 +16,7 @@
         <li [hidden]="currentUserObservable | async" routerLinkActive="active">
             <a routerLink="/account/login" aria-label="Login">Log In</a>
         </li>
-        <li *ngIf="currentUserObservable | async" style="margin-left: 5px; margin-right: 5px;">
+        <li *ngIf="currentUserObservable | async" style="margin-left: 10px; margin-right: 10px;">
             <a routerLink="/user/me" style="padding: 0"><!--[uiParams]="{id: getCurrentUser()._id}"-->
                 <span class="user-image" style.background-image="url(/api/upload/{{(currentUserObservable | async).imageId}}.jpg)"></span>
             </a>
